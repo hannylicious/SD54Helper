@@ -157,7 +157,6 @@ namespace Helpdesk54
 
                 throw;
             }
-
             //*****
             //set restoreDriveCombo to dropdown
             //*****
