@@ -1,0 +1,3 @@
+C:\Users\christophergoodwin\Documents\Visual Studio 2015\Projects\Helpdesk54\Helpdesk54\obj\Debug\Helpdesk54.Properties.Resources.resources
+C:\Users\christophergoodwin\Documents\Visual Studio 2015\Projects\Helpdesk54\Helpdesk54\obj\Debug\Helpdesk54.UserControl1.resources
+C:\Users\christophergoodwin\Documents\Visual Studio 2015\Projects\Helpdesk54\Helpdesk54\obj\Debug\Helpdesk54.csproj.GenerateResource.Cache
