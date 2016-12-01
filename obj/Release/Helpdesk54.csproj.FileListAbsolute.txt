@@ -17,3 +17,7 @@ H:\Programming\windows\Helpdesk54\obj\Release\Interop.IWshRuntimeLibrary.dll
 H:\Programming\windows\Helpdesk54\obj\Release\Helpdesk54.csproj.ResolveComReference.cache
 H:\Programming\windows\Helpdesk54\obj\Release\Helpdesk54.exe
 H:\Programming\windows\Helpdesk54\obj\Release\Helpdesk54.pdb
+H:\Programming\windows\SD54Helper\Helpdesk54\obj\Release\Interop.IWshRuntimeLibrary.dll
+H:\Programming\windows\SD54Helper\Helpdesk54\obj\Release\Helpdesk54.csproj.ResolveComReference.cache
+H:\Programming\windows\SD54Helper\Helpdesk54\obj\Release\Helpdesk54.exe
+H:\Programming\windows\SD54Helper\Helpdesk54\obj\Release\Helpdesk54.pdb
