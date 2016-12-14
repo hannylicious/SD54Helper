@@ -183,7 +183,7 @@ namespace Helpdesk54
 
             //Check the H:\ drive for a backup
             checkForExistingBackup();
-
+            getFilesToListView();
 
             string[] directoryLocations =
             {
@@ -271,9 +271,22 @@ namespace Helpdesk54
                 else
                 {
                     quickenButton.Enabled = false;
+                    quickenCheckBox.Enabled = false;
                 }
             }
 
+        }
+        //set all the files in the server location to the serverListView tab
+        public void getFilesToListView()
+        {
+/*
+            string[] files = System.IO.Directory.GetFiles(serverName);
+
+            for (int x = 0; x < files.Length; x++)
+            {
+                serverListView.Items.Add(files[x]);
+            }
+*/
         }
         //handle clicking of serverNameLinkLabel
         private void serverNameLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -639,18 +652,23 @@ namespace Helpdesk54
                 {
                     case "InfiniteCampus":
                         CreateShortcut("Infinite Campus", Environment.GetFolderPath(Environment.SpecialFolder.Desktop), @"C:\Program Files (x86)\Internet Explorer\iexplore.exe");
+                        icShortcutCheckBox.Checked = true;
                         break;
                     case "AESOP":
                         CreateShortcut("AESOP", Environment.GetFolderPath(Environment.SpecialFolder.Desktop), @"C:\Program Files (x86)\Internet Explorer\iexplore.exe");
+                        aesopShortcutCheckBox.Checked = true;
                         break;
                     case "E-Finance":
                         CreateShortcut("E-Finance", Environment.GetFolderPath(Environment.SpecialFolder.Desktop), @"C:\Program Files (x86)\Internet Explorer\iexplore.exe");
+                        efinanceShortcutCheckBox.Checked = true;
                         break;
                     case "H-Drive":
                         CreateShortcut("H Drive", Environment.GetFolderPath(Environment.SpecialFolder.Desktop), homeDirectory);
+                        homeShortcutCheckBox.Checked = true;
                         break;
                     case "Word":
-                        CreateShortcut("Microsoft Word", Environment.GetFolderPath(Environment.SpecialFolder.Desktop), @"C:\Program Files (x86)\Microsoft Office\Office14\WINWORD.exe");               
+                        CreateShortcut("Microsoft Word", Environment.GetFolderPath(Environment.SpecialFolder.Desktop), @"C:\Program Files (x86)\Microsoft Office\Office14\WINWORD.exe");
+                        wordShortcutCheckBox.Checked = true;
                         break;
                 }
             }
@@ -690,7 +708,7 @@ namespace Helpdesk54
         */
         private void backupDesktopButton_Click(object sender, EventArgs e)
         {
-
+            desktopBackupCheckBox.Checked = true;
             clickedButton = ((Button)sender).Name.ToString();
             itemsChanged = ((Button)sender).Text.ToString();
             selectedDrive = backupDriveCombo.SelectedItem.ToString();
@@ -701,6 +719,7 @@ namespace Helpdesk54
         */
         private void backupDocumentsButton_Click(object sender, EventArgs e)
         {
+            documentsBackupCheckBox.Checked = true;
             clickedButton = ((Button)sender).Name.ToString();
             itemsChanged = ((Button)sender).Text.ToString();
             selectedDrive = backupDriveCombo.SelectedItem.ToString();
@@ -711,6 +730,7 @@ namespace Helpdesk54
         */
         private void backupFavoritesButton_Click(object sender, EventArgs e)
         {
+            favoritesBackupCheckBox.Checked = true;
             clickedButton = ((Button)sender).Name.ToString();
             itemsChanged = ((Button)sender).Text.ToString();
             selectedDrive = backupDriveCombo.SelectedItem.ToString();
@@ -721,6 +741,9 @@ namespace Helpdesk54
         */
         private void backupAllEssentialsButton_Click(object sender, EventArgs e)
         {
+            desktopBackupCheckBox.Checked = true;
+            documentsBackupCheckBox.Checked = true;
+            favoritesBackupCheckBox.Checked = true;
             clickedButton = ((Button)sender).Name.ToString();
             itemsChanged = @"Desktop, Documents and Favorites";
             selectedDrive = backupDriveCombo.SelectedItem.ToString();
@@ -824,6 +847,7 @@ namespace Helpdesk54
         */
         private void backupStickyNotesButton_Click(object sender, EventArgs e)
         {
+            stickyNotesBackupCheckBox.Checked = true;
             clickedButton = ((Button)sender).Name.ToString();
             itemsChanged = ((Button)sender).Text.ToString();
             selectedDrive = backupDriveCombo.SelectedItem.ToString();
@@ -834,6 +858,7 @@ namespace Helpdesk54
         */
         private void backupPicturesButton_Click(object sender, EventArgs e)
         {
+            picturesBackupCheckBox.Checked = true;
             clickedButton = ((Button)sender).Name.ToString();
             itemsChanged = ((Button)sender).Text.ToString();
             selectedDrive = backupDriveCombo.SelectedItem.ToString();
@@ -844,6 +869,7 @@ namespace Helpdesk54
         */
         private void backupVideosButton_Click(object sender, EventArgs e)
         {
+            videosBackupCheckBox.Checked = true;
             clickedButton = ((Button)sender).Name.ToString();
             itemsChanged = ((Button)sender).Text.ToString();
             selectedDrive = backupDriveCombo.SelectedItem.ToString();
@@ -854,6 +880,7 @@ namespace Helpdesk54
         */
         private void backupMusicButton_Click(object sender, EventArgs e)
         {
+            musicBackupCheckBox.Checked = true;
             clickedButton = ((Button)sender).Name.ToString();
             itemsChanged = ((Button)sender).Text.ToString();
             selectedDrive = backupDriveCombo.SelectedItem.ToString();
@@ -1712,6 +1739,7 @@ namespace Helpdesk54
             {
                 installSoftwareClick(outlookButton, null);
             }
+            outlookCheckBox.Checked = true;
         }
 
         private void dymoButton_Click(object sender, EventArgs e)
@@ -1738,6 +1766,7 @@ namespace Helpdesk54
             {
                 installSoftwareClick(acrobatButton, null);
             }
+            adobeProCheckBox.Checked = true;
         }
 
         private void scanSnapButton_Click(object sender, EventArgs e)
@@ -1764,6 +1793,7 @@ namespace Helpdesk54
             {
                 installSoftwareClick(quickenButton, null);
             }
+            quickenCheckBox.Checked = true;
         }
 
         private void installPrintersButton_Click(object sender, EventArgs e)
@@ -1780,6 +1810,8 @@ namespace Helpdesk54
                     System.Diagnostics.Process.Start("explorer", @"\\" + serverName);
                 }
             }
+            installPrintersCheckBox.Checked = true;
+            imageRunnerCheckBox.Checked = true;
         }
 
         /*
