@@ -100,7 +100,7 @@
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.serverListView = new System.Windows.Forms.ListView();
             this.tabPage5 = new System.Windows.Forms.TabPage();
-            this.panel6 = new System.Windows.Forms.Panel();
+            this.endOfYearCheckBoxPanel = new System.Windows.Forms.Panel();
             this.endOfYearLabel = new System.Windows.Forms.Label();
             this.panel7 = new System.Windows.Forms.Panel();
             this.musicBackupCheckBox = new System.Windows.Forms.CheckBox();
@@ -115,7 +115,7 @@
             this.documentsBackupCheckBox = new System.Windows.Forms.CheckBox();
             this.label8 = new System.Windows.Forms.Label();
             this.desktopBackupCheckBox = new System.Windows.Forms.CheckBox();
-            this.panel5 = new System.Windows.Forms.Panel();
+            this.startOfYearCheckBoxPanel = new System.Windows.Forms.Panel();
             this.startOfYearLabel = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
             this.adobeProCheckBox = new System.Windows.Forms.CheckBox();
@@ -152,10 +152,10 @@
             this.tabPage3.SuspendLayout();
             this.tabPage4.SuspendLayout();
             this.tabPage5.SuspendLayout();
-            this.panel6.SuspendLayout();
+            this.endOfYearCheckBoxPanel.SuspendLayout();
             this.panel7.SuspendLayout();
             this.panel8.SuspendLayout();
-            this.panel5.SuspendLayout();
+            this.startOfYearCheckBoxPanel.SuspendLayout();
             this.panel3.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel4.SuspendLayout();
@@ -963,8 +963,8 @@
             // 
             // tabPage5
             // 
-            this.tabPage5.Controls.Add(this.panel6);
-            this.tabPage5.Controls.Add(this.panel5);
+            this.tabPage5.Controls.Add(this.endOfYearCheckBoxPanel);
+            this.tabPage5.Controls.Add(this.startOfYearCheckBoxPanel);
             this.tabPage5.Location = new System.Drawing.Point(4, 22);
             this.tabPage5.Name = "tabPage5";
             this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
@@ -973,17 +973,17 @@
             this.tabPage5.Text = "User Checklist";
             this.tabPage5.UseVisualStyleBackColor = true;
             // 
-            // panel6
+            // endOfYearCheckBoxPanel
             // 
-            this.panel6.BackColor = System.Drawing.Color.MintCream;
-            this.panel6.Controls.Add(this.endOfYearLabel);
-            this.panel6.Controls.Add(this.panel7);
-            this.panel6.Controls.Add(this.userBackupCompleteButton);
-            this.panel6.Controls.Add(this.panel8);
-            this.panel6.Location = new System.Drawing.Point(6, 244);
-            this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(633, 207);
-            this.panel6.TabIndex = 10;
+            this.endOfYearCheckBoxPanel.BackColor = System.Drawing.Color.MintCream;
+            this.endOfYearCheckBoxPanel.Controls.Add(this.endOfYearLabel);
+            this.endOfYearCheckBoxPanel.Controls.Add(this.panel7);
+            this.endOfYearCheckBoxPanel.Controls.Add(this.userBackupCompleteButton);
+            this.endOfYearCheckBoxPanel.Controls.Add(this.panel8);
+            this.endOfYearCheckBoxPanel.Location = new System.Drawing.Point(6, 244);
+            this.endOfYearCheckBoxPanel.Name = "endOfYearCheckBoxPanel";
+            this.endOfYearCheckBoxPanel.Size = new System.Drawing.Size(633, 207);
+            this.endOfYearCheckBoxPanel.TabIndex = 10;
             // 
             // endOfYearLabel
             // 
@@ -1065,6 +1065,7 @@
             this.userBackupCompleteButton.TabIndex = 8;
             this.userBackupCompleteButton.Text = "Record User Backup Complete";
             this.userBackupCompleteButton.UseVisualStyleBackColor = true;
+            this.userBackupCompleteButton.Click += new System.EventHandler(this.userBackupCompleteButton_Click);
             // 
             // panel8
             // 
@@ -1128,19 +1129,19 @@
             this.desktopBackupCheckBox.Text = "Desktop Backup";
             this.desktopBackupCheckBox.UseVisualStyleBackColor = true;
             // 
-            // panel5
+            // startOfYearCheckBoxPanel
             // 
-            this.panel5.BackColor = System.Drawing.Color.MintCream;
-            this.panel5.Controls.Add(this.startOfYearLabel);
-            this.panel5.Controls.Add(this.panel3);
-            this.panel5.Controls.Add(this.userSetupCompleteButton);
-            this.panel5.Controls.Add(this.panel1);
-            this.panel5.Controls.Add(this.panel4);
-            this.panel5.Controls.Add(this.panel2);
-            this.panel5.Location = new System.Drawing.Point(6, 6);
-            this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(633, 232);
-            this.panel5.TabIndex = 9;
+            this.startOfYearCheckBoxPanel.BackColor = System.Drawing.Color.MintCream;
+            this.startOfYearCheckBoxPanel.Controls.Add(this.startOfYearLabel);
+            this.startOfYearCheckBoxPanel.Controls.Add(this.panel3);
+            this.startOfYearCheckBoxPanel.Controls.Add(this.userSetupCompleteButton);
+            this.startOfYearCheckBoxPanel.Controls.Add(this.panel1);
+            this.startOfYearCheckBoxPanel.Controls.Add(this.panel4);
+            this.startOfYearCheckBoxPanel.Controls.Add(this.panel2);
+            this.startOfYearCheckBoxPanel.Location = new System.Drawing.Point(6, 6);
+            this.startOfYearCheckBoxPanel.Name = "startOfYearCheckBoxPanel";
+            this.startOfYearCheckBoxPanel.Size = new System.Drawing.Size(633, 232);
+            this.startOfYearCheckBoxPanel.TabIndex = 9;
             // 
             // startOfYearLabel
             // 
@@ -1211,6 +1212,7 @@
             this.userSetupCompleteButton.TabIndex = 8;
             this.userSetupCompleteButton.Text = "Record User Setup Complete";
             this.userSetupCompleteButton.UseVisualStyleBackColor = true;
+            this.userSetupCompleteButton.Click += new System.EventHandler(this.userSetupCompleteButton_Click);
             // 
             // panel1
             // 
@@ -1407,14 +1409,14 @@
             this.tabPage3.ResumeLayout(false);
             this.tabPage4.ResumeLayout(false);
             this.tabPage5.ResumeLayout(false);
-            this.panel6.ResumeLayout(false);
-            this.panel6.PerformLayout();
+            this.endOfYearCheckBoxPanel.ResumeLayout(false);
+            this.endOfYearCheckBoxPanel.PerformLayout();
             this.panel7.ResumeLayout(false);
             this.panel7.PerformLayout();
             this.panel8.ResumeLayout(false);
             this.panel8.PerformLayout();
-            this.panel5.ResumeLayout(false);
-            this.panel5.PerformLayout();
+            this.startOfYearCheckBoxPanel.ResumeLayout(false);
+            this.startOfYearCheckBoxPanel.PerformLayout();
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
             this.panel1.ResumeLayout(false);
@@ -1523,10 +1525,10 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.CheckBox wordShortcutCheckBox;
         private System.Windows.Forms.CheckBox efinanceShortcutCheckBox;
-        private System.Windows.Forms.Panel panel5;
+        private System.Windows.Forms.Panel startOfYearCheckBoxPanel;
         private System.Windows.Forms.Label startOfYearLabel;
         private System.Windows.Forms.Button userSetupCompleteButton;
-        private System.Windows.Forms.Panel panel6;
+        private System.Windows.Forms.Panel endOfYearCheckBoxPanel;
         private System.Windows.Forms.Label endOfYearLabel;
         private System.Windows.Forms.Panel panel7;
         private System.Windows.Forms.CheckBox musicBackupCheckBox;
