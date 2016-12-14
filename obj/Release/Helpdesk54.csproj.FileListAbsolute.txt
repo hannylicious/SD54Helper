@@ -21,3 +21,15 @@ H:\Programming\windows\SD54Helper\Helpdesk54\obj\Release\Interop.IWshRuntimeLibr
 H:\Programming\windows\SD54Helper\Helpdesk54\obj\Release\Helpdesk54.csproj.ResolveComReference.cache
 H:\Programming\windows\SD54Helper\Helpdesk54\obj\Release\Helpdesk54.exe
 H:\Programming\windows\SD54Helper\Helpdesk54\obj\Release\Helpdesk54.pdb
+H:\Programming\windows\SD54Helper\Helpdesk54\bin\Release\Helpdesk54.exe.manifest
+H:\Programming\windows\SD54Helper\Helpdesk54\bin\Release\Helpdesk54.application
+H:\Programming\windows\SD54Helper\Helpdesk54\bin\Release\Helpdesk54.exe
+H:\Programming\windows\SD54Helper\Helpdesk54\bin\Release\Helpdesk54.pdb
+H:\Programming\windows\SD54Helper\Helpdesk54\obj\Release\Helpdesk54.csprojResolveAssemblyReference.cache
+H:\Programming\windows\SD54Helper\Helpdesk54\obj\Release\Helpdesk54.Properties.Resources.resources
+H:\Programming\windows\SD54Helper\Helpdesk54\obj\Release\Helpdesk54.UserControl1.resources
+H:\Programming\windows\SD54Helper\Helpdesk54\obj\Release\Helpdesk54.csproj.GenerateResource.Cache
+H:\Programming\windows\SD54Helper\Helpdesk54\obj\Release\Helpdesk54.TrustInfo.xml
+H:\Programming\windows\SD54Helper\Helpdesk54\obj\Release\Helpdesk54.exe.manifest
+H:\Programming\windows\SD54Helper\Helpdesk54\obj\Release\Helpdesk54.application
+H:\Programming\windows\SD54Helper\Helpdesk54\bin\Release\Helpdesk54.exe.config

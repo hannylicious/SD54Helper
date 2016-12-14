@@ -42,14 +42,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Helpdesk54.exe" size="81904">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Helpdesk54.exe" size="92144">
       <assemblyIdentity name="Helpdesk54" version="0.7.5.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>QqFiDmJSwkAhMoq9bP8jB09IrU4=</dsig:DigestValue>
+        <dsig:DigestValue>0Hhi/S195ZPV7S3fRYLt2bdidfc=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
