@@ -1,4 +1,9 @@
-﻿using System;
+﻿using Google.Apis.Auth.OAuth2;
+using Google.Apis.Sheets.v4;
+using Google.Apis.Sheets.v4.Data;
+using Google.Apis.Services;
+using Google.Apis.Util.Store;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -14,12 +19,14 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using IWshRuntimeLibrary;
 
-
 namespace Helpdesk54
 {
     public partial class UserControl1 : Form
 
     {
+        static string[] Scopes = { SheetsService.Scope.SpreadsheetsReadonly };
+        static string ApplicationName = "SD54Helper";
+
         string backupDirectoryName;
         string backupName;
         string homeDirectory;
@@ -331,13 +338,13 @@ namespace Helpdesk54
             {
                 // Outlook is not installed.   
                 outlookButton.Text = "Install Outlook";
-                outlookButton.ForeColor = Color.Red;
+                outlookButton.ForeColor = System.Drawing.Color.Red;
             }
             else
             {
                 // Outlook is installed.    
                 outlookButton.Text = "Open Outlook";
-                outlookButton.ForeColor = Color.Green;
+                outlookButton.ForeColor = System.Drawing.Color.Green;
             }
             //go through the application list
             foreach (string applicationName in applicationList)
@@ -349,19 +356,19 @@ namespace Helpdesk54
                     {
                         case "DYMO Label v.8":
                             dymoButton.Text = "Open Dymo";
-                            dymoButton.ForeColor = Color.Green;
+                            dymoButton.ForeColor = System.Drawing.Color.Green;
                             break;
                         case "Adobe Acrobat X Pro":
                             acrobatButton.Text = "Open Acrobat Pro";
-                            acrobatButton.ForeColor = Color.Green;
+                            acrobatButton.ForeColor = System.Drawing.Color.Green;
                             break;
                         case "ScanSnap Manager":
                             scanSnapButton.Text = "Open ScanSnap";
-                            scanSnapButton.ForeColor = Color.Green;
+                            scanSnapButton.ForeColor = System.Drawing.Color.Green;
                             break;
                         case "Quicken 2011":
                             quickenButton.Text = "Open Quicken";
-                            quickenButton.ForeColor = Color.Green;
+                            quickenButton.ForeColor = System.Drawing.Color.Green;
                             break;
                     }
                     //not installed do this block
@@ -372,19 +379,19 @@ namespace Helpdesk54
                     {
                         case "DYMO Label v.8":
                             dymoButton.Text = "Install Dymo";
-                            dymoButton.ForeColor = Color.Red;
+                            dymoButton.ForeColor = System.Drawing.Color.Red;
                             break;
                         case "Adobe Acrobat X Pro":
                             acrobatButton.Text = "Install Acrobat Pro";
-                            acrobatButton.ForeColor = Color.Red;
+                            acrobatButton.ForeColor = System.Drawing.Color.Red;
                             break;
                         case "ScanSnap Manager":
                             scanSnapButton.Text = "Install ScanSnap";
-                            scanSnapButton.ForeColor = Color.Red;
+                            scanSnapButton.ForeColor = System.Drawing.Color.Red;
                             break;
                         case "Quicken 2011":
                             quickenButton.Text = "Install Quicken";
-                            quickenButton.ForeColor = Color.Red;
+                            quickenButton.ForeColor = System.Drawing.Color.Red;
                             break;
                     }
                 }
@@ -1624,7 +1631,7 @@ namespace Helpdesk54
             {
                 //do the code when bgv completes its work
                 restoreAdditionalProgressBar.Visible = false;
-                restoreAdditionalBarLabel.ForeColor = Color.ForestGreen;
+                restoreAdditionalBarLabel.ForeColor = System.Drawing.Color.ForestGreen;
                 restoreAdditionalBarLabel.Text = String.Format("Progress: 100% - All {0} Files Restored", itemsChanged);
                 restoreAdditionalBarLabel.Visible = true;
                 //enable the panel
@@ -1874,13 +1881,13 @@ namespace Helpdesk54
                 if (Directory.Exists(backupName))
                 {
                     backupFoundLabel.Text = "(Backup Found!)";
-                    backupFoundLabel.ForeColor = Color.ForestGreen;
+                    backupFoundLabel.ForeColor = System.Drawing.Color.ForestGreen;
 
                 }
                 else
                 {
                     backupFoundLabel.Text = "(No Backup Found!)";
-                    backupFoundLabel.ForeColor = Color.Crimson;
+                    backupFoundLabel.ForeColor = System.Drawing.Color.Crimson;
                 }
             }
         }
@@ -1907,43 +1914,43 @@ namespace Helpdesk54
                         case "Documents":
                             recoverDocumentsLabel.Enabled = true;
                             recoverDocumentsLabel.Text = "(Found!)";
-                            recoverDocumentsLabel.ForeColor = Color.ForestGreen;
+                            recoverDocumentsLabel.ForeColor = System.Drawing.Color.ForestGreen;
                             restoreDocumentsButton.Enabled = true;
                             break;
                         case "Favorites":
                             recoverFavoritesLabel.Enabled = true;
                             recoverFavoritesLabel.Text = "(Found!)";
-                            recoverFavoritesLabel.ForeColor = Color.ForestGreen;
+                            recoverFavoritesLabel.ForeColor = System.Drawing.Color.ForestGreen;
                             restoreFavoritesButton.Enabled = true;
                             break;
                         case "Desktop":
                             recoverDesktopLabel.Enabled = true;
                             recoverDesktopLabel.Text = "(Found!)";
-                            recoverDesktopLabel.ForeColor = Color.ForestGreen;
+                            recoverDesktopLabel.ForeColor = System.Drawing.Color.ForestGreen;
                             restoreDesktopButton.Enabled = true;
                             break;
                         case "StickyNotes":
                             recoverStickyNotesLabel.Enabled = true;
                             recoverStickyNotesLabel.Text = "(Found!)";
-                            recoverStickyNotesLabel.ForeColor = Color.ForestGreen;
+                            recoverStickyNotesLabel.ForeColor = System.Drawing.Color.ForestGreen;
                             restoreStickyNotesButton.Enabled = true;
                             break;
                         case "Pictures":
                             recoverPicturesLabel.Enabled = true;
                             recoverPicturesLabel.Text = "(Found!)";
-                            recoverPicturesLabel.ForeColor = Color.ForestGreen;
+                            recoverPicturesLabel.ForeColor = System.Drawing.Color.ForestGreen;
                             restorePicturesButton.Enabled = true;
                             break;
                         case "Videos":
                             recoverVideosLabel.Enabled = true;
                             recoverVideosLabel.Text = "(Found!)";
-                            recoverVideosLabel.ForeColor = Color.ForestGreen;
+                            recoverVideosLabel.ForeColor = System.Drawing.Color.ForestGreen;
                             restoreVideosButton.Enabled = true;
                             break;
                         case "Music":
                             recoverMusicLabel.Enabled = true;
                             recoverMusicLabel.Text = "(Found!)";
-                            recoverMusicLabel.ForeColor = Color.ForestGreen;
+                            recoverMusicLabel.ForeColor = System.Drawing.Color.ForestGreen;
                             restoreMusicButton.Enabled = true;
                             break;
                         default:
@@ -1952,6 +1959,66 @@ namespace Helpdesk54
                 }
             }
         }
+
+        private void userSetupCompleteButton_Click(object sender, EventArgs e)
+        {
+            //1YWi6rMUie3BD_AXH85Ew0TGJpgP_AVNN4Ury2bpIaQk - spreadsheet ID
+            UserCredential credential;
+
+            using (var stream =
+                new FileStream("client_secret.json", FileMode.Open, FileAccess.Read))
+            {
+                string credPath = System.Environment.GetFolderPath(
+                    System.Environment.SpecialFolder.Personal);
+                credPath = Path.Combine(credPath, ".credentials/sheets.googleapis.com-dotnet-quickstart.json");
+
+                credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
+                    GoogleClientSecrets.Load(stream).Secrets,
+                    Scopes,
+                    "user",
+                    CancellationToken.None,
+                    new FileDataStore(credPath, true)).Result;
+                Console.WriteLine("Credential file saved to: " + credPath);
+            }
+
+            // Create Google Sheets API service.
+            var service = new SheetsService(new BaseClientService.Initializer()
+            {
+                HttpClientInitializer = credential,
+                ApplicationName = ApplicationName,
+            });
+
+            string[][] values = {
+                new string[]{
+                    
+                    
+                // Cell values ...
+                //foreach (Control c in startOfYearCheckBoxPanel.Controls)
+                //    {
+                    
+                //    }
+                },
+                // Additional rows ...
+            };
+
+
+            // Define request parameters.
+            String spreadsheetId = "1YWi6rMUie3BD_AXH85Ew0TGJpgP_AVNN4Ury2bpIaQk";
+            String range = "Sheet1";
+
+            ValueRange body = new ValueRange();
+            body.Values = values;
+            service.Spreadsheets.Values.Append(body, spreadsheetId,range);
+
+
+        }
+
+        private void userBackupCompleteButton_Click(object sender, EventArgs e)
+        {
+            //1XFsFJ2nqrXsxO9ShRJOwQ2MMlDpxf1wmU7RgSKUvmKM - spreadsheet ID
+
+        }
+
         public void checkBackupDirectories(string backupName)
         {
             string subDirectoryURL;
@@ -1975,43 +2042,43 @@ namespace Helpdesk54
                         case "Documents":
                             recoverDocumentsLabel.Enabled = true;
                             recoverDocumentsLabel.Text = "(Found!)";
-                            recoverDocumentsLabel.ForeColor = Color.ForestGreen;
+                            recoverDocumentsLabel.ForeColor = System.Drawing.Color.ForestGreen;
                             restoreDocumentsButton.Enabled = true;
                             break;
                         case "Favorites":
                             recoverFavoritesLabel.Enabled = true;
                             recoverFavoritesLabel.Text = "(Found!)";
-                            recoverFavoritesLabel.ForeColor = Color.ForestGreen;
+                            recoverFavoritesLabel.ForeColor = System.Drawing.Color.ForestGreen;
                             restoreFavoritesButton.Enabled = true;
                             break;
                         case "Desktop":
                             recoverDesktopLabel.Enabled = true;
                             recoverDesktopLabel.Text = "(Found!)";
-                            recoverDesktopLabel.ForeColor = Color.ForestGreen;
+                            recoverDesktopLabel.ForeColor = System.Drawing.Color.ForestGreen;
                             restoreDesktopButton.Enabled = true;
                             break;
                         case "Sticky Notes":
                             recoverStickyNotesLabel.Enabled = true;
                             recoverStickyNotesLabel.Text = "(Found!)";
-                            recoverStickyNotesLabel.ForeColor = Color.ForestGreen;
+                            recoverStickyNotesLabel.ForeColor = System.Drawing.Color.ForestGreen;
                             restoreStickyNotesButton.Enabled = true;
                             break;
                         case "Pictures":
                             recoverPicturesLabel.Enabled = true;
                             recoverPicturesLabel.Text = "(Found!)";
-                            recoverPicturesLabel.ForeColor = Color.ForestGreen;
+                            recoverPicturesLabel.ForeColor = System.Drawing.Color.ForestGreen;
                             restorePicturesButton.Enabled = true;
                             break;
                         case "Videos":
                             recoverVideosLabel.Enabled = true;
                             recoverVideosLabel.Text = "(Found!)";
-                            recoverVideosLabel.ForeColor = Color.ForestGreen;
+                            recoverVideosLabel.ForeColor = System.Drawing.Color.ForestGreen;
                             restoreVideosButton.Enabled = true;
                             break;
                         case "Music":
                             recoverMusicLabel.Enabled = true;
                             recoverMusicLabel.Text = "(Found!)";
-                            recoverMusicLabel.ForeColor = Color.ForestGreen;
+                            recoverMusicLabel.ForeColor = System.Drawing.Color.ForestGreen;
                             restoreMusicButton.Enabled = true;
                             break;
                         default:
