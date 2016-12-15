@@ -24,11 +24,13 @@ namespace Helpdesk54
     public partial class UserControl1 : Form
 
     {
-        static string[] Scopes = { SheetsService.Scope.SpreadsheetsReadonly };
+        static string[] Scopes = { SheetsService.Scope.Spreadsheets };
         static string ApplicationName = "SD54Helper";
+
 
         string backupDirectoryName;
         string backupName;
+        string serverName;
         string homeDirectory;
         string desktopFolder, documentsFolder, favoritesFolder;
         string userName;
@@ -97,7 +99,7 @@ namespace Helpdesk54
                         
                     }
                     Uri uri = new Uri(path);
-                    string serverName = uri.Host.ToString();
+                    serverName = uri.Host.ToString();
                     serverNameLinkLabel.Text = serverName;
                 }
             }
@@ -1964,13 +1966,12 @@ namespace Helpdesk54
         {
             //1YWi6rMUie3BD_AXH85Ew0TGJpgP_AVNN4Ury2bpIaQk - spreadsheet ID
             UserCredential credential;
-
             using (var stream =
-                new FileStream("client_secret.json", FileMode.Open, FileAccess.Read))
+                          new FileStream("client_secret.json", FileMode.Open, FileAccess.Read))
             {
                 string credPath = System.Environment.GetFolderPath(
                     System.Environment.SpecialFolder.Personal);
-                credPath = Path.Combine(credPath, ".credentials/sheets.googleapis.com-dotnet-quickstart.json");
+
 
                 credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
                     GoogleClientSecrets.Load(stream).Secrets,
@@ -1980,7 +1981,6 @@ namespace Helpdesk54
                     new FileDataStore(credPath, true)).Result;
                 Console.WriteLine("Credential file saved to: " + credPath);
             }
-
             // Create Google Sheets API service.
             var service = new SheetsService(new BaseClientService.Initializer()
             {
@@ -1988,28 +1988,60 @@ namespace Helpdesk54
                 ApplicationName = ApplicationName,
             });
 
-            string[][] values = {
-                new string[]{
-                    
-                    
-                // Cell values ...
-                //foreach (Control c in startOfYearCheckBoxPanel.Controls)
-                //    {
-                    
-                //    }
-                },
-                // Additional rows ...
-            };
+            ValueRange valueRange = new ValueRange();
+            var oblist = new List<object>() {  };
 
+            //set date
+            string updateDate = DateTime.Today.ToString("MM/dd/yyyy");
+            oblist.Add(updateDate);
+            //set location
+            string serverOutput = Regex.Replace(serverName, @"[\d-]", string.Empty);
+            oblist.Add(serverOutput);
+            //set username
+            oblist.Add(userName);
+
+            //create array of checkboxes in appropriate order for spreadsheet (must match the order of columns in the spreadsheet!)
+            CheckBox[] checkBoxNames =
+            {
+                outlookCheckBox,
+                quickenCheckBox,
+                adobeProCheckBox,
+                icPrintingCheckBox,
+                dymoPrintingCheckBox,
+                scanSnapCheckBox,
+                installPrintersCheckBox,
+                imageRunnerCheckBox,
+                restoreFavoritesCheckBox,
+                homeShortcutCheckBox,
+                efinanceShortcutCheckBox,
+                wordShortcutCheckBox,
+                icShortcutCheckBox,
+                aesopShortcutCheckBox
+            };
+            //set X's for checked and O for unchecked
+            //iterate through checkBoxNames Array
+            foreach (Control c in checkBoxNames)
+            {
+                if ((c is CheckBox) && ((CheckBox)c).Checked)
+                {
+                    oblist.Add("X");
+                }
+                if ((c is CheckBox) && ((CheckBox)c).Checked == false)
+                {
+                    oblist.Add("O");
+                }
+            }
+
+            valueRange.Values = new List<IList<object>> { oblist };
 
             // Define request parameters.
             String spreadsheetId = "1YWi6rMUie3BD_AXH85Ew0TGJpgP_AVNN4Ury2bpIaQk";
-            String range = "Sheet1";
+            String range = "A1";
 
-            ValueRange body = new ValueRange();
-            body.Values = values;
-            service.Spreadsheets.Values.Append(body, spreadsheetId,range);
-
+            SpreadsheetsResource.ValuesResource.AppendRequest update = service.Spreadsheets.Values.Append(valueRange, spreadsheetId, range);
+            update.ValueInputOption = SpreadsheetsResource.ValuesResource.AppendRequest.ValueInputOptionEnum.RAW;
+            AppendValuesResponse result = update.Execute();
+            MessageBox.Show("The users setup has been recorded");
 
         }
 

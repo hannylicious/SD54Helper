@@ -117,28 +117,29 @@
             this.desktopBackupCheckBox = new System.Windows.Forms.CheckBox();
             this.startOfYearCheckBoxPanel = new System.Windows.Forms.Panel();
             this.startOfYearLabel = new System.Windows.Forms.Label();
-            this.panel3 = new System.Windows.Forms.Panel();
+            this.softwarePanel = new System.Windows.Forms.Panel();
             this.adobeProCheckBox = new System.Windows.Forms.CheckBox();
             this.quickenCheckBox = new System.Windows.Forms.CheckBox();
             this.label3 = new System.Windows.Forms.Label();
             this.outlookCheckBox = new System.Windows.Forms.CheckBox();
             this.userSetupCompleteButton = new System.Windows.Forms.Button();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.shortcutsPanel = new System.Windows.Forms.Panel();
             this.icShortcutCheckBox = new System.Windows.Forms.CheckBox();
             this.homeShortcutCheckBox = new System.Windows.Forms.CheckBox();
             this.aesopShortcutCheckBox = new System.Windows.Forms.CheckBox();
             this.label1 = new System.Windows.Forms.Label();
             this.wordShortcutCheckBox = new System.Windows.Forms.CheckBox();
             this.efinanceShortcutCheckBox = new System.Windows.Forms.CheckBox();
-            this.panel4 = new System.Windows.Forms.Panel();
+            this.printersPanel = new System.Windows.Forms.Panel();
             this.imageRunnerCheckBox = new System.Windows.Forms.CheckBox();
             this.label4 = new System.Windows.Forms.Label();
             this.installPrintersCheckBox = new System.Windows.Forms.CheckBox();
-            this.panel2 = new System.Windows.Forms.Panel();
+            this.printingPanel = new System.Windows.Forms.Panel();
             this.scanSnapCheckBox = new System.Windows.Forms.CheckBox();
             this.dymoPrintingCheckBox = new System.Windows.Forms.CheckBox();
             this.label2 = new System.Windows.Forms.Label();
             this.icPrintingCheckBox = new System.Windows.Forms.CheckBox();
+            this.restoreFavoritesCheckBox = new System.Windows.Forms.CheckBox();
             this.startOfYearGroupBox.SuspendLayout();
             this.dataBackupGroupBox.SuspendLayout();
             this.essentialItemsGroupBox.SuspendLayout();
@@ -156,10 +157,10 @@
             this.panel7.SuspendLayout();
             this.panel8.SuspendLayout();
             this.startOfYearCheckBoxPanel.SuspendLayout();
-            this.panel3.SuspendLayout();
-            this.panel1.SuspendLayout();
-            this.panel4.SuspendLayout();
-            this.panel2.SuspendLayout();
+            this.softwarePanel.SuspendLayout();
+            this.shortcutsPanel.SuspendLayout();
+            this.printersPanel.SuspendLayout();
+            this.printingPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // restoreDriveCombo
@@ -1133,11 +1134,11 @@
             // 
             this.startOfYearCheckBoxPanel.BackColor = System.Drawing.Color.MintCream;
             this.startOfYearCheckBoxPanel.Controls.Add(this.startOfYearLabel);
-            this.startOfYearCheckBoxPanel.Controls.Add(this.panel3);
+            this.startOfYearCheckBoxPanel.Controls.Add(this.softwarePanel);
             this.startOfYearCheckBoxPanel.Controls.Add(this.userSetupCompleteButton);
-            this.startOfYearCheckBoxPanel.Controls.Add(this.panel1);
-            this.startOfYearCheckBoxPanel.Controls.Add(this.panel4);
-            this.startOfYearCheckBoxPanel.Controls.Add(this.panel2);
+            this.startOfYearCheckBoxPanel.Controls.Add(this.shortcutsPanel);
+            this.startOfYearCheckBoxPanel.Controls.Add(this.printersPanel);
+            this.startOfYearCheckBoxPanel.Controls.Add(this.printingPanel);
             this.startOfYearCheckBoxPanel.Location = new System.Drawing.Point(6, 6);
             this.startOfYearCheckBoxPanel.Name = "startOfYearCheckBoxPanel";
             this.startOfYearCheckBoxPanel.Size = new System.Drawing.Size(633, 232);
@@ -1153,16 +1154,17 @@
             this.startOfYearLabel.TabIndex = 9;
             this.startOfYearLabel.Text = "Start Of Year";
             // 
-            // panel3
+            // softwarePanel
             // 
-            this.panel3.Controls.Add(this.adobeProCheckBox);
-            this.panel3.Controls.Add(this.quickenCheckBox);
-            this.panel3.Controls.Add(this.label3);
-            this.panel3.Controls.Add(this.outlookCheckBox);
-            this.panel3.Location = new System.Drawing.Point(164, 38);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(152, 146);
-            this.panel3.TabIndex = 7;
+            this.softwarePanel.Controls.Add(this.restoreFavoritesCheckBox);
+            this.softwarePanel.Controls.Add(this.adobeProCheckBox);
+            this.softwarePanel.Controls.Add(this.quickenCheckBox);
+            this.softwarePanel.Controls.Add(this.label3);
+            this.softwarePanel.Controls.Add(this.outlookCheckBox);
+            this.softwarePanel.Location = new System.Drawing.Point(164, 38);
+            this.softwarePanel.Name = "softwarePanel";
+            this.softwarePanel.Size = new System.Drawing.Size(152, 146);
+            this.softwarePanel.TabIndex = 7;
             // 
             // adobeProCheckBox
             // 
@@ -1214,23 +1216,23 @@
             this.userSetupCompleteButton.UseVisualStyleBackColor = true;
             this.userSetupCompleteButton.Click += new System.EventHandler(this.userSetupCompleteButton_Click);
             // 
-            // panel1
+            // shortcutsPanel
             // 
-            this.panel1.Controls.Add(this.icShortcutCheckBox);
-            this.panel1.Controls.Add(this.homeShortcutCheckBox);
-            this.panel1.Controls.Add(this.aesopShortcutCheckBox);
-            this.panel1.Controls.Add(this.label1);
-            this.panel1.Controls.Add(this.wordShortcutCheckBox);
-            this.panel1.Controls.Add(this.efinanceShortcutCheckBox);
-            this.panel1.Location = new System.Drawing.Point(3, 38);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(155, 146);
-            this.panel1.TabIndex = 2;
+            this.shortcutsPanel.Controls.Add(this.icShortcutCheckBox);
+            this.shortcutsPanel.Controls.Add(this.homeShortcutCheckBox);
+            this.shortcutsPanel.Controls.Add(this.aesopShortcutCheckBox);
+            this.shortcutsPanel.Controls.Add(this.label1);
+            this.shortcutsPanel.Controls.Add(this.wordShortcutCheckBox);
+            this.shortcutsPanel.Controls.Add(this.efinanceShortcutCheckBox);
+            this.shortcutsPanel.Location = new System.Drawing.Point(3, 38);
+            this.shortcutsPanel.Name = "shortcutsPanel";
+            this.shortcutsPanel.Size = new System.Drawing.Size(155, 146);
+            this.shortcutsPanel.TabIndex = 2;
             // 
             // icShortcutCheckBox
             // 
             this.icShortcutCheckBox.AutoSize = true;
-            this.icShortcutCheckBox.Location = new System.Drawing.Point(7, 74);
+            this.icShortcutCheckBox.Location = new System.Drawing.Point(6, 97);
             this.icShortcutCheckBox.Name = "icShortcutCheckBox";
             this.icShortcutCheckBox.Size = new System.Drawing.Size(98, 17);
             this.icShortcutCheckBox.TabIndex = 5;
@@ -1240,7 +1242,7 @@
             // homeShortcutCheckBox
             // 
             this.homeShortcutCheckBox.AutoSize = true;
-            this.homeShortcutCheckBox.Location = new System.Drawing.Point(7, 97);
+            this.homeShortcutCheckBox.Location = new System.Drawing.Point(6, 27);
             this.homeShortcutCheckBox.Name = "homeShortcutCheckBox";
             this.homeShortcutCheckBox.Size = new System.Drawing.Size(65, 17);
             this.homeShortcutCheckBox.TabIndex = 4;
@@ -1250,7 +1252,7 @@
             // aesopShortcutCheckBox
             // 
             this.aesopShortcutCheckBox.AutoSize = true;
-            this.aesopShortcutCheckBox.Location = new System.Drawing.Point(7, 51);
+            this.aesopShortcutCheckBox.Location = new System.Drawing.Point(6, 120);
             this.aesopShortcutCheckBox.Name = "aesopShortcutCheckBox";
             this.aesopShortcutCheckBox.Size = new System.Drawing.Size(62, 17);
             this.aesopShortcutCheckBox.TabIndex = 3;
@@ -1270,7 +1272,7 @@
             // wordShortcutCheckBox
             // 
             this.wordShortcutCheckBox.AutoSize = true;
-            this.wordShortcutCheckBox.Location = new System.Drawing.Point(7, 120);
+            this.wordShortcutCheckBox.Location = new System.Drawing.Point(6, 74);
             this.wordShortcutCheckBox.Name = "wordShortcutCheckBox";
             this.wordShortcutCheckBox.Size = new System.Drawing.Size(98, 17);
             this.wordShortcutCheckBox.TabIndex = 0;
@@ -1280,22 +1282,22 @@
             // efinanceShortcutCheckBox
             // 
             this.efinanceShortcutCheckBox.AutoSize = true;
-            this.efinanceShortcutCheckBox.Location = new System.Drawing.Point(7, 27);
+            this.efinanceShortcutCheckBox.Location = new System.Drawing.Point(6, 50);
             this.efinanceShortcutCheckBox.Name = "efinanceShortcutCheckBox";
             this.efinanceShortcutCheckBox.Size = new System.Drawing.Size(70, 17);
             this.efinanceShortcutCheckBox.TabIndex = 1;
             this.efinanceShortcutCheckBox.Text = "eFinance";
             this.efinanceShortcutCheckBox.UseVisualStyleBackColor = true;
             // 
-            // panel4
+            // printersPanel
             // 
-            this.panel4.Controls.Add(this.imageRunnerCheckBox);
-            this.panel4.Controls.Add(this.label4);
-            this.panel4.Controls.Add(this.installPrintersCheckBox);
-            this.panel4.Location = new System.Drawing.Point(322, 38);
-            this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(152, 146);
-            this.panel4.TabIndex = 7;
+            this.printersPanel.Controls.Add(this.imageRunnerCheckBox);
+            this.printersPanel.Controls.Add(this.label4);
+            this.printersPanel.Controls.Add(this.installPrintersCheckBox);
+            this.printersPanel.Location = new System.Drawing.Point(322, 38);
+            this.printersPanel.Name = "printersPanel";
+            this.printersPanel.Size = new System.Drawing.Size(152, 146);
+            this.printersPanel.TabIndex = 7;
             // 
             // imageRunnerCheckBox
             // 
@@ -1327,16 +1329,16 @@
             this.installPrintersCheckBox.Text = "Install Printers";
             this.installPrintersCheckBox.UseVisualStyleBackColor = true;
             // 
-            // panel2
+            // printingPanel
             // 
-            this.panel2.Controls.Add(this.scanSnapCheckBox);
-            this.panel2.Controls.Add(this.dymoPrintingCheckBox);
-            this.panel2.Controls.Add(this.label2);
-            this.panel2.Controls.Add(this.icPrintingCheckBox);
-            this.panel2.Location = new System.Drawing.Point(480, 38);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(150, 146);
-            this.panel2.TabIndex = 6;
+            this.printingPanel.Controls.Add(this.scanSnapCheckBox);
+            this.printingPanel.Controls.Add(this.dymoPrintingCheckBox);
+            this.printingPanel.Controls.Add(this.label2);
+            this.printingPanel.Controls.Add(this.icPrintingCheckBox);
+            this.printingPanel.Location = new System.Drawing.Point(480, 38);
+            this.printingPanel.Name = "printingPanel";
+            this.printingPanel.Size = new System.Drawing.Size(150, 146);
+            this.printingPanel.TabIndex = 6;
             // 
             // scanSnapCheckBox
             // 
@@ -1378,6 +1380,16 @@
             this.icPrintingCheckBox.Text = "IC Label Printing";
             this.icPrintingCheckBox.UseVisualStyleBackColor = true;
             // 
+            // restoreFavoritesCheckBox
+            // 
+            this.restoreFavoritesCheckBox.AutoSize = true;
+            this.restoreFavoritesCheckBox.Location = new System.Drawing.Point(7, 97);
+            this.restoreFavoritesCheckBox.Name = "restoreFavoritesCheckBox";
+            this.restoreFavoritesCheckBox.Size = new System.Drawing.Size(109, 17);
+            this.restoreFavoritesCheckBox.TabIndex = 6;
+            this.restoreFavoritesCheckBox.Text = "Restore Favorites";
+            this.restoreFavoritesCheckBox.UseVisualStyleBackColor = true;
+            // 
             // UserControl1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1417,14 +1429,14 @@
             this.panel8.PerformLayout();
             this.startOfYearCheckBoxPanel.ResumeLayout(false);
             this.startOfYearCheckBoxPanel.PerformLayout();
-            this.panel3.ResumeLayout(false);
-            this.panel3.PerformLayout();
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
-            this.panel4.ResumeLayout(false);
-            this.panel4.PerformLayout();
-            this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
+            this.softwarePanel.ResumeLayout(false);
+            this.softwarePanel.PerformLayout();
+            this.shortcutsPanel.ResumeLayout(false);
+            this.shortcutsPanel.PerformLayout();
+            this.printersPanel.ResumeLayout(false);
+            this.printersPanel.PerformLayout();
+            this.printingPanel.ResumeLayout(false);
+            this.printingPanel.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1504,21 +1516,21 @@
         private System.Windows.Forms.TabPage tabPage4;
         private System.Windows.Forms.ListView serverListView;
         private System.Windows.Forms.TabPage tabPage5;
-        private System.Windows.Forms.Panel panel4;
+        private System.Windows.Forms.Panel printersPanel;
         private System.Windows.Forms.CheckBox imageRunnerCheckBox;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.CheckBox installPrintersCheckBox;
-        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.Panel softwarePanel;
         private System.Windows.Forms.CheckBox adobeProCheckBox;
         private System.Windows.Forms.CheckBox quickenCheckBox;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.CheckBox outlookCheckBox;
-        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Panel printingPanel;
         private System.Windows.Forms.CheckBox scanSnapCheckBox;
         private System.Windows.Forms.CheckBox dymoPrintingCheckBox;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.CheckBox icPrintingCheckBox;
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel shortcutsPanel;
         private System.Windows.Forms.CheckBox icShortcutCheckBox;
         private System.Windows.Forms.CheckBox homeShortcutCheckBox;
         private System.Windows.Forms.CheckBox aesopShortcutCheckBox;
@@ -1543,6 +1555,7 @@
         private System.Windows.Forms.CheckBox documentsBackupCheckBox;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.CheckBox desktopBackupCheckBox;
+        private System.Windows.Forms.CheckBox restoreFavoritesCheckBox;
     }
 }
 
