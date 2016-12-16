@@ -902,9 +902,10 @@
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage3);
-            this.tabControl1.Controls.Add(this.tabPage4);
             this.tabControl1.Controls.Add(this.tabPage5);
-            this.tabControl1.Location = new System.Drawing.Point(12, 35);
+            this.tabControl1.Controls.Add(this.tabPage4);
+            this.tabControl1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tabControl1.Location = new System.Drawing.Point(12, 56);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(653, 493);
@@ -913,10 +914,10 @@
             // tabPage1
             // 
             this.tabPage1.Controls.Add(this.startOfYearGroupBox);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Location = new System.Drawing.Point(4, 25);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(645, 467);
+            this.tabPage1.Size = new System.Drawing.Size(645, 464);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Programs";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -925,10 +926,10 @@
             // 
             this.tabPage2.BackColor = System.Drawing.Color.AliceBlue;
             this.tabPage2.Controls.Add(this.dataBackupGroupBox);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Location = new System.Drawing.Point(4, 25);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(645, 467);
+            this.tabPage2.Size = new System.Drawing.Size(645, 464);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Data Backup";
             // 
@@ -936,27 +937,27 @@
             // 
             this.tabPage3.BackColor = System.Drawing.Color.AliceBlue;
             this.tabPage3.Controls.Add(this.restoreGroupBox);
-            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Location = new System.Drawing.Point(4, 25);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(645, 467);
+            this.tabPage3.Size = new System.Drawing.Size(645, 464);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Data Restoration";
             // 
             // tabPage4
             // 
             this.tabPage4.Controls.Add(this.serverListView);
-            this.tabPage4.Location = new System.Drawing.Point(4, 22);
+            this.tabPage4.Location = new System.Drawing.Point(4, 25);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(645, 467);
+            this.tabPage4.Size = new System.Drawing.Size(645, 464);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Printers";
             this.tabPage4.UseVisualStyleBackColor = true;
             // 
             // serverListView
             // 
-            this.serverListView.Location = new System.Drawing.Point(6, 80);
+            this.serverListView.Location = new System.Drawing.Point(6, 6);
             this.serverListView.Name = "serverListView";
             this.serverListView.Size = new System.Drawing.Size(627, 445);
             this.serverListView.TabIndex = 0;
@@ -966,10 +967,10 @@
             // 
             this.tabPage5.Controls.Add(this.endOfYearCheckBoxPanel);
             this.tabPage5.Controls.Add(this.startOfYearCheckBoxPanel);
-            this.tabPage5.Location = new System.Drawing.Point(4, 22);
+            this.tabPage5.Location = new System.Drawing.Point(4, 25);
             this.tabPage5.Name = "tabPage5";
             this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage5.Size = new System.Drawing.Size(645, 467);
+            this.tabPage5.Size = new System.Drawing.Size(645, 464);
             this.tabPage5.TabIndex = 4;
             this.tabPage5.Text = "User Checklist";
             this.tabPage5.UseVisualStyleBackColor = true;
@@ -1013,7 +1014,7 @@
             this.musicBackupCheckBox.AutoSize = true;
             this.musicBackupCheckBox.Location = new System.Drawing.Point(7, 97);
             this.musicBackupCheckBox.Name = "musicBackupCheckBox";
-            this.musicBackupCheckBox.Size = new System.Drawing.Size(94, 17);
+            this.musicBackupCheckBox.Size = new System.Drawing.Size(111, 20);
             this.musicBackupCheckBox.TabIndex = 6;
             this.musicBackupCheckBox.Text = "Music Backup";
             this.musicBackupCheckBox.UseVisualStyleBackColor = true;
@@ -1023,7 +1024,7 @@
             this.videosBackupCheckBox.AutoSize = true;
             this.videosBackupCheckBox.Location = new System.Drawing.Point(7, 74);
             this.videosBackupCheckBox.Name = "videosBackupCheckBox";
-            this.videosBackupCheckBox.Size = new System.Drawing.Size(98, 17);
+            this.videosBackupCheckBox.Size = new System.Drawing.Size(119, 20);
             this.videosBackupCheckBox.TabIndex = 5;
             this.videosBackupCheckBox.Text = "Videos Backup";
             this.videosBackupCheckBox.UseVisualStyleBackColor = true;
@@ -1033,7 +1034,7 @@
             this.picturesBackupCheckBox.AutoSize = true;
             this.picturesBackupCheckBox.Location = new System.Drawing.Point(7, 51);
             this.picturesBackupCheckBox.Name = "picturesBackupCheckBox";
-            this.picturesBackupCheckBox.Size = new System.Drawing.Size(104, 17);
+            this.picturesBackupCheckBox.Size = new System.Drawing.Size(124, 20);
             this.picturesBackupCheckBox.TabIndex = 3;
             this.picturesBackupCheckBox.Text = "Pictures Backup";
             this.picturesBackupCheckBox.UseVisualStyleBackColor = true;
@@ -1053,9 +1054,9 @@
             this.stickyNotesBackupCheckBox.AutoSize = true;
             this.stickyNotesBackupCheckBox.Location = new System.Drawing.Point(7, 27);
             this.stickyNotesBackupCheckBox.Name = "stickyNotesBackupCheckBox";
-            this.stickyNotesBackupCheckBox.Size = new System.Drawing.Size(126, 17);
+            this.stickyNotesBackupCheckBox.Size = new System.Drawing.Size(148, 20);
             this.stickyNotesBackupCheckBox.TabIndex = 1;
-            this.stickyNotesBackupCheckBox.Text = "Sticky Notes Backup";
+            this.stickyNotesBackupCheckBox.Text = "StickyNotes Backup";
             this.stickyNotesBackupCheckBox.UseVisualStyleBackColor = true;
             // 
             // userBackupCompleteButton
@@ -1085,7 +1086,7 @@
             this.favoritesBackupCheckBox.AutoSize = true;
             this.favoritesBackupCheckBox.Location = new System.Drawing.Point(7, 74);
             this.favoritesBackupCheckBox.Name = "favoritesBackupCheckBox";
-            this.favoritesBackupCheckBox.Size = new System.Drawing.Size(109, 17);
+            this.favoritesBackupCheckBox.Size = new System.Drawing.Size(132, 20);
             this.favoritesBackupCheckBox.TabIndex = 5;
             this.favoritesBackupCheckBox.Text = "Favorites Backup";
             this.favoritesBackupCheckBox.UseVisualStyleBackColor = true;
@@ -1095,7 +1096,7 @@
             this.quickenBackupCheckBox.AutoSize = true;
             this.quickenBackupCheckBox.Location = new System.Drawing.Point(7, 97);
             this.quickenBackupCheckBox.Name = "quickenBackupCheckBox";
-            this.quickenBackupCheckBox.Size = new System.Drawing.Size(102, 17);
+            this.quickenBackupCheckBox.Size = new System.Drawing.Size(116, 20);
             this.quickenBackupCheckBox.TabIndex = 4;
             this.quickenBackupCheckBox.Text = "Quicken On H:\\";
             this.quickenBackupCheckBox.UseVisualStyleBackColor = true;
@@ -1105,7 +1106,7 @@
             this.documentsBackupCheckBox.AutoSize = true;
             this.documentsBackupCheckBox.Location = new System.Drawing.Point(7, 51);
             this.documentsBackupCheckBox.Name = "documentsBackupCheckBox";
-            this.documentsBackupCheckBox.Size = new System.Drawing.Size(120, 17);
+            this.documentsBackupCheckBox.Size = new System.Drawing.Size(144, 20);
             this.documentsBackupCheckBox.TabIndex = 3;
             this.documentsBackupCheckBox.Text = "Documents Backup";
             this.documentsBackupCheckBox.UseVisualStyleBackColor = true;
@@ -1125,7 +1126,7 @@
             this.desktopBackupCheckBox.AutoSize = true;
             this.desktopBackupCheckBox.Location = new System.Drawing.Point(7, 27);
             this.desktopBackupCheckBox.Name = "desktopBackupCheckBox";
-            this.desktopBackupCheckBox.Size = new System.Drawing.Size(106, 17);
+            this.desktopBackupCheckBox.Size = new System.Drawing.Size(127, 20);
             this.desktopBackupCheckBox.TabIndex = 1;
             this.desktopBackupCheckBox.Text = "Desktop Backup";
             this.desktopBackupCheckBox.UseVisualStyleBackColor = true;
@@ -1171,7 +1172,7 @@
             this.adobeProCheckBox.AutoSize = true;
             this.adobeProCheckBox.Location = new System.Drawing.Point(7, 74);
             this.adobeProCheckBox.Name = "adobeProCheckBox";
-            this.adobeProCheckBox.Size = new System.Drawing.Size(107, 17);
+            this.adobeProCheckBox.Size = new System.Drawing.Size(130, 20);
             this.adobeProCheckBox.TabIndex = 5;
             this.adobeProCheckBox.Text = "Adobe Pro Setup";
             this.adobeProCheckBox.UseVisualStyleBackColor = true;
@@ -1181,7 +1182,7 @@
             this.quickenCheckBox.AutoSize = true;
             this.quickenCheckBox.Location = new System.Drawing.Point(7, 51);
             this.quickenCheckBox.Name = "quickenCheckBox";
-            this.quickenCheckBox.Size = new System.Drawing.Size(97, 17);
+            this.quickenCheckBox.Size = new System.Drawing.Size(114, 20);
             this.quickenCheckBox.TabIndex = 3;
             this.quickenCheckBox.Text = "Quicken Setup";
             this.quickenCheckBox.UseVisualStyleBackColor = true;
@@ -1201,7 +1202,7 @@
             this.outlookCheckBox.AutoSize = true;
             this.outlookCheckBox.Location = new System.Drawing.Point(7, 27);
             this.outlookCheckBox.Name = "outlookCheckBox";
-            this.outlookCheckBox.Size = new System.Drawing.Size(94, 17);
+            this.outlookCheckBox.Size = new System.Drawing.Size(111, 20);
             this.outlookCheckBox.TabIndex = 1;
             this.outlookCheckBox.Text = "Outlook Setup";
             this.outlookCheckBox.UseVisualStyleBackColor = true;
@@ -1234,7 +1235,7 @@
             this.icShortcutCheckBox.AutoSize = true;
             this.icShortcutCheckBox.Location = new System.Drawing.Point(6, 97);
             this.icShortcutCheckBox.Name = "icShortcutCheckBox";
-            this.icShortcutCheckBox.Size = new System.Drawing.Size(98, 17);
+            this.icShortcutCheckBox.Size = new System.Drawing.Size(117, 20);
             this.icShortcutCheckBox.TabIndex = 5;
             this.icShortcutCheckBox.Text = "Infinite Campus";
             this.icShortcutCheckBox.UseVisualStyleBackColor = true;
@@ -1244,7 +1245,7 @@
             this.homeShortcutCheckBox.AutoSize = true;
             this.homeShortcutCheckBox.Location = new System.Drawing.Point(6, 27);
             this.homeShortcutCheckBox.Name = "homeShortcutCheckBox";
-            this.homeShortcutCheckBox.Size = new System.Drawing.Size(65, 17);
+            this.homeShortcutCheckBox.Size = new System.Drawing.Size(75, 20);
             this.homeShortcutCheckBox.TabIndex = 4;
             this.homeShortcutCheckBox.Text = "H: Drive";
             this.homeShortcutCheckBox.UseVisualStyleBackColor = true;
@@ -1254,7 +1255,7 @@
             this.aesopShortcutCheckBox.AutoSize = true;
             this.aesopShortcutCheckBox.Location = new System.Drawing.Point(6, 120);
             this.aesopShortcutCheckBox.Name = "aesopShortcutCheckBox";
-            this.aesopShortcutCheckBox.Size = new System.Drawing.Size(62, 17);
+            this.aesopShortcutCheckBox.Size = new System.Drawing.Size(73, 20);
             this.aesopShortcutCheckBox.TabIndex = 3;
             this.aesopShortcutCheckBox.Text = "AESOP";
             this.aesopShortcutCheckBox.UseVisualStyleBackColor = true;
@@ -1274,7 +1275,7 @@
             this.wordShortcutCheckBox.AutoSize = true;
             this.wordShortcutCheckBox.Location = new System.Drawing.Point(6, 74);
             this.wordShortcutCheckBox.Name = "wordShortcutCheckBox";
-            this.wordShortcutCheckBox.Size = new System.Drawing.Size(98, 17);
+            this.wordShortcutCheckBox.Size = new System.Drawing.Size(117, 20);
             this.wordShortcutCheckBox.TabIndex = 0;
             this.wordShortcutCheckBox.Text = "Microsoft Word";
             this.wordShortcutCheckBox.UseVisualStyleBackColor = true;
@@ -1284,7 +1285,7 @@
             this.efinanceShortcutCheckBox.AutoSize = true;
             this.efinanceShortcutCheckBox.Location = new System.Drawing.Point(6, 50);
             this.efinanceShortcutCheckBox.Name = "efinanceShortcutCheckBox";
-            this.efinanceShortcutCheckBox.Size = new System.Drawing.Size(70, 17);
+            this.efinanceShortcutCheckBox.Size = new System.Drawing.Size(83, 20);
             this.efinanceShortcutCheckBox.TabIndex = 1;
             this.efinanceShortcutCheckBox.Text = "eFinance";
             this.efinanceShortcutCheckBox.UseVisualStyleBackColor = true;
@@ -1304,7 +1305,7 @@
             this.imageRunnerCheckBox.AutoSize = true;
             this.imageRunnerCheckBox.Location = new System.Drawing.Point(7, 51);
             this.imageRunnerCheckBox.Name = "imageRunnerCheckBox";
-            this.imageRunnerCheckBox.Size = new System.Drawing.Size(93, 17);
+            this.imageRunnerCheckBox.Size = new System.Drawing.Size(111, 20);
             this.imageRunnerCheckBox.TabIndex = 3;
             this.imageRunnerCheckBox.Text = "Image Runner";
             this.imageRunnerCheckBox.UseVisualStyleBackColor = true;
@@ -1324,7 +1325,7 @@
             this.installPrintersCheckBox.AutoSize = true;
             this.installPrintersCheckBox.Location = new System.Drawing.Point(7, 27);
             this.installPrintersCheckBox.Name = "installPrintersCheckBox";
-            this.installPrintersCheckBox.Size = new System.Drawing.Size(91, 17);
+            this.installPrintersCheckBox.Size = new System.Drawing.Size(109, 20);
             this.installPrintersCheckBox.TabIndex = 1;
             this.installPrintersCheckBox.Text = "Install Printers";
             this.installPrintersCheckBox.UseVisualStyleBackColor = true;
@@ -1345,7 +1346,7 @@
             this.scanSnapCheckBox.AutoSize = true;
             this.scanSnapCheckBox.Location = new System.Drawing.Point(7, 74);
             this.scanSnapCheckBox.Name = "scanSnapCheckBox";
-            this.scanSnapCheckBox.Size = new System.Drawing.Size(79, 17);
+            this.scanSnapCheckBox.Size = new System.Drawing.Size(93, 20);
             this.scanSnapCheckBox.TabIndex = 5;
             this.scanSnapCheckBox.Text = "Scan Snap";
             this.scanSnapCheckBox.UseVisualStyleBackColor = true;
@@ -1355,7 +1356,7 @@
             this.dymoPrintingCheckBox.AutoSize = true;
             this.dymoPrintingCheckBox.Location = new System.Drawing.Point(7, 51);
             this.dymoPrintingCheckBox.Name = "dymoPrintingCheckBox";
-            this.dymoPrintingCheckBox.Size = new System.Drawing.Size(82, 17);
+            this.dymoPrintingCheckBox.Size = new System.Drawing.Size(100, 20);
             this.dymoPrintingCheckBox.TabIndex = 3;
             this.dymoPrintingCheckBox.Text = "Dymo Label";
             this.dymoPrintingCheckBox.UseVisualStyleBackColor = true;
@@ -1375,7 +1376,7 @@
             this.icPrintingCheckBox.AutoSize = true;
             this.icPrintingCheckBox.Location = new System.Drawing.Point(7, 27);
             this.icPrintingCheckBox.Name = "icPrintingCheckBox";
-            this.icPrintingCheckBox.Size = new System.Drawing.Size(103, 17);
+            this.icPrintingCheckBox.Size = new System.Drawing.Size(123, 20);
             this.icPrintingCheckBox.TabIndex = 1;
             this.icPrintingCheckBox.Text = "IC Label Printing";
             this.icPrintingCheckBox.UseVisualStyleBackColor = true;
@@ -1385,7 +1386,7 @@
             this.restoreFavoritesCheckBox.AutoSize = true;
             this.restoreFavoritesCheckBox.Location = new System.Drawing.Point(7, 97);
             this.restoreFavoritesCheckBox.Name = "restoreFavoritesCheckBox";
-            this.restoreFavoritesCheckBox.Size = new System.Drawing.Size(109, 17);
+            this.restoreFavoritesCheckBox.Size = new System.Drawing.Size(134, 20);
             this.restoreFavoritesCheckBox.TabIndex = 6;
             this.restoreFavoritesCheckBox.Text = "Restore Favorites";
             this.restoreFavoritesCheckBox.UseVisualStyleBackColor = true;
@@ -1394,7 +1395,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(677, 540);
+            this.ClientSize = new System.Drawing.Size(677, 561);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.serverNameLinkLabel);
             this.Controls.Add(this.serverLabel);

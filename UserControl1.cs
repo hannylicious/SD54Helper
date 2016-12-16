@@ -26,7 +26,7 @@ namespace Helpdesk54
     {
         static string[] Scopes = { SheetsService.Scope.Spreadsheets };
         static string ApplicationName = "SD54Helper";
-
+        int existingSetupRowNumber, existingBackupRowNumber; 
 
         string backupDirectoryName;
         string backupName;
@@ -107,6 +107,17 @@ namespace Helpdesk54
             checkApplicationInstalls();
             //check if secretary needs quicken
             secretaryNeedsQuicken();
+            //check to see if user has been backed up or restored already
+            if (userHasBeenSetup())
+            {
+                updateUserSetupChecks();
+                MessageBox.Show("This user has been setup this year - please see checklist.");
+            }
+            if (userHasBeenBackedUp())
+            {
+                updateUserBackupChecks();
+                MessageBox.Show("This user has been backed up this year - please see checklist.");
+            }
             //setup background worker for progress bars
             //essentialBgWorker
             essentialBgWorker.DoWork += new DoWorkEventHandler(essentialBgWorker_DoWork);
@@ -281,6 +292,7 @@ namespace Helpdesk54
                 {
                     quickenButton.Enabled = false;
                     quickenCheckBox.Enabled = false;
+                    quickenBackupCheckBox.Enabled = false;
                 }
             }
 
@@ -1991,9 +2003,12 @@ namespace Helpdesk54
             ValueRange valueRange = new ValueRange();
             var oblist = new List<object>() {  };
 
+            //set year
+            string yearDate = DateTime.Today.ToString("yyyy");
+            oblist.Add(yearDate);
             //set date
-            string updateDate = DateTime.Today.ToString("MM/dd/yyyy");
-            oblist.Add(updateDate);
+            string monthDay = DateTime.Today.ToString("MM/dd");
+            oblist.Add(monthDay);
             //set location
             string serverOutput = Regex.Replace(serverName, @"[\d-]", string.Empty);
             oblist.Add(serverOutput);
@@ -2033,24 +2048,348 @@ namespace Helpdesk54
             }
 
             valueRange.Values = new List<IList<object>> { oblist };
-
-            // Define request parameters.
             String spreadsheetId = "1YWi6rMUie3BD_AXH85Ew0TGJpgP_AVNN4Ury2bpIaQk";
-            String range = "A1";
 
-            SpreadsheetsResource.ValuesResource.AppendRequest update = service.Spreadsheets.Values.Append(valueRange, spreadsheetId, range);
-            update.ValueInputOption = SpreadsheetsResource.ValuesResource.AppendRequest.ValueInputOptionEnum.RAW;
-            AppendValuesResponse result = update.Execute();
-            MessageBox.Show("The users setup has been recorded");
+            //If the user has been Setup once before - run an update command on the appropriate row - otherwise append it to end of spreadsheet
+            if (userHasBeenSetup())
+            {
+                int x = existingSetupRowNumber;
+                String customRange = "A" + (x+1);
+                SpreadsheetsResource.ValuesResource.UpdateRequest update = service.Spreadsheets.Values.Update(valueRange, spreadsheetId, customRange);
+                update.ValueInputOption = SpreadsheetsResource.ValuesResource.UpdateRequest.ValueInputOptionEnum.RAW;
+                UpdateValuesResponse result = update.Execute();
+                MessageBox.Show("The users setup information has been updated.");
+            } else {
+                // Define request parameters.
+                
+                String range = "A1";
+                SpreadsheetsResource.ValuesResource.AppendRequest update = service.Spreadsheets.Values.Append(valueRange, spreadsheetId, range);
+                update.ValueInputOption = SpreadsheetsResource.ValuesResource.AppendRequest.ValueInputOptionEnum.RAW;
+                AppendValuesResponse result = update.Execute();
+                MessageBox.Show("The users setup information has been recorded.");
+            }
 
         }
 
         private void userBackupCompleteButton_Click(object sender, EventArgs e)
         {
             //1XFsFJ2nqrXsxO9ShRJOwQ2MMlDpxf1wmU7RgSKUvmKM - spreadsheet ID
+            UserCredential credential;
+            using (var stream =
+                          new FileStream("client_secret.json", FileMode.Open, FileAccess.Read))
+            {
+                string credPath = System.Environment.GetFolderPath(
+                    System.Environment.SpecialFolder.Personal);
 
+
+                credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
+                    GoogleClientSecrets.Load(stream).Secrets,
+                    Scopes,
+                    "user",
+                    CancellationToken.None,
+                    new FileDataStore(credPath, true)).Result;
+                Console.WriteLine("Credential file saved to: " + credPath);
+            }
+            // Create Google Sheets API service.
+            var service = new SheetsService(new BaseClientService.Initializer()
+            {
+                HttpClientInitializer = credential,
+                ApplicationName = ApplicationName,
+            });
+
+            ValueRange valueRange = new ValueRange();
+            var oblist = new List<object>() { };
+
+            //set year
+            string yearDate = DateTime.Today.ToString("yyyy");
+            oblist.Add(yearDate);
+            //set date
+            string monthDay = DateTime.Today.ToString("MM/dd");
+            oblist.Add(monthDay);
+            //set location
+            string serverOutput = Regex.Replace(serverName, @"[\d-]", string.Empty);
+            oblist.Add(serverOutput);
+            //set username
+            oblist.Add(userName);
+
+            //create array of checkboxes in appropriate order for spreadsheet (must match the order of columns in the spreadsheet!)
+            CheckBox[] checkBoxNames =
+            {
+                desktopBackupCheckBox,
+                documentsBackupCheckBox,
+                favoritesBackupCheckBox,
+                quickenBackupCheckBox,
+                stickyNotesBackupCheckBox,
+                picturesBackupCheckBox,
+                videosBackupCheckBox,
+                musicBackupCheckBox,
+            };
+            //set X's for checked and O for unchecked
+            //iterate through checkBoxNames Array
+            foreach (Control c in checkBoxNames)
+            {
+                if ((c is CheckBox) && ((CheckBox)c).Checked)
+                {
+                    oblist.Add("X");
+                }
+                if ((c is CheckBox) && ((CheckBox)c).Checked == false)
+                {
+                    oblist.Add("O");
+                }
+            }
+
+            valueRange.Values = new List<IList<object>> { oblist };
+
+            // Define request parameters.
+            String spreadsheetId = "1XFsFJ2nqrXsxO9ShRJOwQ2MMlDpxf1wmU7RgSKUvmKM";
+            //If the user has been Setup once before - run an update command on the appropriate row - otherwise append it to end of spreadsheet
+            if (userHasBeenBackedUp())
+            {
+                int x = existingSetupRowNumber;
+                String customRange = "A" + (x + 1);
+                SpreadsheetsResource.ValuesResource.UpdateRequest update = service.Spreadsheets.Values.Update(valueRange, spreadsheetId, customRange);
+                update.ValueInputOption = SpreadsheetsResource.ValuesResource.UpdateRequest.ValueInputOptionEnum.RAW;
+                UpdateValuesResponse result = update.Execute();
+                MessageBox.Show("The users backup information has been updated.");
+            }
+            else
+            {
+                // Define request parameters.
+                String range = "A1";
+                SpreadsheetsResource.ValuesResource.AppendRequest update = service.Spreadsheets.Values.Append(valueRange, spreadsheetId, range);
+                update.ValueInputOption = SpreadsheetsResource.ValuesResource.AppendRequest.ValueInputOptionEnum.RAW;
+                AppendValuesResponse result = update.Execute();
+                MessageBox.Show("The users backup information has been recorded.");
+            }
         }
+        //Checks the Google Spreadsheet to see if the user exists in the current year as having been setup
+        //If the user DOES exist - it updates the UserChecklist tab accordingly in the Setup section
+        //returns bool
+        public bool userHasBeenSetup()
+        {
+            UserCredential credential;
+            using (var stream =
+                          new FileStream("client_secret.json", FileMode.Open, FileAccess.Read))
+            {
+                string credPath = System.Environment.GetFolderPath(
+                    System.Environment.SpecialFolder.Personal);
 
+
+                credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
+                    GoogleClientSecrets.Load(stream).Secrets,
+                    Scopes,
+                    "user",
+                    CancellationToken.None,
+                    new FileDataStore(credPath, true)).Result;
+                Console.WriteLine("Credential file saved to: " + credPath);
+            }
+            // Create Google Sheets API service.
+            var service = new SheetsService(new BaseClientService.Initializer()
+            {
+                HttpClientInitializer = credential,
+                ApplicationName = ApplicationName,
+            });
+
+            // Define request parameters.
+            String spreadsheetId = "1YWi6rMUie3BD_AXH85Ew0TGJpgP_AVNN4Ury2bpIaQk";
+            String range = "A1:R2000";
+            
+            SpreadsheetsResource.ValuesResource.GetRequest getData = service.Spreadsheets.Values.Get(spreadsheetId, range);
+            getData.MajorDimension = SpreadsheetsResource.ValuesResource.GetRequest.MajorDimensionEnum.ROWS;
+            ValueRange sheetData = getData.Execute();
+
+            int i = 0;
+            foreach (var row in sheetData.Values)
+            {
+                if (row[0].ToString() == DateTime.Today.ToString("yyyy") && row[3].ToString() == userName)
+                {
+                    existingSetupRowNumber = i;
+                    return true;
+                }
+                i++;
+            }
+            return false;
+        }
+        //Updates the user CheckBoxes for their setup if the user exists
+        public void updateUserSetupChecks()
+        {
+            UserCredential credential;
+            using (var stream =
+                          new FileStream("client_secret.json", FileMode.Open, FileAccess.Read))
+            {
+                string credPath = System.Environment.GetFolderPath(
+                    System.Environment.SpecialFolder.Personal);
+
+
+                credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
+                    GoogleClientSecrets.Load(stream).Secrets,
+                    Scopes,
+                    "user",
+                    CancellationToken.None,
+                    new FileDataStore(credPath, true)).Result;
+                Console.WriteLine("Credential file saved to: " + credPath);
+            }
+            // Create Google Sheets API service.
+            var service = new SheetsService(new BaseClientService.Initializer()
+            {
+                HttpClientInitializer = credential,
+                ApplicationName = ApplicationName,
+            });
+
+            // Define request parameters.
+            String spreadsheetId = "1YWi6rMUie3BD_AXH85Ew0TGJpgP_AVNN4Ury2bpIaQk";
+            String range = "A1:R2000";
+
+            SpreadsheetsResource.ValuesResource.GetRequest getData = service.Spreadsheets.Values.Get(spreadsheetId, range);
+            getData.MajorDimension = SpreadsheetsResource.ValuesResource.GetRequest.MajorDimensionEnum.ROWS;
+            ValueRange sheetData = getData.Execute();
+
+            //get the appropriate row
+            var row = sheetData.Values[existingSetupRowNumber];
+
+            //create array of checkboxes in appropriate order for spreadsheet (must match the order of columns in the spreadsheet!)
+            CheckBox[] checkBoxNames =
+            {
+                outlookCheckBox,
+                quickenCheckBox,
+                adobeProCheckBox,
+                icPrintingCheckBox,
+                dymoPrintingCheckBox,
+                scanSnapCheckBox,
+                installPrintersCheckBox,
+                imageRunnerCheckBox,
+                restoreFavoritesCheckBox,
+                homeShortcutCheckBox,
+                efinanceShortcutCheckBox,
+                wordShortcutCheckBox,
+                icShortcutCheckBox,
+                aesopShortcutCheckBox
+            };
+            int i = 4;
+            foreach (CheckBox c in checkBoxNames)
+            {
+                string cellContent = row[i].ToString();
+                if (cellContent == "X")
+                {
+                    c.Checked = true;
+                    i++;
+                }
+                if (cellContent == "O")
+                {
+                    c.Checked = false;
+                    i++;
+                }
+            }
+        }
+        public bool userHasBeenBackedUp()
+        {
+            UserCredential credential;
+            using (var stream =
+                          new FileStream("client_secret.json", FileMode.Open, FileAccess.Read))
+            {
+                string credPath = System.Environment.GetFolderPath(
+                    System.Environment.SpecialFolder.Personal);
+
+
+                credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
+                    GoogleClientSecrets.Load(stream).Secrets,
+                    Scopes,
+                    "user",
+                    CancellationToken.None,
+                    new FileDataStore(credPath, true)).Result;
+                Console.WriteLine("Credential file saved to: " + credPath);
+            }
+            // Create Google Sheets API service.
+            var service = new SheetsService(new BaseClientService.Initializer()
+            {
+                HttpClientInitializer = credential,
+                ApplicationName = ApplicationName,
+            });
+
+            // Define request parameters.
+            String spreadsheetId = "1XFsFJ2nqrXsxO9ShRJOwQ2MMlDpxf1wmU7RgSKUvmKM";
+            String range = "A1:L2000";
+
+            SpreadsheetsResource.ValuesResource.GetRequest getData = service.Spreadsheets.Values.Get(spreadsheetId, range);
+            getData.MajorDimension = SpreadsheetsResource.ValuesResource.GetRequest.MajorDimensionEnum.ROWS;
+            ValueRange sheetData = getData.Execute();
+
+            int i = 0;
+            foreach (var row in sheetData.Values)
+            {
+                if (row[0].ToString() == DateTime.Today.ToString("yyyy") && row[3].ToString() == userName)
+                {
+                    existingSetupRowNumber = i;
+                    return true;
+                }
+                i++;
+            }
+            return false;
+        }
+        public void updateUserBackupChecks()
+        {
+            UserCredential credential;
+            using (var stream =
+                          new FileStream("client_secret.json", FileMode.Open, FileAccess.Read))
+            {
+                string credPath = System.Environment.GetFolderPath(
+                    System.Environment.SpecialFolder.Personal);
+
+
+                credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
+                    GoogleClientSecrets.Load(stream).Secrets,
+                    Scopes,
+                    "user",
+                    CancellationToken.None,
+                    new FileDataStore(credPath, true)).Result;
+                Console.WriteLine("Credential file saved to: " + credPath);
+            }
+            // Create Google Sheets API service.
+            var service = new SheetsService(new BaseClientService.Initializer()
+            {
+                HttpClientInitializer = credential,
+                ApplicationName = ApplicationName,
+            });
+
+            // Define request parameters.
+            String spreadsheetId = "1XFsFJ2nqrXsxO9ShRJOwQ2MMlDpxf1wmU7RgSKUvmKM";
+            String range = "A1:L2000";
+
+            SpreadsheetsResource.ValuesResource.GetRequest getData = service.Spreadsheets.Values.Get(spreadsheetId, range);
+            getData.MajorDimension = SpreadsheetsResource.ValuesResource.GetRequest.MajorDimensionEnum.ROWS;
+            ValueRange sheetData = getData.Execute();
+
+            //get the appropriate row
+            var row = sheetData.Values[existingSetupRowNumber];
+
+            //create array of checkboxes in appropriate order for spreadsheet (must match the order of columns in the spreadsheet!)
+            CheckBox[] checkBoxNames =
+            {
+                desktopBackupCheckBox,
+                documentsBackupCheckBox,
+                favoritesBackupCheckBox,
+                quickenBackupCheckBox,
+                stickyNotesBackupCheckBox,
+                picturesBackupCheckBox,
+                videosBackupCheckBox,
+                musicBackupCheckBox,
+            };
+            int i = 4;
+            foreach (CheckBox c in checkBoxNames)
+            {
+                string cellContent = row[i].ToString();
+                if (cellContent == "X")
+                {
+                    c.Checked = true;
+                    i++;
+                }
+                if (cellContent == "O")
+                {
+                    c.Checked = false;
+                    i++;
+                }
+            }
+        }
         public void checkBackupDirectories(string backupName)
         {
             string subDirectoryURL;
