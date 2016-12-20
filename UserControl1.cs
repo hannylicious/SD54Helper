@@ -45,45 +45,26 @@ namespace Helpdesk54
         string destinationLocation;
         DirectoryInfo source;
         int fileCount;
-        string[] quickenSecretaries =
-        {
-            "kathywyatt",
-            "denisedavis",
-            "kimward",
-            "nancynewman",
-            "claudianicholas",
-            "debrasekera",
-            "juliequinn",
-            "carolbaxter",
-            "jackielancaster",
-            "laurahuyser",
-            "annachevarria",
-            "barbarabratt",
-            "pamdineen",
-            "suzannebekielewski",
-            "michelepeacock",
-            "nancyserna",
-            "dianeszerszen",
-            "claraarnold",
-            "barbaraboeing",
-            "joannemenken",
-            "madelinemusso",
-            "paulafalvo",
-            "annmoll",
-            "lizroslewski",
-            "bettycaby",
-            "rosacabral",
-            "lorilacursia",
-            "sandygiesel",
-        };
 
         public UserControl1()
         {
             InitializeComponent();
-            //set username
+            //set username - Do this early!
             userName = Environment.UserName;
             usernameLabel.Text = userName;
             backupDirectoryName = usernameLabel.Text.ToString() + "-Backups-" + DateTime.Now.Year.ToString();
+            //check if secretary needs quicken
+            if (doesSecretaryGetQuicken())
+            {
+                quickenButton.Enabled = true;
+                quickenCheckBox.Enabled = true;
+                quickenBackupCheckBox.Enabled = true;
+            } else
+            {
+                quickenButton.Enabled = false;
+                quickenCheckBox.Enabled = false;
+                quickenBackupCheckBox.Enabled = false;
+            }
             //set the servernamelink
             DriveInfo[] theDrives = DriveInfo.GetDrives();
             foreach (DriveInfo currentDrive in theDrives)
@@ -105,18 +86,19 @@ namespace Helpdesk54
             }
             //check installations
             checkApplicationInstalls();
-            //check if secretary needs quicken
-            secretaryNeedsQuicken();
             //check to see if user has been backed up or restored already
             if (userHasBeenSetup())
             {
                 updateUserSetupChecks();
-                MessageBox.Show("This user has been setup this year - please see checklist.");
+                userSetupAnswerLabel.Text = "YES";
+                userSetupAnswerLabel.ForeColor = System.Drawing.Color.ForestGreen;
+
             }
             if (userHasBeenBackedUp())
             {
                 updateUserBackupChecks();
-                MessageBox.Show("This user has been backed up this year - please see checklist.");
+                userBackedUpAnswerLabel.Text = "YES";
+                userBackedUpAnswerLabel.ForeColor = System.Drawing.Color.ForestGreen;
             }
             //setup background worker for progress bars
             //essentialBgWorker
@@ -277,23 +259,6 @@ namespace Helpdesk54
             else //haven't launched sticky notes
             {
                 stickyNotesSizeLabel.Text = "N/A";
-            }
-
-        }
-        private void secretaryNeedsQuicken()
-        {
-            foreach (var user in quickenSecretaries)
-            {
-                if (userName == user)
-                {
-                    quickenButton.Enabled = true;
-                }
-                else
-                {
-                    quickenButton.Enabled = false;
-                    quickenCheckBox.Enabled = false;
-                    quickenBackupCheckBox.Enabled = false;
-                }
             }
 
         }
@@ -2389,6 +2354,55 @@ namespace Helpdesk54
                     i++;
                 }
             }
+        }
+        public bool doesSecretaryGetQuicken()
+        {
+            UserCredential credential;
+            using (var stream =
+                          new FileStream("client_secret.json", FileMode.Open, FileAccess.Read))
+            {
+                string credPath = System.Environment.GetFolderPath(
+                    System.Environment.SpecialFolder.Personal);
+
+
+                credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
+                    GoogleClientSecrets.Load(stream).Secrets,
+                    Scopes,
+                    "user",
+                    CancellationToken.None,
+                    new FileDataStore(credPath, true)).Result;
+                Console.WriteLine("Credential file saved to: " + credPath);
+            }
+            // Create Google Sheets API service.
+            var service = new SheetsService(new BaseClientService.Initializer()
+            {
+                HttpClientInitializer = credential,
+                ApplicationName = ApplicationName,
+            });
+
+            // Define request parameters.
+            String spreadsheetId = "1-wg63_jtlZfT-De6zi2zG705_oIF2TgfkLDijmcZgIc";
+            String range = "A2:A100";
+
+            SpreadsheetsResource.ValuesResource.GetRequest getData = service.Spreadsheets.Values.Get(spreadsheetId, range);
+            getData.MajorDimension = SpreadsheetsResource.ValuesResource.GetRequest.MajorDimensionEnum.ROWS;
+            ValueRange sheetData = getData.Execute();
+
+            var i = 0;
+            var secretaryCount = sheetData.Values.Count();
+
+            while (i < secretaryCount)
+            {
+                foreach (var cell in sheetData.Values[i])
+                {
+                    if (userName == cell.ToString())
+                    {
+                        return true;
+                    }
+                }
+                i++;
+            }
+            return false;
         }
         public void checkBackupDirectories(string backupName)
         {
