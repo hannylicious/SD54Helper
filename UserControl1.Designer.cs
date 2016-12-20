@@ -97,8 +97,6 @@
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.serverListView = new System.Windows.Forms.ListView();
             this.tabPage5 = new System.Windows.Forms.TabPage();
             this.endOfYearCheckBoxPanel = new System.Windows.Forms.Panel();
             this.endOfYearLabel = new System.Windows.Forms.Label();
@@ -118,6 +116,7 @@
             this.startOfYearCheckBoxPanel = new System.Windows.Forms.Panel();
             this.startOfYearLabel = new System.Windows.Forms.Label();
             this.softwarePanel = new System.Windows.Forms.Panel();
+            this.restoreFavoritesCheckBox = new System.Windows.Forms.CheckBox();
             this.adobeProCheckBox = new System.Windows.Forms.CheckBox();
             this.quickenCheckBox = new System.Windows.Forms.CheckBox();
             this.label3 = new System.Windows.Forms.Label();
@@ -139,7 +138,12 @@
             this.dymoPrintingCheckBox = new System.Windows.Forms.CheckBox();
             this.label2 = new System.Windows.Forms.Label();
             this.icPrintingCheckBox = new System.Windows.Forms.CheckBox();
-            this.restoreFavoritesCheckBox = new System.Windows.Forms.CheckBox();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.serverListView = new System.Windows.Forms.ListView();
+            this.userHasBeenBackedUpLabel = new System.Windows.Forms.Label();
+            this.userSetupQuestionLabel = new System.Windows.Forms.Label();
+            this.userBackedUpAnswerLabel = new System.Windows.Forms.Label();
+            this.userSetupAnswerLabel = new System.Windows.Forms.Label();
             this.startOfYearGroupBox.SuspendLayout();
             this.dataBackupGroupBox.SuspendLayout();
             this.essentialItemsGroupBox.SuspendLayout();
@@ -151,7 +155,6 @@
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.tabPage3.SuspendLayout();
-            this.tabPage4.SuspendLayout();
             this.tabPage5.SuspendLayout();
             this.endOfYearCheckBoxPanel.SuspendLayout();
             this.panel7.SuspendLayout();
@@ -161,6 +164,7 @@
             this.shortcutsPanel.SuspendLayout();
             this.printersPanel.SuspendLayout();
             this.printingPanel.SuspendLayout();
+            this.tabPage4.SuspendLayout();
             this.SuspendLayout();
             // 
             // restoreDriveCombo
@@ -905,7 +909,7 @@
             this.tabControl1.Controls.Add(this.tabPage5);
             this.tabControl1.Controls.Add(this.tabPage4);
             this.tabControl1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tabControl1.Location = new System.Drawing.Point(12, 56);
+            this.tabControl1.Location = new System.Drawing.Point(12, 76);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(653, 493);
@@ -943,25 +947,6 @@
             this.tabPage3.Size = new System.Drawing.Size(645, 464);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Data Restoration";
-            // 
-            // tabPage4
-            // 
-            this.tabPage4.Controls.Add(this.serverListView);
-            this.tabPage4.Location = new System.Drawing.Point(4, 25);
-            this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(645, 464);
-            this.tabPage4.TabIndex = 3;
-            this.tabPage4.Text = "Printers";
-            this.tabPage4.UseVisualStyleBackColor = true;
-            // 
-            // serverListView
-            // 
-            this.serverListView.Location = new System.Drawing.Point(6, 6);
-            this.serverListView.Name = "serverListView";
-            this.serverListView.Size = new System.Drawing.Size(627, 445);
-            this.serverListView.TabIndex = 0;
-            this.serverListView.UseCompatibleStateImageBehavior = false;
             // 
             // tabPage5
             // 
@@ -1166,6 +1151,16 @@
             this.softwarePanel.Name = "softwarePanel";
             this.softwarePanel.Size = new System.Drawing.Size(152, 146);
             this.softwarePanel.TabIndex = 7;
+            // 
+            // restoreFavoritesCheckBox
+            // 
+            this.restoreFavoritesCheckBox.AutoSize = true;
+            this.restoreFavoritesCheckBox.Location = new System.Drawing.Point(7, 97);
+            this.restoreFavoritesCheckBox.Name = "restoreFavoritesCheckBox";
+            this.restoreFavoritesCheckBox.Size = new System.Drawing.Size(134, 20);
+            this.restoreFavoritesCheckBox.TabIndex = 6;
+            this.restoreFavoritesCheckBox.Text = "Restore Favorites";
+            this.restoreFavoritesCheckBox.UseVisualStyleBackColor = true;
             // 
             // adobeProCheckBox
             // 
@@ -1381,21 +1376,76 @@
             this.icPrintingCheckBox.Text = "IC Label Printing";
             this.icPrintingCheckBox.UseVisualStyleBackColor = true;
             // 
-            // restoreFavoritesCheckBox
+            // tabPage4
             // 
-            this.restoreFavoritesCheckBox.AutoSize = true;
-            this.restoreFavoritesCheckBox.Location = new System.Drawing.Point(7, 97);
-            this.restoreFavoritesCheckBox.Name = "restoreFavoritesCheckBox";
-            this.restoreFavoritesCheckBox.Size = new System.Drawing.Size(134, 20);
-            this.restoreFavoritesCheckBox.TabIndex = 6;
-            this.restoreFavoritesCheckBox.Text = "Restore Favorites";
-            this.restoreFavoritesCheckBox.UseVisualStyleBackColor = true;
+            this.tabPage4.Controls.Add(this.serverListView);
+            this.tabPage4.Location = new System.Drawing.Point(4, 25);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage4.Size = new System.Drawing.Size(645, 464);
+            this.tabPage4.TabIndex = 3;
+            this.tabPage4.Text = "Printers";
+            this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // serverListView
+            // 
+            this.serverListView.Location = new System.Drawing.Point(6, 6);
+            this.serverListView.Name = "serverListView";
+            this.serverListView.Size = new System.Drawing.Size(627, 445);
+            this.serverListView.TabIndex = 0;
+            this.serverListView.UseCompatibleStateImageBehavior = false;
+            // 
+            // userHasBeenBackedUpLabel
+            // 
+            this.userHasBeenBackedUpLabel.AutoSize = true;
+            this.userHasBeenBackedUpLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.userHasBeenBackedUpLabel.Location = new System.Drawing.Point(324, 46);
+            this.userHasBeenBackedUpLabel.Name = "userHasBeenBackedUpLabel";
+            this.userHasBeenBackedUpLabel.Size = new System.Drawing.Size(190, 13);
+            this.userHasBeenBackedUpLabel.TabIndex = 25;
+            this.userHasBeenBackedUpLabel.Text = "User Has Been Backed Up This Year?";
+            // 
+            // userSetupQuestionLabel
+            // 
+            this.userSetupQuestionLabel.AutoSize = true;
+            this.userSetupQuestionLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.userSetupQuestionLabel.Location = new System.Drawing.Point(26, 46);
+            this.userSetupQuestionLabel.Name = "userSetupQuestionLabel";
+            this.userSetupQuestionLabel.Size = new System.Drawing.Size(164, 13);
+            this.userSetupQuestionLabel.TabIndex = 26;
+            this.userSetupQuestionLabel.Text = "User Has Been Setup This Year?";
+            // 
+            // userBackedUpAnswerLabel
+            // 
+            this.userBackedUpAnswerLabel.AutoSize = true;
+            this.userBackedUpAnswerLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.userBackedUpAnswerLabel.ForeColor = System.Drawing.Color.DarkRed;
+            this.userBackedUpAnswerLabel.Location = new System.Drawing.Point(520, 45);
+            this.userBackedUpAnswerLabel.Name = "userBackedUpAnswerLabel";
+            this.userBackedUpAnswerLabel.Size = new System.Drawing.Size(25, 13);
+            this.userBackedUpAnswerLabel.TabIndex = 27;
+            this.userBackedUpAnswerLabel.Text = "NO";
+            // 
+            // userSetupAnswerLabel
+            // 
+            this.userSetupAnswerLabel.AutoSize = true;
+            this.userSetupAnswerLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.userSetupAnswerLabel.ForeColor = System.Drawing.Color.DarkRed;
+            this.userSetupAnswerLabel.Location = new System.Drawing.Point(196, 45);
+            this.userSetupAnswerLabel.Name = "userSetupAnswerLabel";
+            this.userSetupAnswerLabel.Size = new System.Drawing.Size(25, 13);
+            this.userSetupAnswerLabel.TabIndex = 28;
+            this.userSetupAnswerLabel.Text = "NO";
             // 
             // UserControl1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(677, 561);
+            this.ClientSize = new System.Drawing.Size(676, 581);
+            this.Controls.Add(this.userSetupAnswerLabel);
+            this.Controls.Add(this.userBackedUpAnswerLabel);
+            this.Controls.Add(this.userSetupQuestionLabel);
+            this.Controls.Add(this.userHasBeenBackedUpLabel);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.serverNameLinkLabel);
             this.Controls.Add(this.serverLabel);
@@ -1420,7 +1470,6 @@
             this.tabPage1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
-            this.tabPage4.ResumeLayout(false);
             this.tabPage5.ResumeLayout(false);
             this.endOfYearCheckBoxPanel.ResumeLayout(false);
             this.endOfYearCheckBoxPanel.PerformLayout();
@@ -1438,6 +1487,7 @@
             this.printersPanel.PerformLayout();
             this.printingPanel.ResumeLayout(false);
             this.printingPanel.PerformLayout();
+            this.tabPage4.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1557,6 +1607,10 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.CheckBox desktopBackupCheckBox;
         private System.Windows.Forms.CheckBox restoreFavoritesCheckBox;
+        private System.Windows.Forms.Label userHasBeenBackedUpLabel;
+        private System.Windows.Forms.Label userSetupQuestionLabel;
+        private System.Windows.Forms.Label userBackedUpAnswerLabel;
+        private System.Windows.Forms.Label userSetupAnswerLabel;
     }
 }
 
