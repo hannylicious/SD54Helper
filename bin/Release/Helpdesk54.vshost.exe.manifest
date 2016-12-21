@@ -3,7 +3,7 @@
   <asmv1:assemblyIdentity name="Helpdesk54.exe" version="1.0.0.2" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="msil" type="win32" />
   <application />
   <entryPoint>
-    <assemblyIdentity name="Helpdesk54" version="0.7.5.0" language="neutral" processorArchitecture="msil" />
+    <assemblyIdentity name="Helpdesk54" version="0.9.0.0" language="neutral" processorArchitecture="msil" />
     <commandLine file="Helpdesk54.exe" parameters="" />
   </entryPoint>
   <trustInfo>
@@ -126,14 +126,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Helpdesk54.exe" size="99824">
-      <assemblyIdentity name="Helpdesk54" version="0.7.5.0" language="neutral" processorArchitecture="msil" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Helpdesk54.exe" size="2589168">
+      <assemblyIdentity name="Helpdesk54" version="0.9.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>VeGTcfIiu5pCSS3jycCDRN/AQZJYJ6h/ukAtCdQKnRo=</dsig:DigestValue>
+        <dsig:DigestValue>Ix1ddPMuYAKtqoZx97AjMElzI/OFZFoPOVYjU9hGJZI=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -233,13 +233,22 @@
       </hash>
     </dependentAssembly>
   </dependency>
-  <file name="Helpdesk54.exe.config" size="544">
+  <file name="FodyWeavers.xml" size="77" writeableType="applicationData">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>1HS3mhIC394/vsElP5PQIdlhNJ1rB/e8gKwD7f1k4c8=</dsig:DigestValue>
+      <dsig:DigestValue>DnKBIIMoiPS2CrKLlaELmY2fI4Rv/81ohhr+mG0h9wU=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Helpdesk54.exe.config" size="787">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>HzB/p7UcpgOe+x7TjTs1GpaSLxDeWFI93v3HbzonBpY=</dsig:DigestValue>
     </hash>
   </file>
   <compatibility xmlns="urn:schemas-microsoft-com:compatibility.v1">

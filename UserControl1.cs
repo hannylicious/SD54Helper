@@ -59,8 +59,7 @@ namespace Helpdesk54
                 quickenButton.Enabled = true;
                 quickenCheckBox.Enabled = true;
                 quickenBackupCheckBox.Enabled = true;
-            } else
-            {
+            } else {
                 quickenButton.Enabled = false;
                 quickenCheckBox.Enabled = false;
                 quickenBackupCheckBox.Enabled = false;
@@ -2284,7 +2283,7 @@ namespace Helpdesk54
             {
                 if (row[0].ToString() == DateTime.Today.ToString("yyyy") && row[3].ToString() == userName)
                 {
-                    existingSetupRowNumber = i;
+                    existingBackupRowNumber = i;
                     return true;
                 }
                 i++;
@@ -2325,7 +2324,7 @@ namespace Helpdesk54
             ValueRange sheetData = getData.Execute();
 
             //get the appropriate row
-            var row = sheetData.Values[existingSetupRowNumber];
+            var row = sheetData.Values[existingBackupRowNumber];
 
             //create array of checkboxes in appropriate order for spreadsheet (must match the order of columns in the spreadsheet!)
             CheckBox[] checkBoxNames =
@@ -2371,7 +2370,7 @@ namespace Helpdesk54
                     "user",
                     CancellationToken.None,
                     new FileDataStore(credPath, true)).Result;
-                Console.WriteLine("Credential file saved to: " + credPath);
+
             }
             // Create Google Sheets API service.
             var service = new SheetsService(new BaseClientService.Initializer()

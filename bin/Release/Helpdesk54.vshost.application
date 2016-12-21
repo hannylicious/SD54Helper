@@ -7,14 +7,14 @@
     <framework targetVersion="4.5" profile="Full" supportedRuntime="4.0.30319" />
   </compatibleFrameworks>
   <dependency>
-    <dependentAssembly dependencyType="install" codebase="Helpdesk54.exe.manifest" size="15082">
+    <dependentAssembly dependencyType="install" codebase="Helpdesk54.exe.manifest" size="15507">
       <assemblyIdentity name="Helpdesk54.exe" version="1.0.0.2" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="msil" type="win32" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>AfgkoxbwnIWuetx+X6B3wxFPtfcSd6jSKxEGUF5AOGw=</dsig:DigestValue>
+        <dsig:DigestValue>AxzsM5IwJVUah/Cv21X00e3WKwRCdb3dWJPKOWVW79s=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
