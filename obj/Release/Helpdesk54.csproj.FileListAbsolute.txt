@@ -18,6 +18,7 @@ H:\Programming\windows\Helpdesk54\obj\Release\Helpdesk54.csproj.ResolveComRefere
 H:\Programming\windows\Helpdesk54\obj\Release\Helpdesk54.exe
 H:\Programming\windows\Helpdesk54\obj\Release\Helpdesk54.pdb
 H:\Programming\windows\SD54Helper\Helpdesk54\bin\Release\client_secret.json
+H:\Programming\windows\SD54Helper\Helpdesk54\bin\Release\SD54HelperServiceAccount.json
 H:\Programming\windows\SD54Helper\Helpdesk54\bin\Release\Helpdesk54.exe.config
 H:\Programming\windows\SD54Helper\Helpdesk54\bin\Release\Helpdesk54.exe.manifest
 H:\Programming\windows\SD54Helper\Helpdesk54\bin\Release\Helpdesk54.application
@@ -40,6 +41,7 @@ H:\Programming\windows\SD54Helper\Helpdesk54\bin\Release\System.Net.Http.dll
 H:\Programming\windows\SD54Helper\Helpdesk54\bin\Release\System.Net.Http.Extensions.dll
 H:\Programming\windows\SD54Helper\Helpdesk54\bin\Release\System.Net.Http.Primitives.dll
 H:\Programming\windows\SD54Helper\Helpdesk54\bin\Release\System.Net.Http.WebRequest.dll
+H:\Programming\windows\SD54Helper\Helpdesk54\bin\Release\Zlib.Portable.dll
 H:\Programming\windows\SD54Helper\Helpdesk54\bin\Release\BouncyCastle.Crypto.pdb
 H:\Programming\windows\SD54Helper\Helpdesk54\bin\Release\Google.Apis.pdb
 H:\Programming\windows\SD54Helper\Helpdesk54\bin\Release\Google.Apis.xml
@@ -62,6 +64,7 @@ H:\Programming\windows\SD54Helper\Helpdesk54\bin\Release\System.Net.Http.xml
 H:\Programming\windows\SD54Helper\Helpdesk54\bin\Release\System.Net.Http.Extensions.xml
 H:\Programming\windows\SD54Helper\Helpdesk54\bin\Release\System.Net.Http.Primitives.xml
 H:\Programming\windows\SD54Helper\Helpdesk54\bin\Release\System.Net.Http.WebRequest.xml
+H:\Programming\windows\SD54Helper\Helpdesk54\bin\Release\Zlib.Portable.xml
 H:\Programming\windows\SD54Helper\Helpdesk54\obj\Release\Interop.IWshRuntimeLibrary.dll
 H:\Programming\windows\SD54Helper\Helpdesk54\obj\Release\Helpdesk54.csproj.ResolveComReference.cache
 H:\Programming\windows\SD54Helper\Helpdesk54\obj\Release\Helpdesk54.Properties.Resources.resources
