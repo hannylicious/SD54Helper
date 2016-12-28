@@ -126,14 +126,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Helpdesk54.exe" size="98800">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Helpdesk54.exe" size="2926576">
       <assemblyIdentity name="Helpdesk54" version="0.9.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>L16iMpTGKagSUttt6FdVOrSDR/s=</dsig:DigestValue>
+        <dsig:DigestValue>w59y1hGXj22e8BpqYx3wDsPT6lY=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -293,13 +293,13 @@
       </hash>
     </dependentAssembly>
   </dependency>
-  <file name="FodyWeavers.xml" size="65" writeableType="applicationData">
+  <file name="FodyWeavers.xml" size="77" writeableType="applicationData">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-      <dsig:DigestValue>wDcIagw45e+MdKQ7PwjyA3Y4Qpk=</dsig:DigestValue>
+      <dsig:DigestValue>uW0pxaTjh8DY+RoMii1h85NFzvk=</dsig:DigestValue>
     </hash>
   </file>
   <file name="Helpdesk54.exe.config" size="1787">

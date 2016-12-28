@@ -25,7 +25,7 @@ namespace Helpdesk54
     public partial class UserControl1 : Form
 
     {
-        int existingSetupRowNumber, existingBackupRowNumber; 
+        int existingSetupRowNumber, existingBackupRowNumber;
 
         string backupDirectoryName;
         string backupName;
@@ -2282,7 +2282,7 @@ namespace Helpdesk54
             });
             return service;
             */
-
+            /*
             try
             {
                 string[] scopes = new string[] { SheetsService.Scope.Drive, SheetsService.Scope.Spreadsheets, SheetsService.Scope.SpreadsheetsReadonly }; // Put your scopes here
@@ -2291,7 +2291,7 @@ namespace Helpdesk54
                 MessageBox.Show("stream set: "+stream);
                 var credential = GoogleCredential.FromStream(stream);        
                 MessageBox.Show("credential set");
-                SheetsService service = new SheetsService(new BaseClientService.Initializer()
+                var service = new SheetsService(new BaseClientService.Initializer()
                 {
                     HttpClientInitializer = credential,
                     ApplicationName = "sd54helper,"
@@ -2306,13 +2306,13 @@ namespace Helpdesk54
                 Console.WriteLine("Create service account SD54HelperServiceAccount failed : " + ex.Message);
                 throw new Exception("Create ServiceAccount Failed : ", ex);
             }
-
-            /*
+            */
+            
             try
             {
                 GoogleCredential credential;
                 string applicationName = "SD54Helper";
-                using (var stream = new FileStream("SD54HelperServiceAccount.json", FileMode.Open, FileAccess.Read))
+                using (var stream = new FileStream(Environment.CurrentDirectory + @"\json\SD54HelperServiceAccount.json", FileMode.Open, FileAccess.Read))
                 {
                     credential = GoogleCredential.FromStream(stream)
                           .CreateScoped(SheetsService.Scope.Spreadsheets, SheetsService.Scope.Drive);
@@ -2330,7 +2330,7 @@ namespace Helpdesk54
                 Console.WriteLine("Create service account SD54HelperServiceAccount failed" + ex.Message);
                 throw new Exception("Create ServiceAccount Failed", ex);
             }
-            */
+            
         }
         public void checkBackupDirectories(string backupName)
         {
