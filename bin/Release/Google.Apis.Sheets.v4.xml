@@ -233,11 +233,33 @@
             <summary>The A1 notation of a range to search for a logical table of data. Values will be appended
             after the last row of the table.</summary>
         </member>
+        <member name="P:Google.Apis.Sheets.v4.SpreadsheetsResource.ValuesResource.AppendRequest.ResponseValueRenderOption">
+            <summary>Determines how values in the response should be rendered. The default render option is
+            ValueRenderOption.FORMATTED_VALUE.</summary>
+        </member>
+        <member name="T:Google.Apis.Sheets.v4.SpreadsheetsResource.ValuesResource.AppendRequest.ResponseValueRenderOptionEnum">
+            <summary>Determines how values in the response should be rendered. The default render option is
+            ValueRenderOption.FORMATTED_VALUE.</summary>
+        </member>
         <member name="P:Google.Apis.Sheets.v4.SpreadsheetsResource.ValuesResource.AppendRequest.ValueInputOption">
             <summary>How the input data should be interpreted.</summary>
         </member>
         <member name="T:Google.Apis.Sheets.v4.SpreadsheetsResource.ValuesResource.AppendRequest.ValueInputOptionEnum">
             <summary>How the input data should be interpreted.</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.SpreadsheetsResource.ValuesResource.AppendRequest.ResponseDateTimeRenderOption">
+            <summary>Determines how dates, times, and durations in the response should be rendered. This is
+            ignored if response_value_render_option is FORMATTED_VALUE. The default dateTime render option is
+            [DateTimeRenderOption.SERIAL_NUMBER].</summary>
+        </member>
+        <member name="T:Google.Apis.Sheets.v4.SpreadsheetsResource.ValuesResource.AppendRequest.ResponseDateTimeRenderOptionEnum">
+            <summary>Determines how dates, times, and durations in the response should be rendered. This is
+            ignored if response_value_render_option is FORMATTED_VALUE. The default dateTime render option is
+            [DateTimeRenderOption.SERIAL_NUMBER].</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.SpreadsheetsResource.ValuesResource.AppendRequest.IncludeValuesInResponse">
+            <summary>Determines if the update response should include the values of the cells that were
+            appended. By default, responses do not include the updated values.</summary>
         </member>
         <member name="P:Google.Apis.Sheets.v4.SpreadsheetsResource.ValuesResource.AppendRequest.InsertDataOption">
             <summary>How the input data should be inserted.</summary>
@@ -318,18 +340,22 @@
             <summary>The A1 notation of the values to retrieve.</summary>
         </member>
         <member name="P:Google.Apis.Sheets.v4.SpreadsheetsResource.ValuesResource.BatchGetRequest.ValueRenderOption">
-            <summary>How values should be represented in the output.</summary>
+            <summary>How values should be represented in the output. The default render option is
+            ValueRenderOption.FORMATTED_VALUE.</summary>
         </member>
         <member name="T:Google.Apis.Sheets.v4.SpreadsheetsResource.ValuesResource.BatchGetRequest.ValueRenderOptionEnum">
-            <summary>How values should be represented in the output.</summary>
+            <summary>How values should be represented in the output. The default render option is
+            ValueRenderOption.FORMATTED_VALUE.</summary>
         </member>
         <member name="P:Google.Apis.Sheets.v4.SpreadsheetsResource.ValuesResource.BatchGetRequest.DateTimeRenderOption">
             <summary>How dates, times, and durations should be represented in the output. This is ignored if
-            value_render_option is FORMATTED_VALUE.</summary>
+            value_render_option is FORMATTED_VALUE. The default dateTime render option is
+            [DateTimeRenderOption.SERIAL_NUMBER].</summary>
         </member>
         <member name="T:Google.Apis.Sheets.v4.SpreadsheetsResource.ValuesResource.BatchGetRequest.DateTimeRenderOptionEnum">
             <summary>How dates, times, and durations should be represented in the output. This is ignored if
-            value_render_option is FORMATTED_VALUE.</summary>
+            value_render_option is FORMATTED_VALUE. The default dateTime render option is
+            [DateTimeRenderOption.SERIAL_NUMBER].</summary>
         </member>
         <member name="P:Google.Apis.Sheets.v4.SpreadsheetsResource.ValuesResource.BatchGetRequest.MajorDimension">
              <summary>The major dimension that results should use.
@@ -453,18 +479,22 @@
             <summary>The A1 notation of the values to retrieve.</summary>
         </member>
         <member name="P:Google.Apis.Sheets.v4.SpreadsheetsResource.ValuesResource.GetRequest.ValueRenderOption">
-            <summary>How values should be represented in the output.</summary>
+            <summary>How values should be represented in the output. The default render option is
+            ValueRenderOption.FORMATTED_VALUE.</summary>
         </member>
         <member name="T:Google.Apis.Sheets.v4.SpreadsheetsResource.ValuesResource.GetRequest.ValueRenderOptionEnum">
-            <summary>How values should be represented in the output.</summary>
+            <summary>How values should be represented in the output. The default render option is
+            ValueRenderOption.FORMATTED_VALUE.</summary>
         </member>
         <member name="P:Google.Apis.Sheets.v4.SpreadsheetsResource.ValuesResource.GetRequest.DateTimeRenderOption">
             <summary>How dates, times, and durations should be represented in the output. This is ignored if
-            value_render_option is FORMATTED_VALUE.</summary>
+            value_render_option is FORMATTED_VALUE. The default dateTime render option is
+            [DateTimeRenderOption.SERIAL_NUMBER].</summary>
         </member>
         <member name="T:Google.Apis.Sheets.v4.SpreadsheetsResource.ValuesResource.GetRequest.DateTimeRenderOptionEnum">
             <summary>How dates, times, and durations should be represented in the output. This is ignored if
-            value_render_option is FORMATTED_VALUE.</summary>
+            value_render_option is FORMATTED_VALUE. The default dateTime render option is
+            [DateTimeRenderOption.SERIAL_NUMBER].</summary>
         </member>
         <member name="P:Google.Apis.Sheets.v4.SpreadsheetsResource.ValuesResource.GetRequest.MajorDimension">
              <summary>The major dimension that results should use.
@@ -513,11 +543,35 @@
         <member name="P:Google.Apis.Sheets.v4.SpreadsheetsResource.ValuesResource.UpdateRequest.Range">
             <summary>The A1 notation of the values to update.</summary>
         </member>
+        <member name="P:Google.Apis.Sheets.v4.SpreadsheetsResource.ValuesResource.UpdateRequest.ResponseValueRenderOption">
+            <summary>Determines how values in the response should be rendered. The default render option is
+            ValueRenderOption.FORMATTED_VALUE.</summary>
+        </member>
+        <member name="T:Google.Apis.Sheets.v4.SpreadsheetsResource.ValuesResource.UpdateRequest.ResponseValueRenderOptionEnum">
+            <summary>Determines how values in the response should be rendered. The default render option is
+            ValueRenderOption.FORMATTED_VALUE.</summary>
+        </member>
         <member name="P:Google.Apis.Sheets.v4.SpreadsheetsResource.ValuesResource.UpdateRequest.ValueInputOption">
             <summary>How the input data should be interpreted.</summary>
         </member>
         <member name="T:Google.Apis.Sheets.v4.SpreadsheetsResource.ValuesResource.UpdateRequest.ValueInputOptionEnum">
             <summary>How the input data should be interpreted.</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.SpreadsheetsResource.ValuesResource.UpdateRequest.ResponseDateTimeRenderOption">
+            <summary>Determines how dates, times, and durations in the response should be rendered. This is
+            ignored if response_value_render_option is FORMATTED_VALUE. The default dateTime render option is
+            [DateTimeRenderOption.SERIAL_NUMBER].</summary>
+        </member>
+        <member name="T:Google.Apis.Sheets.v4.SpreadsheetsResource.ValuesResource.UpdateRequest.ResponseDateTimeRenderOptionEnum">
+            <summary>Determines how dates, times, and durations in the response should be rendered. This is
+            ignored if response_value_render_option is FORMATTED_VALUE. The default dateTime render option is
+            [DateTimeRenderOption.SERIAL_NUMBER].</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.SpreadsheetsResource.ValuesResource.UpdateRequest.IncludeValuesInResponse">
+            <summary>Determines if the update response should include the values of the cells that were updated.
+            By default, responses do not include the updated values. If the range to write was larger than than
+            the range actually written, the response will include all values in the requested range (excluding
+            trailing empty rows and columns).</summary>
         </member>
         <member name="P:Google.Apis.Sheets.v4.SpreadsheetsResource.ValuesResource.UpdateRequest.Body">
             <summary>Gets or sets the body of this request.</summary>
@@ -680,6 +734,25 @@
         </member>
         <member name="M:Google.Apis.Sheets.v4.SpreadsheetsResource.GetRequest.InitParameters">
             <summary>Initializes Get parameter list.</summary>
+        </member>
+        <member name="T:Google.Apis.Sheets.v4.Data.AddBandingRequest">
+            <summary>Adds a new banded range to the spreadsheet.</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.AddBandingRequest.BandedRange">
+            <summary>The banded range to add. The bandedRangeId field is optional; if one is not set, an id will be
+            randomly generated. (It is an error to specify the ID of a range that already exists.)</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.AddBandingRequest.ETag">
+            <summary>The ETag of the item.</summary>
+        </member>
+        <member name="T:Google.Apis.Sheets.v4.Data.AddBandingResponse">
+            <summary>The result of adding a banded range.</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.AddBandingResponse.BandedRange">
+            <summary>The banded range that was added.</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.AddBandingResponse.ETag">
+            <summary>The ETag of the item.</summary>
         </member>
         <member name="T:Google.Apis.Sheets.v4.Data.AddChartRequest">
             <summary>Adds a chart to a sheet in the spreadsheet.</summary>
@@ -870,6 +943,58 @@
         <member name="P:Google.Apis.Sheets.v4.Data.AutoResizeDimensionsRequest.ETag">
             <summary>The ETag of the item.</summary>
         </member>
+        <member name="T:Google.Apis.Sheets.v4.Data.BandedRange">
+            <summary>A banded (alternating colors) range in a sheet.</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.BandedRange.BandedRangeId">
+            <summary>The id of the banded range.</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.BandedRange.ColumnProperties">
+            <summary>Properties for column bands. These properties will be applied on a column- by-column basis
+            throughout all the columns in the range. At least one of row_properties or column_properties must be
+            specified.</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.BandedRange.Range">
+            <summary>The range over which these properties are applied.</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.BandedRange.RowProperties">
+            <summary>Properties for row bands. These properties will be applied on a row-by-row basis throughout all the
+            rows in the range. At least one of row_properties or column_properties must be specified.</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.BandedRange.ETag">
+            <summary>The ETag of the item.</summary>
+        </member>
+        <member name="T:Google.Apis.Sheets.v4.Data.BandingProperties">
+             <summary>Properties referring a single dimension (either row or column). If both BandedRange.row_properties and
+             BandedRange.column_properties are set, the fill colors are applied to cells according to the following rules:
+            
+             * header_color and footer_color take priority over band colors. * first_band_color takes priority over
+             second_band_color. * row_properties takes priority over column_properties.
+            
+             For example, the first row color takes priority over the first column color, but the first column color takes
+             priority over the second row color. Similarly, the row header takes priority over the column header in the top
+             left cell, but the column header takes priority over the first row color if the row header is not set.</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.BandingProperties.FirstBandColor">
+            <summary>The first color that is alternating. (Required)</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.BandingProperties.FooterColor">
+            <summary>The color of the last row or column. If this field is not set, the last row or column will be
+            filled with either first_band_color or second_band_color, depending on the color of the previous row or
+            column.</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.BandingProperties.HeaderColor">
+            <summary>The color of the first row or column. If this field is set, the first row or column will be filled
+            with this color and the colors will alternate between first_band_color and second_band_color starting from
+            the second row or column. Otherwise, the first row or column will be filled with first_band_color and the
+            colors will proceed to alternate as they normally would.</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.BandingProperties.SecondBandColor">
+            <summary>The second color that is alternating. (Required)</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.BandingProperties.ETag">
+            <summary>The ETag of the item.</summary>
+        </member>
         <member name="T:Google.Apis.Sheets.v4.Data.BasicChartAxis">
             <summary>An axis of the chart. A chart may not have more than one axis per axis position.</summary>
         </member>
@@ -1001,8 +1126,19 @@
         <member name="T:Google.Apis.Sheets.v4.Data.BatchUpdateSpreadsheetRequest">
             <summary>The request for updating any aspect of a spreadsheet.</summary>
         </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.BatchUpdateSpreadsheetRequest.IncludeSpreadsheetInResponse">
+            <summary>Determines if the update response should include the spreadsheet resource.</summary>
+        </member>
         <member name="P:Google.Apis.Sheets.v4.Data.BatchUpdateSpreadsheetRequest.Requests">
             <summary>A list of updates to apply to the spreadsheet.</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.BatchUpdateSpreadsheetRequest.ResponseIncludeGridData">
+            <summary>True if grid data should be returned. Meaningful only if if include_spreadsheet_response is 'true'.
+            This parameter is ignored if a field mask was set in the request.</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.BatchUpdateSpreadsheetRequest.ResponseRanges">
+            <summary>Limits the ranges included in the response spreadsheet. Meaningful only if
+            include_spreadsheet_response is 'true'.</summary>
         </member>
         <member name="P:Google.Apis.Sheets.v4.Data.BatchUpdateSpreadsheetRequest.ETag">
             <summary>The ETag of the item.</summary>
@@ -1017,6 +1153,10 @@
         <member name="P:Google.Apis.Sheets.v4.Data.BatchUpdateSpreadsheetResponse.SpreadsheetId">
             <summary>The spreadsheet the updates were applied to.</summary>
         </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.BatchUpdateSpreadsheetResponse.UpdatedSpreadsheet">
+            <summary>The spreadsheet after updates were applied. This is only set if
+            [BatchUpdateSpreadsheetRequest.include_spreadsheet_in_response] is `true`.</summary>
+        </member>
         <member name="P:Google.Apis.Sheets.v4.Data.BatchUpdateSpreadsheetResponse.ETag">
             <summary>The ETag of the item.</summary>
         </member>
@@ -1025,6 +1165,22 @@
         </member>
         <member name="P:Google.Apis.Sheets.v4.Data.BatchUpdateValuesRequest.Data">
             <summary>The new values to apply to the spreadsheet.</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.BatchUpdateValuesRequest.IncludeValuesInResponse">
+            <summary>Determines if the update response should include the values of the cells that were updated. By
+            default, responses do not include the updated values. The `updatedData` field within each of the
+            BatchUpdateValuesResponse.responses will contain the updated values. If the range to write was larger than
+            than the range actually written, the response will include all values in the requested range (excluding
+            trailing empty rows and columns).</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.BatchUpdateValuesRequest.ResponseDateTimeRenderOption">
+            <summary>Determines how dates, times, and durations in the response should be rendered. This is ignored if
+            response_value_render_option is FORMATTED_VALUE. The default dateTime render option is
+            [DateTimeRenderOption.SERIAL_NUMBER].</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.BatchUpdateValuesRequest.ResponseValueRenderOption">
+            <summary>Determines how values in the response should be rendered. The default render option is
+            ValueRenderOption.FORMATTED_VALUE.</summary>
         </member>
         <member name="P:Google.Apis.Sheets.v4.Data.BatchUpdateValuesRequest.ValueInputOption">
             <summary>How the input data should be interpreted.</summary>
@@ -1392,6 +1548,15 @@
             <summary>True if invalid data should be rejected.</summary>
         </member>
         <member name="P:Google.Apis.Sheets.v4.Data.DataValidationRule.ETag">
+            <summary>The ETag of the item.</summary>
+        </member>
+        <member name="T:Google.Apis.Sheets.v4.Data.DeleteBandingRequest">
+            <summary>Removes the banded range with the given ID from the spreadsheet.</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.DeleteBandingRequest.BandedRangeId">
+            <summary>The ID of the banded range to delete.</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.DeleteBandingRequest.ETag">
             <summary>The ETag of the item.</summary>
         </member>
         <member name="T:Google.Apis.Sheets.v4.Data.DeleteConditionalFormatRuleRequest">
@@ -2213,6 +2378,9 @@
         <member name="T:Google.Apis.Sheets.v4.Data.Request">
             <summary>A single kind of update to apply to a spreadsheet.</summary>
         </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.Request.AddBanding">
+            <summary>Adds a new banded range</summary>
+        </member>
         <member name="P:Google.Apis.Sheets.v4.Data.Request.AddChart">
             <summary>Adds a chart.</summary>
         </member>
@@ -2252,6 +2420,9 @@
         </member>
         <member name="P:Google.Apis.Sheets.v4.Data.Request.CutPaste">
             <summary>Cuts data from one area and pastes it to another.</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.Request.DeleteBanding">
+            <summary>Removes a banded range</summary>
         </member>
         <member name="P:Google.Apis.Sheets.v4.Data.Request.DeleteConditionalFormatRule">
             <summary>Deletes an existing conditional format rule.</summary>
@@ -2313,6 +2484,9 @@
         <member name="P:Google.Apis.Sheets.v4.Data.Request.UnmergeCells">
             <summary>Unmerges merged cells.</summary>
         </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.Request.UpdateBanding">
+            <summary>Updates a banded range</summary>
+        </member>
         <member name="P:Google.Apis.Sheets.v4.Data.Request.UpdateBorders">
             <summary>Updates the borders in a range of cells.</summary>
         </member>
@@ -2351,6 +2525,9 @@
         </member>
         <member name="T:Google.Apis.Sheets.v4.Data.Response">
             <summary>A single response from an update.</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.Response.AddBanding">
+            <summary>A reply from adding a banded range.</summary>
         </member>
         <member name="P:Google.Apis.Sheets.v4.Data.Response.AddChart">
             <summary>A reply from adding a chart.</summary>
@@ -2423,6 +2600,9 @@
         <member name="T:Google.Apis.Sheets.v4.Data.Sheet">
             <summary>A sheet in a spreadsheet.</summary>
         </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.Sheet.BandedRanges">
+            <summary>The banded (i.e. alternating colors) ranges on this sheet.</summary>
+        </member>
         <member name="P:Google.Apis.Sheets.v4.Data.Sheet.BasicFilter">
             <summary>The filter on this sheet, if any.</summary>
         </member>
@@ -2467,7 +2647,11 @@
         </member>
         <member name="P:Google.Apis.Sheets.v4.Data.SheetProperties.Index">
             <summary>The index of the sheet within the spreadsheet. When adding or updating sheet properties, if this
-            field is excluded then the sheet will be added or moved to the end of the sheet list.</summary>
+            field is excluded then the sheet will be added or moved to the end of the sheet list. When updating sheet
+            indices or inserting sheets, movement is considered in "before the move" indexes. For example, if there were
+            3 sheets (S1, S2, S3) in order to move S1 ahead of S2 the index would have to be set to 2. A sheet index
+            update request will be ignored if the requested index is identical to the sheets current index or if the
+            requested new index is equal to the current sheet index + 1.</summary>
         </member>
         <member name="P:Google.Apis.Sheets.v4.Data.SheetProperties.RightToLeft">
             <summary>True if the sheet is an RTL sheet instead of an LTR sheet.</summary>
@@ -2543,6 +2727,9 @@
         </member>
         <member name="P:Google.Apis.Sheets.v4.Data.Spreadsheet.SpreadsheetId">
             <summary>The ID of the spreadsheet. This field is read-only.</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.Spreadsheet.SpreadsheetUrl">
+            <summary>The url of the spreadsheet. This field is read-only.</summary>
         </member>
         <member name="P:Google.Apis.Sheets.v4.Data.Spreadsheet.ETag">
             <summary>The ETag of the item.</summary>
@@ -2641,6 +2828,20 @@
             be unmerged. The range must not partially span any merge.</summary>
         </member>
         <member name="P:Google.Apis.Sheets.v4.Data.UnmergeCellsRequest.ETag">
+            <summary>The ETag of the item.</summary>
+        </member>
+        <member name="T:Google.Apis.Sheets.v4.Data.UpdateBandingRequest">
+            <summary>Updates properties of the supplied banded range.</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.UpdateBandingRequest.BandedRange">
+            <summary>The banded range to update with the new properties.</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.UpdateBandingRequest.Fields">
+            <summary>The fields that should be updated.  At least one field must be specified. The root `bandedRange` is
+            implied and should not be specified. A single `"*"` can be used as short-hand for listing every
+            field.</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.UpdateBandingRequest.ETag">
             <summary>The ETag of the item.</summary>
         </member>
         <member name="T:Google.Apis.Sheets.v4.Data.UpdateBordersRequest">
@@ -2879,6 +3080,10 @@
         </member>
         <member name="P:Google.Apis.Sheets.v4.Data.UpdateValuesResponse.UpdatedColumns">
             <summary>The number of columns where at least one cell in the column was updated.</summary>
+        </member>
+        <member name="P:Google.Apis.Sheets.v4.Data.UpdateValuesResponse.UpdatedData">
+            <summary>The values of the cells after updates were applied. This is only included if the request's
+            `includeValuesInResponse` field was `true`.</summary>
         </member>
         <member name="P:Google.Apis.Sheets.v4.Data.UpdateValuesResponse.UpdatedRange">
             <summary>The range (in A1 notation) that updates were applied to.</summary>

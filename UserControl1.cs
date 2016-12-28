@@ -15,6 +15,8 @@ using System.Text.RegularExpressions;
 using System.Linq;
 using System.Runtime.InteropServices;
 using IWshRuntimeLibrary;
+using System.DirectoryServices.AccountManagement;
+
 
 namespace Helpdesk54
 {
@@ -23,6 +25,7 @@ namespace Helpdesk54
     {
         int existingSetupRowNumber, existingBackupRowNumber;
 
+        string userDisplayFirstName, userDisplayLastName, userCustomDisplayName;
         string backupDirectoryName;
         string backupName;
         string serverName;
@@ -40,16 +43,28 @@ namespace Helpdesk54
         string destinationLocation;
         DirectoryInfo source;
         int fileCount;
+        DriveInfo[] theDrives;
 
         public UserControl1()
         {
             InitializeComponent();
+            
             //set username - Do this early!
             userName = Environment.UserName;
+            userDisplayFirstName = UserPrincipal.Current.GivenName;
+            userDisplayLastName = UserPrincipal.Current.Surname;
+            userCustomDisplayName = userDisplayFirstName+userDisplayLastName;
             usernameLabel.Text = userName;
-            backupDirectoryName = usernameLabel.Text.ToString() + "-Backups-" + DateTime.Now.Year.ToString();
-            //check if secretary needs quicken
-            if (doesSecretaryGetQuicken())
+            
+            //get the drives and set them to an array
+            theDrives = DriveInfo.GetDrives();
+
+            //set the backupDirectoryName
+            backupDirectoryName = userName.ToString() + "-Backups-" + DateTime.Now.Year.ToString();
+            
+            //check if the user gets access to quicken
+            //enable main button and options on setup & backup checkboxes
+            if (doesUserGetQuicken())
             {
                 quickenButton.Enabled = true;
                 quickenCheckBox.Enabled = true;
@@ -59,25 +74,38 @@ namespace Helpdesk54
                 quickenCheckBox.Enabled = false;
                 quickenBackupCheckBox.Enabled = false;
             }
+
             //set the servernamelink
-            DriveInfo[] theDrives = DriveInfo.GetDrives();
-            foreach (DriveInfo currentDrive in theDrives)
+            try
             {
-                if (currentDrive.DriveType == DriveType.Network)
+                foreach (DriveInfo currentDrive in theDrives)
                 {
-                    string currentDriveString = currentDrive.Name.ToString();
-                    string path = GetUNCPath(currentDriveString);
-                    if (path.ToLower().Contains(userName))
+                    if (currentDrive.DriveType == DriveType.Network)
                     {
-                        // This is the Home drive! // 
-                        homeDirectory = currentDrive.Name;
-                        
+                        string currentDriveString = currentDrive.Name.ToString();
+                        string path = GetUNCPath(currentDriveString);
+                        if (path.ToLower().Contains(userName.ToLower()))
+                        {
+                            // This is the Home drive! // 
+                            homeDirectory = currentDrive.Name;
+                        }
+                        if (path.ToLower().Contains(userCustomDisplayName.ToLower()))
+                        {
+                            // This is the Home drive! // 
+                            homeDirectory = currentDrive.Name;
+                        }
+                        Uri uri = new Uri(path);
+                        serverName = uri.Host.ToString();
+                        serverNameLinkLabel.Text = serverName;
                     }
-                    Uri uri = new Uri(path);
-                    serverName = uri.Host.ToString();
-                    serverNameLinkLabel.Text = serverName;
                 }
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show("An issue with getting the drives occurred: " + ex.Message);
+                throw new Exception("An issue with getting the drives occurred: ", ex);
+            }
+
             //check installations
             checkApplicationInstalls();
             //check to see if user has been backed up or restored already
@@ -133,26 +161,30 @@ namespace Helpdesk54
             {
                 backupDriveCombo.SelectedIndex = backupDriveCombo.FindString(homeDirectory);
             }
-            catch (IOException e)
+            catch (Exception e)
             {
-                Console.WriteLine("IOException source: {0}", e.Source);
+                MessageBox.Show("Exception with setting the backup drive to H:/: {0}", e.Source);
 
                 throw;
             }
-            //Set the selected drive freespace label
+            //Set the selected drive freespace label        
             try
             {
                 DriveInfo selectedDrive = (DriveInfo)backupDriveCombo.SelectedItem;
-                long driveSpace = selectedDrive.AvailableFreeSpace;
-                string driveFreeSpace = FormatBytes(driveSpace);
-                backupDriveLabel.Text = driveFreeSpace + " Free";
+                if (selectedDrive.AvailableFreeSpace > 0)
+                {
+                    long driveSpace = selectedDrive.AvailableFreeSpace;
+                    string driveFreeSpace = FormatBytes(driveSpace);
+                    backupDriveLabel.Text = driveFreeSpace + " Free";
+                }
             }
             catch (IOException e)
             {
-                Console.WriteLine("IOException source: {0}", e.Source);
+                MessageBox.Show("Exception with setting the freespace label: "+ e.Message);
 
                 throw;
             }
+
             //*****
             //set restoreDriveCombo to dropdown
             //*****
@@ -170,9 +202,9 @@ namespace Helpdesk54
             {
                 restoreDriveCombo.SelectedIndex = restoreDriveCombo.FindString(homeDirectory);
             }
-            catch (IOException e)
+            catch (Exception e)
             {
-                Console.WriteLine("IOException source: {0}", e.Source);
+                MessageBox.Show("Exception with setting the restore drive to H:/: {0}", e.Source);
 
                 throw;
             }
@@ -199,7 +231,6 @@ namespace Helpdesk54
                 {
                     string folderName = "Videos";
                     string folder = userDirectoryLocation + "\\" + folderName;
-                    //System.Windows.Forms.MessageBox.Show(folder);
                     long folderSize = DirSize(new DirectoryInfo(folder));
                     string folderMB = FormatBytes(folderSize);
                     videosSizeLabel.Text = folderMB;
@@ -257,6 +288,10 @@ namespace Helpdesk54
 
         }
         //set all the files in the server location to the serverListView tab
+        public void getAllDrives()
+        {
+
+        }
         public void getFilesToListView()
         {
 /*
@@ -286,9 +321,9 @@ namespace Helpdesk54
                             checkBackupDirectories(backupName);
                         }
                     }
-                    catch (IOException e)
+                    catch (Exception e)
                     {
-                        Console.WriteLine("IOException source: {0}", e.Source);
+                        MessageBox.Show("Exception source from checkForExistingBackup() : {0}", e.Source);
 
                         throw;
                     }
@@ -2223,7 +2258,7 @@ namespace Helpdesk54
                 }
             }
         }
-        public bool doesSecretaryGetQuicken()
+        public bool doesUserGetQuicken()
         {
             SheetsService service = authenticateServiceAccount();
 
@@ -2272,7 +2307,7 @@ namespace Helpdesk54
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Create service account SD54HelperServiceAccount failed" + ex.Message);
+                MessageBox.Show("Create service account SD54HelperServiceAccount failed" + ex.Message);
                 throw new Exception("Create ServiceAccount Failed", ex);
             }
             

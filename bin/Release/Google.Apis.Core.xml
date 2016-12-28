@@ -488,13 +488,46 @@
         <member name="M:Google.Apis.ISerializer.Deserialize``1(System.IO.Stream)">
             <summary>Deserializes the stream into an object.</summary>
         </member>
+        <member name="T:Google.Apis.Json.JsonExplicitNull">
+            <summary>
+            Provides values which are explicitly expressed as <c>null</c> when converted to JSON.
+            </summary>
+        </member>
+        <member name="M:Google.Apis.Json.JsonExplicitNull.ForIList``1">
+            <summary>
+            Get an <see cref="T:System.Collections.Generic.IList`1"/> that is explicitly expressed as <c>null</c> when converted to JSON.
+            </summary>
+            <returns>An <see cref="T:System.Collections.Generic.IList`1"/> that is explicitly expressed as <c>null</c> when converted to JSON.</returns>
+        </member>
         <member name="T:Google.Apis.Json.IJsonSerializer">
             <summary>Represents a JSON serializer.</summary>
+        </member>
+        <member name="T:Google.Apis.Json.JsonExplicitNullAttribute">
+            <summary>
+            All values of a type with this attribute are represented as a literal <c>null</c> in JSON.
+            </summary>
         </member>
         <member name="T:Google.Apis.Json.RFC3339DateTimeConverter">
             <summary>
             A JSON converter which honers RFC 3339 and the serialized date is accepted by Google services.
             </summary>
+        </member>
+        <member name="T:Google.Apis.Json.ExplicitNullConverter">
+            <summary>
+            A JSON converter to write <c>null</c> literals into JSON when explicitly requested.
+            </summary>
+        </member>
+        <member name="P:Google.Apis.Json.ExplicitNullConverter.CanRead">
+            <inheritdoc />
+        </member>
+        <member name="M:Google.Apis.Json.ExplicitNullConverter.CanConvert(System.Type)">
+            <inheritdoc />
+        </member>
+        <member name="M:Google.Apis.Json.ExplicitNullConverter.ReadJson(Newtonsoft.Json.JsonReader,System.Type,System.Object,Newtonsoft.Json.JsonSerializer)">
+            <inheritdoc />
+        </member>
+        <member name="M:Google.Apis.Json.ExplicitNullConverter.WriteJson(Newtonsoft.Json.JsonWriter,System.Object,Newtonsoft.Json.JsonSerializer)">
+            <inheritdoc />
         </member>
         <member name="T:Google.Apis.Json.NewtonsoftJsonSerializer">
             <summary>Class for serialization and deserialization of JSON documents using the Newtonsoft Library.</summary>
@@ -908,16 +941,22 @@
             string value into the path, replacing {name}. If the parameter is a query parameter, this parameter will be
             added to the query string, in the format "name=value".
             </param>
-            <param name="type">The type of the parameter, either Path or Query.</param>
+            <param name="type">The type of the parameter, either Path, Query or UserDefinedQueries.</param>
         </member>
         <member name="T:Google.Apis.Util.RequestParameterType">
-            <summary>Describe the type of this parameter (Path or Query).</summary>
+            <summary>Describe the type of this parameter (Path, Query or UserDefinedQueries).</summary>
         </member>
         <member name="F:Google.Apis.Util.RequestParameterType.Path">
             <summary>A path parameter which is inserted into the path portion of the request URI.</summary>
         </member>
         <member name="F:Google.Apis.Util.RequestParameterType.Query">
             <summary>A query parameter which is inserted into the query portion of the request URI.</summary>
+        </member>
+        <member name="F:Google.Apis.Util.RequestParameterType.UserDefinedQueries">
+            <summary>
+            A group of user-defined parameters that will be added in to the query portion of the request URI. If this
+            type is being used, the name of the RequestParameterAttirbute is meaningless.
+            </summary>
         </member>
         <member name="T:Google.Apis.Util.StandardResponse`1">
             <summary>

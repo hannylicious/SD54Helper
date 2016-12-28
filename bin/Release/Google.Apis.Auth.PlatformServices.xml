@@ -4,6 +4,166 @@
         <name>Google.Apis.Auth.PlatformServices</name>
     </assembly>
     <members>
+        <member name="T:Google.Apis.Auth.OAuth2.GoogleWebAuthorizationBroker">
+            <summary>A helper utility to manage the authorization code flow.</summary>
+        </member>
+        <member name="F:Google.Apis.Auth.OAuth2.GoogleWebAuthorizationBroker.Folder">
+            <summary>The folder which is used by the <see cref="T:Google.Apis.Util.Store.FileDataStore"/>.</summary>
+            <remarks>
+            The reason that this is not 'private const' is that a user can change it and store the credentials in a
+            different location.
+            </remarks>
+        </member>
+        <member name="M:Google.Apis.Auth.OAuth2.GoogleWebAuthorizationBroker.AuthorizeAsync(Google.Apis.Auth.OAuth2.ClientSecrets,System.Collections.Generic.IEnumerable{System.String},System.String,System.Threading.CancellationToken,Google.Apis.Util.Store.IDataStore,Google.Apis.Auth.OAuth2.ICodeReceiver)">
+            <summary>Asynchronously authorizes the specified user.</summary>
+            <remarks>
+            In case no data store is specified, <see cref="T:Google.Apis.Util.Store.FileDataStore"/> will be used by 
+            default.
+            </remarks>
+            <param name="clientSecrets">The client secrets.</param>
+            <param name="scopes">
+            The scopes which indicate the Google API access your application is requesting.
+            </param>
+            <param name="user">The user to authorize.</param>
+            <param name="taskCancellationToken">Cancellation token to cancel an operation.</param>
+            <param name="dataStore">The data store, if not specified a file data store will be used.</param>
+            <param name="codeReceiver">The code receiver, if not specified a local server code receiver will be used.</param>
+            <returns>User credential.</returns>
+        </member>
+        <member name="M:Google.Apis.Auth.OAuth2.GoogleWebAuthorizationBroker.AuthorizeAsync(System.IO.Stream,System.Collections.Generic.IEnumerable{System.String},System.String,System.Threading.CancellationToken,Google.Apis.Util.Store.IDataStore,Google.Apis.Auth.OAuth2.ICodeReceiver)">
+            <summary>Asynchronously authorizes the specified user.</summary>
+            <remarks>
+            In case no data store is specified, <see cref="T:Google.Apis.Util.Store.FileDataStore"/> will be used by 
+            default.
+            </remarks>
+            <param name="clientSecretsStream">
+            The client secrets stream. The authorization code flow constructor is responsible for disposing the stream.
+            </param>
+            <param name="scopes">
+            The scopes which indicate the Google API access your application is requesting.
+            </param>
+            <param name="user">The user to authorize.</param>
+            <param name="taskCancellationToken">Cancellation token to cancel an operation.</param>
+            <param name="dataStore">The data store, if not specified a file data store will be used.</param>
+            <param name="codeReceiver">The code receiver, if not specified a local server code receiver will be used.</param>
+            <returns>User credential.</returns>
+        </member>
+        <member name="M:Google.Apis.Auth.OAuth2.GoogleWebAuthorizationBroker.ReauthorizeAsync(Google.Apis.Auth.OAuth2.UserCredential,System.Threading.CancellationToken,Google.Apis.Auth.OAuth2.ICodeReceiver)">
+            <summary>
+            Asynchronously reauthorizes the user. This method should be called if the users want to authorize after 
+            they revoked the token.
+            </summary>
+            <param name="userCredential">The current user credential. Its <see cref="P:Google.Apis.Auth.OAuth2.UserCredential.Token"/> will be
+            updated. </param>
+            <param name="taskCancellationToken">Cancellation token to cancel an operation.</param>
+            <param name="codeReceiver">The code receiver, if not specified a local server code receiver will be used.</param>
+        </member>
+        <member name="M:Google.Apis.Auth.OAuth2.GoogleWebAuthorizationBroker.AuthorizeAsync(Google.Apis.Auth.OAuth2.Flows.GoogleAuthorizationCodeFlow.Initializer,System.Collections.Generic.IEnumerable{System.String},System.String,System.Threading.CancellationToken,Google.Apis.Util.Store.IDataStore,Google.Apis.Auth.OAuth2.ICodeReceiver)">
+            <summary>The core logic for asynchronously authorizing the specified user.</summary>
+            <param name="initializer">The authorization code initializer.</param>
+            <param name="scopes">
+            The scopes which indicate the Google API access your application is requesting.
+            </param>
+            <param name="user">The user to authorize.</param>
+            <param name="taskCancellationToken">Cancellation token to cancel an operation.</param>
+            <param name="dataStore">The data store, if not specified a file data store will be used.</param>
+            <param name="codeReceiver">The code receiver, if not specified a local server code receiver will be used.</param>
+            <returns>User credential.</returns>
+        </member>
+        <member name="T:Google.Apis.Auth.OAuth2.LocalServerCodeReceiver">
+            <summary>
+            OAuth 2.0 verification code receiver that runs a local server on a free port and waits for a call with the 
+            authorization verification code.
+            </summary>
+        </member>
+        <member name="F:Google.Apis.Auth.OAuth2.LocalServerCodeReceiver.LoopbackCallback">
+            <summary>The call back format. Expects one port parameter.</summary>
+        </member>
+        <member name="F:Google.Apis.Auth.OAuth2.LocalServerCodeReceiver.ClosePageResponse">
+            <summary>Close HTML tag to return the browser so it will close itself.</summary>
+        </member>
+        <member name="M:Google.Apis.Auth.OAuth2.LocalServerCodeReceiver.GetRandomUnusedPort">
+            <summary>Returns a random, unused port.</summary>
+        </member>
+        <member name="T:Google.Apis.Auth.OAuth2.DefaultCredentialProvider">
+            <summary>
+            Provides the Application Default Credential from the environment. 
+            An instance of this class represents the per-process state used to get and cache 
+            the credential and allows overriding the state and environment for testing purposes.
+            </summary>
+        </member>
+        <member name="F:Google.Apis.Auth.OAuth2.DefaultCredentialProvider.CredentialEnvironmentVariable">
+            <summary>
+            Environment variable override which stores the default application credentials file path.
+            </summary>
+        </member>
+        <member name="F:Google.Apis.Auth.OAuth2.DefaultCredentialProvider.WellKnownCredentialsFile">
+            <summary>Well known file which stores the default application credentials.</summary>
+        </member>
+        <member name="F:Google.Apis.Auth.OAuth2.DefaultCredentialProvider.AppdataEnvironmentVariable">
+            <summary>Environment variable which contains the Application Data settings.</summary>
+        </member>
+        <member name="F:Google.Apis.Auth.OAuth2.DefaultCredentialProvider.HomeEnvironmentVariable">
+            <summary>Environment variable which contains the location of home directory on UNIX systems.</summary>
+        </member>
+        <member name="F:Google.Apis.Auth.OAuth2.DefaultCredentialProvider.CloudSDKConfigDirectoryWindows">
+            <summary>GCloud configuration directory in Windows, relative to %APPDATA%.</summary>
+        </member>
+        <member name="F:Google.Apis.Auth.OAuth2.DefaultCredentialProvider.HelpPermalink">
+            <summary>Help link to the application default credentials feature.</summary>
+        </member>
+        <member name="F:Google.Apis.Auth.OAuth2.DefaultCredentialProvider.CloudSDKConfigDirectoryUnix">
+            <summary>GCloud configuration directory on Linux/Mac, relative to $HOME.</summary>
+        </member>
+        <member name="F:Google.Apis.Auth.OAuth2.DefaultCredentialProvider.cachedCredentialTask">
+            <summary>Caches result from first call to <c>GetApplicationDefaultCredentialAsync</c> </summary>
+        </member>
+        <member name="M:Google.Apis.Auth.OAuth2.DefaultCredentialProvider.#ctor">
+            <summary>Constructs a new default credential provider.</summary>
+        </member>
+        <member name="M:Google.Apis.Auth.OAuth2.DefaultCredentialProvider.GetDefaultCredentialAsync">
+            <summary>
+            Returns the Application Default Credentials. Subsequent invocations return cached value from
+            first invocation.
+            See <see cref="M:Google.Apis.Auth.OAuth2.GoogleCredential.GetApplicationDefaultAsync"/> for details.
+            </summary>
+        </member>
+        <member name="M:Google.Apis.Auth.OAuth2.DefaultCredentialProvider.CreateDefaultCredentialAsync">
+            <summary>Creates a new default credential.</summary>
+        </member>
+        <member name="M:Google.Apis.Auth.OAuth2.DefaultCredentialProvider.CreateDefaultCredentialFromFile(System.String)">
+            <summary>Creates a default credential from a JSON file.</summary>
+        </member>
+        <member name="M:Google.Apis.Auth.OAuth2.DefaultCredentialProvider.CreateDefaultCredentialFromStream(System.IO.Stream)">
+            <summary>Creates a default credential from a stream that contains JSON credential data.</summary>
+        </member>
+        <member name="M:Google.Apis.Auth.OAuth2.DefaultCredentialProvider.CreateDefaultCredentialFromJson(Google.Apis.Auth.OAuth2.JsonCredentialParameters)">
+            <summary>Creates a default credential from JSON data.</summary>
+        </member>
+        <member name="M:Google.Apis.Auth.OAuth2.DefaultCredentialProvider.CreateUserCredentialFromJson(Google.Apis.Auth.OAuth2.JsonCredentialParameters)">
+            <summary>Creates a user credential from JSON data.</summary>
+        </member>
+        <member name="M:Google.Apis.Auth.OAuth2.DefaultCredentialProvider.CreateServiceAccountCredentialFromJson(Google.Apis.Auth.OAuth2.JsonCredentialParameters)">
+            <summary>Creates a <see cref="T:Google.Apis.Auth.OAuth2.ServiceAccountCredential"/> from JSON data.</summary>
+        </member>
+        <member name="M:Google.Apis.Auth.OAuth2.DefaultCredentialProvider.GetWellKnownCredentialFilePath">
+            <summary> 
+            Returns platform-specific well known credential file path. This file is created by 
+            <a href="https://cloud.google.com/sdk/gcloud/reference/auth/login">gcloud auth login</a>
+            </summary>
+        </member>
+        <member name="M:Google.Apis.Auth.OAuth2.DefaultCredentialProvider.GetEnvironmentVariable(System.String)">
+            <summary>
+            Gets the environment variable. 
+            This method is protected so it could be overriden for testing purposes only.
+            </summary>
+        </member>
+        <member name="M:Google.Apis.Auth.OAuth2.DefaultCredentialProvider.GetStream(System.String)">
+            <summary>
+            Opens file as a stream.
+            This method is protected so it could be overriden for testing purposes only.
+            </summary>
+        </member>
         <member name="T:Google.Apis.Auth.OAuth2.GoogleCredential">
             <summary>
             Credential for authorizing calls using OAuth 2.0.
@@ -112,7 +272,9 @@
             </summary>
         </member>
         <member name="P:Google.Apis.Auth.OAuth2.GoogleCredential.UnderlyingCredential">
-            <summary>Provides access to the underlying credential object</summary>
+            <summary>
+            Gets the underlying credential instance being wrapped.
+            </summary>
         </member>
         <member name="M:Google.Apis.Auth.OAuth2.GoogleCredential.FromCredential(Google.Apis.Auth.OAuth2.ServiceAccountCredential)">
             <summary>Creates a <c>GoogleCredential</c> wrapping a <see cref="T:Google.Apis.Auth.OAuth2.ServiceAccountCredential"/>.</summary>
@@ -124,161 +286,11 @@
             types) requires special handling for <c>IsCreateScopedRequired</c> and <c>CreateScoped</c> members.
             </summary>
         </member>
-        <member name="T:Google.Apis.Auth.OAuth2.DefaultCredentialProvider">
+        <member name="T:Google.Apis.Auth.OAuth2.Pkcs8.Asn1">
             <summary>
-            Provides the Application Default Credential from the environment. 
-            An instance of this class represents the per-process state used to get and cache 
-            the credential and allows overriding the state and environment for testing purposes.
+            An incomplete ASN.1 decoder, only implements what's required
+            to decode a Service Credential.
             </summary>
-        </member>
-        <member name="F:Google.Apis.Auth.OAuth2.DefaultCredentialProvider.CredentialEnvironmentVariable">
-            <summary>
-            Environment variable override which stores the default application credentials file path.
-            </summary>
-        </member>
-        <member name="F:Google.Apis.Auth.OAuth2.DefaultCredentialProvider.WellKnownCredentialsFile">
-            <summary>Well known file which stores the default application credentials.</summary>
-        </member>
-        <member name="F:Google.Apis.Auth.OAuth2.DefaultCredentialProvider.AppdataEnvironmentVariable">
-            <summary>Environment variable which contains the Application Data settings.</summary>
-        </member>
-        <member name="F:Google.Apis.Auth.OAuth2.DefaultCredentialProvider.HomeEnvironmentVariable">
-            <summary>Environment variable which contains the location of home directory on UNIX systems.</summary>
-        </member>
-        <member name="F:Google.Apis.Auth.OAuth2.DefaultCredentialProvider.CloudSDKConfigDirectoryWindows">
-            <summary>GCloud configuration directory in Windows, relative to %APPDATA%.</summary>
-        </member>
-        <member name="F:Google.Apis.Auth.OAuth2.DefaultCredentialProvider.HelpPermalink">
-            <summary>Help link to the application default credentials feature.</summary>
-        </member>
-        <member name="F:Google.Apis.Auth.OAuth2.DefaultCredentialProvider.CloudSDKConfigDirectoryUnix">
-            <summary>GCloud configuration directory on Linux/Mac, relative to $HOME.</summary>
-        </member>
-        <member name="F:Google.Apis.Auth.OAuth2.DefaultCredentialProvider.cachedCredentialTask">
-            <summary>Caches result from first call to <c>GetApplicationDefaultCredentialAsync</c> </summary>
-        </member>
-        <member name="M:Google.Apis.Auth.OAuth2.DefaultCredentialProvider.#ctor">
-            <summary>Constructs a new default credential provider.</summary>
-        </member>
-        <member name="M:Google.Apis.Auth.OAuth2.DefaultCredentialProvider.GetDefaultCredentialAsync">
-            <summary>
-            Returns the Application Default Credentials. Subsequent invocations return cached value from
-            first invocation.
-            See <see cref="M:Google.Apis.Auth.OAuth2.GoogleCredential.GetApplicationDefaultAsync"/> for details.
-            </summary>
-        </member>
-        <member name="M:Google.Apis.Auth.OAuth2.DefaultCredentialProvider.CreateDefaultCredentialAsync">
-            <summary>Creates a new default credential.</summary>
-        </member>
-        <member name="M:Google.Apis.Auth.OAuth2.DefaultCredentialProvider.CreateDefaultCredentialFromFile(System.String)">
-            <summary>Creates a default credential from a JSON file.</summary>
-        </member>
-        <member name="M:Google.Apis.Auth.OAuth2.DefaultCredentialProvider.CreateDefaultCredentialFromStream(System.IO.Stream)">
-            <summary>Creates a default credential from a stream that contains JSON credential data.</summary>
-        </member>
-        <member name="M:Google.Apis.Auth.OAuth2.DefaultCredentialProvider.CreateDefaultCredentialFromJson(Google.Apis.Auth.OAuth2.JsonCredentialParameters)">
-            <summary>Creates a default credential from JSON data.</summary>
-        </member>
-        <member name="M:Google.Apis.Auth.OAuth2.DefaultCredentialProvider.CreateUserCredentialFromJson(Google.Apis.Auth.OAuth2.JsonCredentialParameters)">
-            <summary>Creates a user credential from JSON data.</summary>
-        </member>
-        <member name="M:Google.Apis.Auth.OAuth2.DefaultCredentialProvider.CreateServiceAccountCredentialFromJson(Google.Apis.Auth.OAuth2.JsonCredentialParameters)">
-            <summary>Creates a <see cref="T:Google.Apis.Auth.OAuth2.ServiceAccountCredential"/> from JSON data.</summary>
-        </member>
-        <member name="M:Google.Apis.Auth.OAuth2.DefaultCredentialProvider.GetWellKnownCredentialFilePath">
-            <summary> 
-            Returns platform-specific well known credential file path. This file is created by 
-            <a href="https://cloud.google.com/sdk/gcloud/reference/auth/login">gcloud auth login</a>
-            </summary>
-        </member>
-        <member name="M:Google.Apis.Auth.OAuth2.DefaultCredentialProvider.GetEnvironmentVariable(System.String)">
-            <summary>
-            Gets the environment variable. 
-            This method is protected so it could be overriden for testing purposes only.
-            </summary>
-        </member>
-        <member name="M:Google.Apis.Auth.OAuth2.DefaultCredentialProvider.GetStream(System.String)">
-            <summary>
-            Opens file as a stream.
-            This method is protected so it could be overriden for testing purposes only.
-            </summary>
-        </member>
-        <member name="T:Google.Apis.Auth.OAuth2.GoogleWebAuthorizationBroker">
-            <summary>A helper utility to manage the authorization code flow.</summary>
-        </member>
-        <member name="F:Google.Apis.Auth.OAuth2.GoogleWebAuthorizationBroker.Folder">
-            <summary>The folder which is used by the <see cref="T:Google.Apis.Util.Store.FileDataStore"/>.</summary>
-            <remarks>
-            The reason that this is not 'private const' is that a user can change it and store the credentials in a
-            different location.
-            </remarks>
-        </member>
-        <member name="M:Google.Apis.Auth.OAuth2.GoogleWebAuthorizationBroker.AuthorizeAsync(Google.Apis.Auth.OAuth2.ClientSecrets,System.Collections.Generic.IEnumerable{System.String},System.String,System.Threading.CancellationToken,Google.Apis.Util.Store.IDataStore)">
-            <summary>Asynchronously authorizes the specified user.</summary>
-            <remarks>
-            In case no data store is specified, <see cref="T:Google.Apis.Util.Store.FileDataStore"/> will be used by 
-            default.
-            </remarks>
-            <param name="clientSecrets">The client secrets.</param>
-            <param name="scopes">
-            The scopes which indicate the Google API access your application is requesting.
-            </param>
-            <param name="user">The user to authorize.</param>
-            <param name="taskCancellationToken">Cancellation token to cancel an operation.</param>
-            <param name="dataStore">The data store, if not specified a file data store will be used.</param>
-            <returns>User credential.</returns>
-        </member>
-        <member name="M:Google.Apis.Auth.OAuth2.GoogleWebAuthorizationBroker.AuthorizeAsync(System.IO.Stream,System.Collections.Generic.IEnumerable{System.String},System.String,System.Threading.CancellationToken,Google.Apis.Util.Store.IDataStore)">
-            <summary>Asynchronously authorizes the specified user.</summary>
-            <remarks>
-            In case no data store is specified, <see cref="T:Google.Apis.Util.Store.FileDataStore"/> will be used by 
-            default.
-            </remarks>
-            <param name="clientSecretsStream">
-            The client secrets stream. The authorization code flow constructor is responsible for disposing the stream.
-            </param>
-            <param name="scopes">
-            The scopes which indicate the Google API access your application is requesting.
-            </param>
-            <param name="user">The user to authorize.</param>
-            <param name="taskCancellationToken">Cancellation token to cancel an operation.</param>
-            <param name="dataStore">The data store, if not specified a file data store will be used.</param>
-            <returns>User credential.</returns>
-        </member>
-        <member name="M:Google.Apis.Auth.OAuth2.GoogleWebAuthorizationBroker.ReauthorizeAsync(Google.Apis.Auth.OAuth2.UserCredential,System.Threading.CancellationToken)">
-            <summary>
-            Asynchronously reauthorizes the user. This method should be called if the users want to authorize after 
-            they revoked the token.
-            </summary>
-            <param name="userCredential">The current user credential. Its <see cref="P:Google.Apis.Auth.OAuth2.UserCredential.Token"/> will be
-            updated. </param>
-            <param name="taskCancellationToken">Cancellation token to cancel an operation.</param>
-        </member>
-        <member name="M:Google.Apis.Auth.OAuth2.GoogleWebAuthorizationBroker.AuthorizeAsync(Google.Apis.Auth.OAuth2.Flows.GoogleAuthorizationCodeFlow.Initializer,System.Collections.Generic.IEnumerable{System.String},System.String,System.Threading.CancellationToken,Google.Apis.Util.Store.IDataStore)">
-            <summary>The core logic for asynchronously authorizing the specified user.</summary>
-            <param name="initializer">The authorization code initializer.</param>
-            <param name="scopes">
-            The scopes which indicate the Google API access your application is requesting.
-            </param>
-            <param name="user">The user to authorize.</param>
-            <param name="taskCancellationToken">Cancellation token to cancel an operation.</param>
-            <param name="dataStore">The data store, if not specified a file data store will be used.</param>
-            <returns>User credential.</returns>
-        </member>
-        <member name="T:Google.Apis.Auth.OAuth2.LocalServerCodeReceiver">
-            <summary>
-            OAuth 2.0 verification code receiver that runs a local server on a free port and waits for a call with the 
-            authorization verification code.
-            </summary>
-        </member>
-        <member name="F:Google.Apis.Auth.OAuth2.LocalServerCodeReceiver.LoopbackCallback">
-            <summary>The call back format. Expects one port parameter.</summary>
-        </member>
-        <member name="F:Google.Apis.Auth.OAuth2.LocalServerCodeReceiver.ClosePageResponse">
-            <summary>Close HTML tag to return the browser so it will close itself.</summary>
-        </member>
-        <member name="M:Google.Apis.Auth.OAuth2.LocalServerCodeReceiver.GetRandomUnusedPort">
-            <summary>Returns a random, unused port.</summary>
         </member>
         <member name="T:Google.Apis.Auth.OAuth2.PromptCodeReceiver">
             <summary>OAuth 2.0 verification code receiver that reads the authorization code from the user input.</summary>
@@ -362,6 +374,16 @@
         <member name="M:Google.Apis.Auth.OAuth2.ServiceAccountCredential.#ctor(Google.Apis.Auth.OAuth2.ServiceAccountCredential.Initializer)">
             <summary>Constructs a new service account credential using the given initializer.</summary>
         </member>
+        <member name="M:Google.Apis.Auth.OAuth2.ServiceAccountCredential.FromServiceAccountData(System.IO.Stream)">
+            <summary>
+            Creates a new <see cref="T:Google.Apis.Auth.OAuth2.ServiceAccountCredential"/> instance from JSON credential data.
+            </summary>
+            <param name="credentialData">The stream from which to read the JSON key data for a service account. Must not be null.</param>
+            <exception cref="T:System.InvalidOperationException">
+            The <paramref name="credentialData"/> does not contain valid JSON service account key data.
+            </exception>
+            <returns>The credentials parsed from the service account key data.</returns>
+        </member>
         <member name="M:Google.Apis.Auth.OAuth2.ServiceAccountCredential.RequestAccessTokenAsync(System.Threading.CancellationToken)">
             <summary>
             Requests a new token as specified in 
@@ -376,7 +398,7 @@
             If <paramref name="authUri"/> is set and this credential has no scopes associated
             with it, a locally signed JWT access token for given <paramref name="authUri"/>
             is returned. Otherwise, an OAuth2 access token obtained from token server will be returned.
-            A cached token is used if possible and the token is only refreshed once its close to its expiry.
+            A cached token is used if possible and the token is only refreshed once it's close to its expiry.
             </summary>
             <param name="authUri">The URI the returned token will grant access to.</param>
             <param name="cancellationToken">The cancellation token.</param>
@@ -395,15 +417,17 @@
             </summary>
             <param name="payload">the JWT payload to sign.</param>
         </member>
+        <member name="M:Google.Apis.Auth.OAuth2.ServiceAccountCredential.CreateSignature(System.Byte[])">
+            <summary>
+            Creates a base64 encoded signature for the SHA-256 hash of the specified data.
+            </summary>
+            <param name="data">The data to hash and sign. Must not be null.</param>
+            <returns>The base-64 encoded signature.</returns>
+        </member>
         <member name="M:Google.Apis.Auth.OAuth2.ServiceAccountCredential.CreateSerializedHeader">
             <summary>
             Creates a serialized header as specified in 
             https://developers.google.com/accounts/docs/OAuth2ServiceAccount#formingheader.
-            </summary>
-        </member>
-        <member name="M:Google.Apis.Auth.OAuth2.ServiceAccountCredential.ConvertPKCS8ToRSAParameters(System.String)">
-            <summary>
-            Converts the PKCS8 private key to RSA parameters. This method uses the Bouncy Castle library.
             </summary>
         </member>
         <member name="M:Google.Apis.Auth.OAuth2.ServiceAccountCredential.CreatePayload">
@@ -420,6 +444,11 @@
         <member name="M:Google.Apis.Auth.OAuth2.ServiceAccountCredential.UrlSafeBase64Encode(System.Byte[])">
             <summary>Encodes the byte array into an URL safe base64 string.</summary>
             <param name="bytes">Byte array to encode.</param>
+            <returns>The URL safe base64 string.</returns>
+        </member>
+        <member name="M:Google.Apis.Auth.OAuth2.ServiceAccountCredential.UrlSafeEncode(System.String)">
+            <summary>Encodes the base64 string into an URL safe string.</summary>
+            <param name="base64Value">The base64 string to make URL safe.</param>
             <returns>The URL safe base64 string.</returns>
         </member>
     </members>

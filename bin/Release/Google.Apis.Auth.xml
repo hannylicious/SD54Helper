@@ -399,6 +399,16 @@
             </summary>
             <remarks>Currently unsupported for installed apps.</remarks>
         </member>
+        <member name="P:Google.Apis.Auth.OAuth2.Requests.GoogleAuthorizationCodeRequestUrl.UserDefinedQueryParams">
+            <summary>
+            Gets or sets a collection of user defined query parameters to facilitate any not explicitly supported
+            by the library which will be included in the resultant authentication URL.
+            </summary>
+            <remarks>
+            The name of this parameter is used only for the constructor and will not end up in the resultant query
+            string.
+            </remarks>
+        </member>
         <member name="M:Google.Apis.Auth.OAuth2.Requests.GoogleAuthorizationCodeRequestUrl.#ctor(System.Uri)">
             <summary>
             Constructs a new authorization code request with the given authorization server URL. This constructor sets
@@ -550,6 +560,12 @@
         </member>
         <member name="M:Google.Apis.Auth.OAuth2.ServiceCredential.#ctor(Google.Apis.Auth.OAuth2.ServiceCredential.Initializer)">
             <summary>Constructs a new service account credential using the given initializer.</summary>
+        </member>
+        <member name="M:Google.Apis.Auth.OAuth2.ServiceCredential.HandleResponseAsync(Google.Apis.Http.HandleUnsuccessfulResponseArgs)">
+            <summary>
+            Decorates unsuccessful responses, returns true if the response gets modified.
+            See IHttpUnsuccessfulResponseHandler for more information. 
+            </summary>
         </member>
         <member name="M:Google.Apis.Auth.OAuth2.ServiceCredential.GetAccessTokenForRequestAsync(System.String,System.Threading.CancellationToken)">
             <summary>
@@ -817,6 +833,9 @@
         <member name="P:Google.Apis.Auth.OAuth2.Flows.GoogleAuthorizationCodeFlow.IncludeGrantedScopes">
             <summary>Gets or sets the include granted scopes indicator.</summary>
         </member>
+        <member name="P:Google.Apis.Auth.OAuth2.Flows.GoogleAuthorizationCodeFlow.UserDefinedQueryParams">
+            <summary>Gets the user defined query parameters.</summary>
+        </member>
         <member name="M:Google.Apis.Auth.OAuth2.Flows.GoogleAuthorizationCodeFlow.#ctor(Google.Apis.Auth.OAuth2.Flows.GoogleAuthorizationCodeFlow.Initializer)">
             <summary>Constructs a new Google authorization code flow.</summary>
         </member>
@@ -827,7 +846,12 @@
             <summary>Gets or sets the token revocation URL.</summary>
         </member>
         <member name="P:Google.Apis.Auth.OAuth2.Flows.GoogleAuthorizationCodeFlow.Initializer.IncludeGrantedScopes">
-            <summary>Gets or sets the optional indicator for including granted scopes for incremental authorization.</summary>
+            <summary>
+            Gets or sets the optional indicator for including granted scopes for incremental authorization.
+            </summary>
+        </member>
+        <member name="P:Google.Apis.Auth.OAuth2.Flows.GoogleAuthorizationCodeFlow.Initializer.UserDefinedQueryParams">
+            <summary>Gets or sets the optional user defined query parameters.</summary>
         </member>
         <member name="M:Google.Apis.Auth.OAuth2.Flows.GoogleAuthorizationCodeFlow.Initializer.#ctor">
             <summary>
@@ -1085,6 +1109,11 @@
             Gets or sets the scope of the access token as specified in http://tools.ietf.org/html/rfc6749#section-3.3.
             </summary>
         </member>
+        <member name="P:Google.Apis.Auth.OAuth2.Responses.TokenResponse.IdToken">
+            <summary>
+            Gets or sets the id_token, which is a JSON Web Token (JWT) as specified in http://tools.ietf.org/html/draft-ietf-oauth-json-web-token
+            </summary>
+        </member>
         <member name="P:Google.Apis.Auth.OAuth2.Responses.TokenResponse.Issued">
             <summary>The date and time that this token was issued. <remarks>
             It should be set by the CLIENT after the token was received from the server.
@@ -1095,6 +1124,20 @@
             <summary>
             Returns <c>true</c> if the token is expired or it's going to be expired in the next minute.
             </summary>
+        </member>
+        <member name="M:Google.Apis.Auth.OAuth2.Responses.TokenResponse.FromHttpResponseAsync(System.Net.Http.HttpResponseMessage,Google.Apis.Util.IClock,Google.Apis.Logging.ILogger)">
+            <summary>
+            Asynchronously parses a <see cref="T:Google.Apis.Auth.OAuth2.Responses.TokenResponse"/> instance from the specified <see cref="T:System.Net.Http.HttpResponseMessage"/>.
+            </summary>
+            <param name="response">The http response from which to parse the token.</param>
+            <param name="clock">The clock used to set the <see cref="P:Google.Apis.Auth.OAuth2.Responses.TokenResponse.Issued"/> value of the token.</param>
+            <param name="logger">The logger used to output messages incase of error.</param>
+            <exception cref="T:Google.Apis.Auth.OAuth2.Responses.TokenResponseException">
+            The response was not successful or there is an error parsing the response into valid <see cref="T:Google.Apis.Auth.OAuth2.Responses.TokenResponse"/> instance.
+            </exception>
+            <returns>
+            A task containing the <see cref="T:Google.Apis.Auth.OAuth2.Responses.TokenResponse"/> parsed form the response message.
+            </returns>
         </member>
         <member name="T:Google.Apis.Auth.OAuth2.Responses.TokenResponseException">
             <summary>
