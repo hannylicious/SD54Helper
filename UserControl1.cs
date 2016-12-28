@@ -2298,7 +2298,7 @@ namespace Helpdesk54
                 });
                 MessageBox.Show("We have a service");
                 
-                MessageBox.Show(service.Name.ToString() + " " + service.GZipEnabled.ToString());
+                MessageBox.Show(service.Name.ToString());
                 return service;
             }
             catch (Exception ex)
