@@ -4,17 +4,17 @@
   <description asmv2:publisher="Helpdesk54" asmv2:product="Helpdesk54" xmlns="urn:schemas-microsoft-com:asm.v1" />
   <deployment install="true" mapFileExtensions="true" />
   <compatibleFrameworks xmlns="urn:schemas-microsoft-com:clickonce.v2">
-    <framework targetVersion="4.5" profile="Full" supportedRuntime="4.0.30319" />
+    <framework targetVersion="4.0" profile="Full" supportedRuntime="4.0.30319" />
   </compatibleFrameworks>
   <dependency>
-    <dependentAssembly dependencyType="install" codebase="Helpdesk54.exe.manifest" size="15507">
+    <dependentAssembly dependencyType="install" codebase="Helpdesk54.exe.manifest" size="18530">
       <assemblyIdentity name="Helpdesk54.exe" version="1.0.0.2" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="msil" type="win32" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
-        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>7qSgkcvUs8Dww4LugABbvb5661xfUCN2ZM/PHGcg+Co=</dsig:DigestValue>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <dsig:DigestValue>qLilGCsOxebgojZ8ovsLmit+NsI=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
