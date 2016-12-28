@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Data;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
@@ -16,9 +15,6 @@ using System.Text.RegularExpressions;
 using System.Linq;
 using System.Runtime.InteropServices;
 using IWshRuntimeLibrary;
-using System.Threading;
-using System.Security.Cryptography.X509Certificates;
-using System.Threading.Tasks;
 
 namespace Helpdesk54
 {
@@ -2256,58 +2252,7 @@ namespace Helpdesk54
             return false;
         }
         public static SheetsService authenticateServiceAccount()
-        {
-            /*
-            UserCredential credential;
-            string[] scopes = new string[] { SheetsService.Scope.Drive, SheetsService.Scope.Spreadsheets, SheetsService.Scope.SpreadsheetsReadonly }; // Put your scopes here
-
-            string applicationName = "sd54helper";
-            using (var stream = new FileStream(Environment.CurrentDirectory + @"\json\SD54HelperAccount.json", FileMode.Open, FileAccess.Read))
-            {
-
-               
-
-                credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
-                    GoogleClientSecrets.Load(stream).Secrets,
-                    scopes,
-                    "user",
-                    CancellationToken.None,
-                    new FileDataStore("Books.ListMyLibrary")).Result;
-            }
-            // Create Google Sheets API service.
-            var service = new SheetsService(new BaseClientService.Initializer()
-            {
-                HttpClientInitializer = credential,
-                ApplicationName = applicationName,
-            });
-            return service;
-            */
-            /*
-            try
-            {
-                string[] scopes = new string[] { SheetsService.Scope.Drive, SheetsService.Scope.Spreadsheets, SheetsService.Scope.SpreadsheetsReadonly }; // Put your scopes here
-                MessageBox.Show("scopes set");
-                Stream stream = new FileStream(Environment.CurrentDirectory + @"\json\SD54Helper.json", FileMode.Open, FileAccess.Read);
-                MessageBox.Show("stream set: "+stream);
-                var credential = GoogleCredential.FromStream(stream);        
-                MessageBox.Show("credential set");
-                var service = new SheetsService(new BaseClientService.Initializer()
-                {
-                    HttpClientInitializer = credential,
-                    ApplicationName = "sd54helper,"
-                });
-                MessageBox.Show("We have a service");
-                
-                MessageBox.Show(service.Name.ToString());
-                return service;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Create service account SD54HelperServiceAccount failed : " + ex.Message);
-                throw new Exception("Create ServiceAccount Failed : ", ex);
-            }
-            */
-            
+        {            
             try
             {
                 GoogleCredential credential;
