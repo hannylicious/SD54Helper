@@ -1,18 +1,21 @@
-﻿using System;
+﻿using Google.Apis.Auth.OAuth2;
+using Google.Apis.Sheets.v4;
+using Google.Apis.Sheets.v4.Data;
+using Google.Apis.Services;
+using Google.Apis.Util.Store;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Data;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
-using System.Threading;
 using Microsoft.Win32;
 using System.Text.RegularExpressions;
-using System.Management;
 using System.Linq;
 using System.Runtime.InteropServices;
 using IWshRuntimeLibrary;
+using System.DirectoryServices.AccountManagement;
 
 
 namespace Helpdesk54
@@ -20,8 +23,12 @@ namespace Helpdesk54
     public partial class UserControl1 : Form
 
     {
+        int existingSetupRowNumber, existingBackupRowNumber;
+        long canItFit;
+        string userDisplayFirstName, userDisplayLastName, userCustomDisplayName;
         string backupDirectoryName;
         string backupName;
+        string serverName;
         string homeDirectory;
         string desktopFolder, documentsFolder, favoritesFolder;
         string userName;
@@ -32,94 +39,112 @@ namespace Helpdesk54
         string selectedDrive;
         string clickedButton;
         string itemsChanged;
+        long selectedDriveAvailableSize;
         int totalFileCount;
         string destinationLocation;
         DirectoryInfo source;
         int fileCount;
-        string[] quickenSecretaries =
-        {
-            "kathywyatt",
-            "denisedavis",
-            "kimward",
-            "nancynewman",
-            "claudianicholas",
-            "debrasekera",
-            "juliequinn",
-            "carolbaxter",
-            "jackielancaster",
-            "laurahuyser",
-            "annachevarria",
-            "barbarabratt",
-            "pamdineen",
-            "suzannebekielewski",
-            "michelepeacock",
-            "nancyserna",
-            "dianeszerszen",
-            "claraarnold",
-            "barbaraboeing",
-            "joannemenken",
-            "madelinemusso",
-            "paulafalvo",
-            "annmoll",
-            "lizroslewski",
-            "bettycaby",
-            "rosacabral",
-            "lorilacursia",
-            "sandygiesel",
-        };
+        DriveInfo[] theDrives;
 
         public UserControl1()
         {
             InitializeComponent();
-            //set username
+            
+            //set username - Do this early!
             userName = Environment.UserName;
+            userDisplayFirstName = UserPrincipal.Current.GivenName;
+            userDisplayLastName = UserPrincipal.Current.Surname;
+            userCustomDisplayName = userDisplayFirstName+userDisplayLastName;
             usernameLabel.Text = userName;
-            backupDirectoryName = usernameLabel.Text.ToString() + "-Backups-" + DateTime.Now.Year.ToString();
-            //set the servernamelink
-            DriveInfo[] theDrives = DriveInfo.GetDrives();
-            foreach (DriveInfo currentDrive in theDrives)
+            
+            //get the drives and set them to an array
+            theDrives = DriveInfo.GetDrives();
+
+            //set the backupDirectoryName
+            backupDirectoryName = userName.ToString() + "-Backups-" + DateTime.Now.Year.ToString();
+            
+            //check if the user gets access to quicken
+            //enable main button and options on setup & backup checkboxes
+            if (doesUserGetQuicken())
             {
-                if (currentDrive.DriveType == DriveType.Network)
+                quickenButton.Enabled = true;
+                quickenCheckBox.Enabled = true;
+                quickenBackupCheckBox.Enabled = true;
+            } else {
+                quickenButton.Enabled = false;
+                quickenCheckBox.Enabled = false;
+                quickenBackupCheckBox.Enabled = false;
+            }
+
+            //set the servernamelink
+            try
+            {
+                foreach (DriveInfo currentDrive in theDrives)
                 {
-                    string currentDriveString = currentDrive.Name.ToString();
-                    string path = GetUNCPath(currentDriveString);
-                    if (path.ToLower().Contains(userName))
+                    if (currentDrive.DriveType == DriveType.Network)
                     {
-                        // This is the Home drive! // 
-                        homeDirectory = currentDrive.Name;
-                        
+                        string currentDriveString = currentDrive.Name.ToString();
+                        string path = GetUNCPath(currentDriveString);
+                        if (path.ToLower().Contains(userName.ToLower()))
+                        {
+                            // This is the Home drive! // 
+                            homeDirectory = currentDrive.Name;
+                        }
+                        if (path.ToLower().Contains(userCustomDisplayName.ToLower()))
+                        {
+                            // This is the Home drive! // 
+                            homeDirectory = currentDrive.Name;
+                        }
+                        Uri uri = new Uri(path);
+                        serverName = uri.Host.ToString();
+                        serverNameLinkLabel.Text = serverName;
                     }
-                    Uri uri = new Uri(path);
-                    string serverName = uri.Host.ToString();
-                    serverNameLinkLabel.Text = serverName;
                 }
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show("An issue with getting the drives occurred: " + ex.Message);
+                throw new Exception("An issue with getting the drives occurred: ", ex);
+            }
+
             //check installations
             checkApplicationInstalls();
-            //check if secretary needs quicken
-            secretaryNeedsQuicken();
+            //check to see if user has been backed up or restored already
+            if (userHasBeenSetup())
+            {
+                updateUserSetupChecks();
+                userSetupAnswerLabel.Text = "YES";
+                userSetupAnswerLabel.ForeColor = System.Drawing.Color.ForestGreen;
+
+            }
+            if (userHasBeenBackedUp())
+            {
+                updateUserBackupChecks();
+                userBackedUpAnswerLabel.Text = "YES";
+                userBackedUpAnswerLabel.ForeColor = System.Drawing.Color.ForestGreen;
+            }
             //setup background worker for progress bars
             //essentialBgWorker
             essentialBgWorker.DoWork += new DoWorkEventHandler(essentialBgWorker_DoWork);
             essentialBgWorker.ProgressChanged += new ProgressChangedEventHandler(essentialBgWorker_ProgressChanged);
             essentialBgWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(essentialBgWorker_RunWorkerCompleted);
-            essentialBgWorker.WorkerReportsProgress = true;
+            essentialBgWorker.WorkerReportsProgress = true;            
             //additionalBgWorker
             additionalBgWorker.DoWork += new DoWorkEventHandler(additionalBgWorker_DoWork);
             additionalBgWorker.ProgressChanged += new ProgressChangedEventHandler(additionalBgWorker_ProgressChanged);
             additionalBgWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(additionalBgWorker_RunWorkerCompleted);
-            additionalBgWorker.WorkerReportsProgress = true;
+            additionalBgWorker.WorkerReportsProgress = true;            
             //restoreEssentialsWorker
             restoreEssentialBgWorker.DoWork += new DoWorkEventHandler(restoreEssentialBgWorker_DoWork);
             restoreEssentialBgWorker.ProgressChanged += new ProgressChangedEventHandler(restoreEssentialBgWorker_ProgressChanged);
             restoreEssentialBgWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(restoreEssentialBgWorker_RunWorkerCompleted);
-            restoreEssentialBgWorker.WorkerReportsProgress = true;
+            restoreEssentialBgWorker.WorkerReportsProgress = true;            
             //restoreAdditionalWorker
             restoreAdditionalBgWorker.DoWork += new DoWorkEventHandler(restoreAdditionalBgWorker_DoWork);
             restoreAdditionalBgWorker.ProgressChanged += new ProgressChangedEventHandler(restoreAdditionalBgWorker_ProgressChanged);
             restoreAdditionalBgWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(restoreAdditionalBgWorker_RunWorkerCompleted);
             restoreAdditionalBgWorker.WorkerReportsProgress = true;
-            restoreAdditionalBgWorker.WorkerSupportsCancellation = true;
+            restoreAdditionalBgWorker.WorkerSupportsCancellation = true;            
             //*****
             //set backupDriveCombo to dropdown
             //*****
@@ -137,23 +162,39 @@ namespace Helpdesk54
             {
                 backupDriveCombo.SelectedIndex = backupDriveCombo.FindString(homeDirectory);
             }
-            catch (IOException e)
+            catch (Exception e)
             {
-                Console.WriteLine("IOException source: {0}", e.Source);
+                MessageBox.Show("Exception with setting the backup drive to H:/: {0}", e.Source);
 
                 throw;
             }
-            //Set the selected drive freespace label
+            //Set the selected drive freespace label        
             try
             {
                 DriveInfo selectedDrive = (DriveInfo)backupDriveCombo.SelectedItem;
-                long driveSpace = selectedDrive.AvailableFreeSpace;
-                string driveFreeSpace = FormatBytes(driveSpace);
-                backupDriveLabel.Text = driveFreeSpace + " Free";
+                //If it's the homedrive (or a network drive) - we need to do further calculation to determine 'available free space'
+                //Max Available : 3GB
+                if (selectedDrive.DriveType == DriveType.Network)
+                {
+                    long maxAvailableDriveSpace = 3221225472;
+                    string folder = selectedDrive.ToString();
+                    long networkDirectorySize = DirSize(new DirectoryInfo(folder));
+                    selectedDriveAvailableSize = maxAvailableDriveSpace - networkDirectorySize;
+                    string folderMB = FormatBytes(selectedDriveAvailableSize);
+                    //folderMB = used space on network drive
+                    backupDriveLabel.Text = folderMB + " Free";
+                }
+                //otherwise prepare as normal and show appropriate free space
+                else if (selectedDrive.AvailableFreeSpace > 0)
+                {
+                    long driveSpace = selectedDrive.AvailableFreeSpace;
+                    string driveFreeSpace = FormatBytes(driveSpace);
+                    backupDriveLabel.Text = driveFreeSpace + " Free";
+                }
             }
             catch (IOException e)
             {
-                Console.WriteLine("IOException source: {0}", e.Source);
+                MessageBox.Show("Exception with setting the freespace label: "+ e.Message);
 
                 throw;
             }
@@ -174,107 +215,38 @@ namespace Helpdesk54
             try
             {
                 restoreDriveCombo.SelectedIndex = restoreDriveCombo.FindString(homeDirectory);
+                
             }
-            catch (IOException e)
+            catch (Exception e)
             {
-                Console.WriteLine("IOException source: {0}", e.Source);
+                MessageBox.Show("Exception with setting the restore drive to H:/: {0}", e.Source);
 
                 throw;
             }
 
             //Check the H:\ drive for a backup
             checkForExistingBackup();
+            getFilesToListView();
+            //update labels
+            labelDirectorySizes();
 
-
-            string[] directoryLocations =
-            {
-            "DesktopDirectory",
-            "MyDocuments",
-            "Favorites",
-            "MyMusic",
-            "MyPictures",
-            "My Videos"
-            };
-            // Get the directory sizes for each directoryLocation & set the label
-            foreach (string directoryLocation in directoryLocations)
-            {
-                string userDirectoryLocation = Environment.GetEnvironmentVariable("userprofile");
-                //'My Videos' is not supported in older frameworks so set it seperately
-                if (directoryLocation == "My Videos")
-                {
-                    string folderName = "Videos";
-                    string folder = userDirectoryLocation + "\\" + folderName;
-                    //System.Windows.Forms.MessageBox.Show(folder);
-                    long folderSize = DirSize(new DirectoryInfo(folder));
-                    string folderMB = FormatBytes(folderSize);
-                    videosSizeLabel.Text = folderMB;
-                }
-                else //iterate through all the other directory Locations
-                {
-                    var dir = (Environment.SpecialFolder)Enum.Parse(typeof(Environment.SpecialFolder), directoryLocation);
-                    string folder = Environment.GetFolderPath(dir);
-                    long folderSize = DirSize(new DirectoryInfo(folder));
-                    string folderMB = FormatBytes(folderSize);
-                    switch (directoryLocation)
-                    {
-                        case "DesktopDirectory":
-                            desktopSizeLabel.Text = folderMB;
-                            break;
-                        case "MyDocuments":
-                            documentsSizeLabel.Text = folderMB;
-                            break;
-                        case "Favorites":
-                            favoritesSizeLabel.Text = folderMB;
-                            break;
-                        case "MyMusic":
-                            musicSizeLabel.Text = folderMB;
-                            break;
-                        case "MyPictures":
-                            picturesSizeLabel.Text = folderMB;
-                            break;
-                    }
-
-                }
-            }
-            //Set the size & label for the button that backs up Desktop, Documents & Favorites
-            var desktopFolder = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
-            long desktopSize = DirSize(new DirectoryInfo(desktopFolder));
-            var documentsFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            long documentsSize = DirSize(new DirectoryInfo(documentsFolder));
-            var favoritesFolder = Environment.GetFolderPath(Environment.SpecialFolder.Favorites);
-            long favoritesSize = DirSize(new DirectoryInfo(favoritesFolder));
-            long totalSize = desktopSize + documentsSize + favoritesSize;
-            string totalMB = FormatBytes(totalSize);
-            allEssentialsSizeLabel.Text = totalMB;
-            //Set the size & label for Sticky Notes
-            string stickyNotesFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            stickyNotesFolder = stickyNotesFolder + "\\Microsoft\\Sticky Notes";
-            if (Directory.Exists(stickyNotesFolder)) //If they have launched sticky notes
-            {
-                long stickyNotesSize = DirSize(new DirectoryInfo(stickyNotesFolder));
-                string stickyNotesMB = FormatBytes(stickyNotesSize);
-                stickyNotesSizeLabel.Text = stickyNotesMB;
-            }
-            else //haven't launched sticky notes
-            {
-                stickyNotesSizeLabel.Text = "N/A";
-            }
 
         }
-        private void secretaryNeedsQuicken()
+        //set all the files in the server location to the serverListView tab
+        public void getAllDrives()
         {
-            foreach (var user in quickenSecretaries)
-            {
-                if (userName == user)
-                {
-                    quickenButton.Enabled = true;
-                }
-                else
-                {
-                    quickenButton.Enabled = false;
-                }
-            }
 
+        }
+        public void getFilesToListView()
+        {
+/*
+            string[] files = System.IO.Directory.GetFiles(serverName);
+
+            for (int x = 0; x < files.Length; x++)
+            {
+                serverListView.Items.Add(files[x]);
+            }
+*/
         }
         //handle clicking of serverNameLinkLabel
         private void serverNameLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -294,9 +266,9 @@ namespace Helpdesk54
                             checkBackupDirectories(backupName);
                         }
                     }
-                    catch (IOException e)
+                    catch (Exception e)
                     {
-                        Console.WriteLine("IOException source: {0}", e.Source);
+                        MessageBox.Show("Exception source from checkForExistingBackup() : {0}", e.Source);
 
                         throw;
                     }
@@ -319,13 +291,13 @@ namespace Helpdesk54
             {
                 // Outlook is not installed.   
                 outlookButton.Text = "Install Outlook";
-                outlookButton.ForeColor = Color.Red;
+                outlookButton.ForeColor = System.Drawing.Color.Red;
             }
             else
             {
                 // Outlook is installed.    
                 outlookButton.Text = "Open Outlook";
-                outlookButton.ForeColor = Color.Green;
+                outlookButton.ForeColor = System.Drawing.Color.Green;
             }
             //go through the application list
             foreach (string applicationName in applicationList)
@@ -337,19 +309,19 @@ namespace Helpdesk54
                     {
                         case "DYMO Label v.8":
                             dymoButton.Text = "Open Dymo";
-                            dymoButton.ForeColor = Color.Green;
+                            dymoButton.ForeColor = System.Drawing.Color.Green;
                             break;
                         case "Adobe Acrobat X Pro":
                             acrobatButton.Text = "Open Acrobat Pro";
-                            acrobatButton.ForeColor = Color.Green;
+                            acrobatButton.ForeColor = System.Drawing.Color.Green;
                             break;
                         case "ScanSnap Manager":
                             scanSnapButton.Text = "Open ScanSnap";
-                            scanSnapButton.ForeColor = Color.Green;
+                            scanSnapButton.ForeColor = System.Drawing.Color.Green;
                             break;
                         case "Quicken 2011":
                             quickenButton.Text = "Open Quicken";
-                            quickenButton.ForeColor = Color.Green;
+                            quickenButton.ForeColor = System.Drawing.Color.Green;
                             break;
                     }
                     //not installed do this block
@@ -360,19 +332,19 @@ namespace Helpdesk54
                     {
                         case "DYMO Label v.8":
                             dymoButton.Text = "Install Dymo";
-                            dymoButton.ForeColor = Color.Red;
+                            dymoButton.ForeColor = System.Drawing.Color.Red;
                             break;
                         case "Adobe Acrobat X Pro":
                             acrobatButton.Text = "Install Acrobat Pro";
-                            acrobatButton.ForeColor = Color.Red;
+                            acrobatButton.ForeColor = System.Drawing.Color.Red;
                             break;
                         case "ScanSnap Manager":
                             scanSnapButton.Text = "Install ScanSnap";
-                            scanSnapButton.ForeColor = Color.Red;
+                            scanSnapButton.ForeColor = System.Drawing.Color.Red;
                             break;
                         case "Quicken 2011":
                             quickenButton.Text = "Install Quicken";
-                            quickenButton.ForeColor = Color.Red;
+                            quickenButton.ForeColor = System.Drawing.Color.Red;
                             break;
                     }
                 }
@@ -640,18 +612,23 @@ namespace Helpdesk54
                 {
                     case "InfiniteCampus":
                         CreateShortcut("Infinite Campus", Environment.GetFolderPath(Environment.SpecialFolder.Desktop), @"C:\Program Files (x86)\Internet Explorer\iexplore.exe");
+                        icShortcutCheckBox.Checked = true;
                         break;
                     case "AESOP":
                         CreateShortcut("AESOP", Environment.GetFolderPath(Environment.SpecialFolder.Desktop), @"C:\Program Files (x86)\Internet Explorer\iexplore.exe");
+                        aesopShortcutCheckBox.Checked = true;
                         break;
                     case "E-Finance":
                         CreateShortcut("E-Finance", Environment.GetFolderPath(Environment.SpecialFolder.Desktop), @"C:\Program Files (x86)\Internet Explorer\iexplore.exe");
+                        efinanceShortcutCheckBox.Checked = true;
                         break;
                     case "H-Drive":
                         CreateShortcut("H Drive", Environment.GetFolderPath(Environment.SpecialFolder.Desktop), homeDirectory);
+                        homeShortcutCheckBox.Checked = true;
                         break;
                     case "Word":
-                        CreateShortcut("Microsoft Word", Environment.GetFolderPath(Environment.SpecialFolder.Desktop), @"C:\Program Files (x86)\Microsoft Office\Office14\WINWORD.exe");               
+                        CreateShortcut("Microsoft Word", Environment.GetFolderPath(Environment.SpecialFolder.Desktop), @"C:\Program Files (x86)\Microsoft Office\Office14\WINWORD.exe");
+                        wordShortcutCheckBox.Checked = true;
                         break;
                 }
             }
@@ -664,9 +641,31 @@ namespace Helpdesk54
         {
             //Set the selected drive freespace label
             DriveInfo selectedDrive = (DriveInfo)backupDriveCombo.SelectedItem;
-            long driveSpace = selectedDrive.AvailableFreeSpace;
-            string driveFreeSpace = FormatBytes(driveSpace);
-            backupDriveLabel.Text = driveFreeSpace + " Free";
+            //If it's the homedrive (or a network drive) - we need to do further calculation to determine 'available free space'
+            //Max Available For Standard Users: 3GB            
+            if (selectedDrive.DriveType == DriveType.Network)
+            {
+                long maxAvailableDriveSpace = 3221225472;
+                string folder = selectedDrive.ToString();
+                long networkDirectorySize = DirSize(new DirectoryInfo(folder));
+                selectedDriveAvailableSize = maxAvailableDriveSpace - networkDirectorySize;
+                string folderMB = FormatBytes(selectedDriveAvailableSize);
+                labelDirectorySizes();
+                //folderMB = used space on network drive
+                backupDriveLabel.Text = folderMB+ " Free";
+            }
+            //otherwise prepare as normal and show appropriate free space
+            else
+            {
+                if (selectedDrive.AvailableFreeSpace > 0)
+                {
+                    selectedDriveAvailableSize = selectedDrive.AvailableFreeSpace;
+                    string driveFreeSpace = FormatBytes(selectedDriveAvailableSize);
+                    labelDirectorySizes();
+                    backupDriveLabel.Text = driveFreeSpace + " Free";
+                }
+            }
+            
         }
         private void restoreDriveCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -691,7 +690,7 @@ namespace Helpdesk54
         */
         private void backupDesktopButton_Click(object sender, EventArgs e)
         {
-
+            desktopBackupCheckBox.Checked = true;
             clickedButton = ((Button)sender).Name.ToString();
             itemsChanged = ((Button)sender).Text.ToString();
             selectedDrive = backupDriveCombo.SelectedItem.ToString();
@@ -702,6 +701,7 @@ namespace Helpdesk54
         */
         private void backupDocumentsButton_Click(object sender, EventArgs e)
         {
+            documentsBackupCheckBox.Checked = true;
             clickedButton = ((Button)sender).Name.ToString();
             itemsChanged = ((Button)sender).Text.ToString();
             selectedDrive = backupDriveCombo.SelectedItem.ToString();
@@ -712,6 +712,7 @@ namespace Helpdesk54
         */
         private void backupFavoritesButton_Click(object sender, EventArgs e)
         {
+            favoritesBackupCheckBox.Checked = true;
             clickedButton = ((Button)sender).Name.ToString();
             itemsChanged = ((Button)sender).Text.ToString();
             selectedDrive = backupDriveCombo.SelectedItem.ToString();
@@ -722,6 +723,9 @@ namespace Helpdesk54
         */
         private void backupAllEssentialsButton_Click(object sender, EventArgs e)
         {
+            desktopBackupCheckBox.Checked = true;
+            documentsBackupCheckBox.Checked = true;
+            favoritesBackupCheckBox.Checked = true;
             clickedButton = ((Button)sender).Name.ToString();
             itemsChanged = @"Desktop, Documents and Favorites";
             selectedDrive = backupDriveCombo.SelectedItem.ToString();
@@ -801,10 +805,11 @@ namespace Helpdesk54
         */
         void essentialBgWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            //do the code when bgv completes its work
+            //do the code when bgv completes its work           
             essentialItemsProgressBar.Visible = false;
             essentialItemsProgressLabel.Visible = true;
             essentialItemsProgressLabel.Text = String.Format("Progress: 100% - All {0} Files Transferred", itemsChanged);
+            MessageBox.Show("Process Complete. Always verify all data was backed up appropriately.");
             //enable the panel
             foreach (Control cont in dataBackupGroupBox.Controls)
             {
@@ -825,6 +830,7 @@ namespace Helpdesk54
         */
         private void backupStickyNotesButton_Click(object sender, EventArgs e)
         {
+            stickyNotesBackupCheckBox.Checked = true;
             clickedButton = ((Button)sender).Name.ToString();
             itemsChanged = ((Button)sender).Text.ToString();
             selectedDrive = backupDriveCombo.SelectedItem.ToString();
@@ -835,6 +841,7 @@ namespace Helpdesk54
         */
         private void backupPicturesButton_Click(object sender, EventArgs e)
         {
+            picturesBackupCheckBox.Checked = true;
             clickedButton = ((Button)sender).Name.ToString();
             itemsChanged = ((Button)sender).Text.ToString();
             selectedDrive = backupDriveCombo.SelectedItem.ToString();
@@ -845,6 +852,7 @@ namespace Helpdesk54
         */
         private void backupVideosButton_Click(object sender, EventArgs e)
         {
+            videosBackupCheckBox.Checked = true;
             clickedButton = ((Button)sender).Name.ToString();
             itemsChanged = ((Button)sender).Text.ToString();
             selectedDrive = backupDriveCombo.SelectedItem.ToString();
@@ -855,6 +863,7 @@ namespace Helpdesk54
         */
         private void backupMusicButton_Click(object sender, EventArgs e)
         {
+            musicBackupCheckBox.Checked = true;
             clickedButton = ((Button)sender).Name.ToString();
             itemsChanged = ((Button)sender).Text.ToString();
             selectedDrive = backupDriveCombo.SelectedItem.ToString();
@@ -965,6 +974,7 @@ namespace Helpdesk54
             additionalItemsProgressBar.Visible = false;
             additionalItemsProgressLabel.Visible = true;
             additionalItemsProgressLabel.Text = String.Format("Progress: 100% - All {0} Files Transferred", itemsChanged);
+            MessageBox.Show("Process complete. Always verify all data was backed up appropriately.");
             //enable the panel
             foreach (Control cont in dataBackupGroupBox.Controls)
             {
@@ -979,6 +989,166 @@ namespace Helpdesk54
             }
             checkForExistingBackup();
             checkBackupDirectories(backupName);
+        }
+        public void labelDirectorySizes()
+        {
+            string[] directoryLocations =
+            {
+            "DesktopDirectory",
+            "MyDocuments",
+            "Favorites",
+            "MyMusic",
+            "MyPictures",
+            "My Videos"
+            };
+            // Get the directory sizes for each directoryLocation & set the label
+            foreach (string directoryLocation in directoryLocations)
+            {
+                string userDirectoryLocation = Environment.GetEnvironmentVariable("userprofile");
+                //'My Videos' is not supported in older frameworks so set it seperately
+                if (directoryLocation == "My Videos")
+                {
+                    string folderName = "Videos";
+                    string folder = userDirectoryLocation + "\\" + folderName;
+                    long folderSize = DirSize(new DirectoryInfo(folder));
+                    canItFit = selectedDriveAvailableSize - folderSize;
+                    string folderMB = FormatBytes(folderSize);
+                    videosSizeLabel.Text = folderMB;
+                    if (canItFit < 0)
+                    {
+                        videosSizeLabel.ForeColor = System.Drawing.Color.Red;
+                    }
+                    else
+                    {
+                        videosSizeLabel.ForeColor = System.Drawing.Color.ForestGreen;
+                        backupVideosButton.Enabled = true;
+                    }
+                }
+                else //iterate through all the other directory Locations
+                {
+                    var dir = (Environment.SpecialFolder)Enum.Parse(typeof(Environment.SpecialFolder), directoryLocation);
+                    string folder = Environment.GetFolderPath(dir);
+                    long folderSize = DirSize(new DirectoryInfo(folder));
+                    string folderMB = FormatBytes(folderSize);
+                    var selectedDriveSize = selectedDriveAvailableSize;
+                    
+                    switch (directoryLocation)
+                    {
+                        case "DesktopDirectory":
+                            canItFit = selectedDriveSize - folderSize;
+                            desktopSizeLabel.Text = folderMB;
+                            if (canItFit < 0)
+                            {
+                                desktopSizeLabel.ForeColor = System.Drawing.Color.Red;
+                                backupDesktopButton.Enabled = false;
+                                backupAllEssentialsButton.Enabled = false;
+                            }
+                            else
+                            {
+                                desktopSizeLabel.ForeColor = System.Drawing.Color.ForestGreen;
+                                backupDesktopButton.Enabled = true;
+                            }
+                            break;
+                        case "MyDocuments":
+                            canItFit = selectedDriveSize - folderSize;
+                            documentsSizeLabel.Text = folderMB;
+                            if (canItFit < 0)
+                            {
+                                documentsSizeLabel.ForeColor = System.Drawing.Color.Red;
+                                backupDocumentsButton.Enabled = false;
+                                backupAllEssentialsButton.Enabled = false;
+                            }
+                            else
+                            {
+                                documentsSizeLabel.ForeColor = System.Drawing.Color.ForestGreen;
+                                backupDocumentsButton.Enabled = true;
+                            }
+                            break;
+                        case "Favorites":
+                            canItFit = selectedDriveSize - folderSize;
+                            favoritesSizeLabel.Text = folderMB;
+                            if (canItFit < 0)
+                            {
+                                favoritesSizeLabel.ForeColor = System.Drawing.Color.Red;
+                                backupFavoritesButton.Enabled = false;
+                                backupAllEssentialsButton.Enabled = false;
+                            }
+                            else
+                            {
+                                favoritesSizeLabel.ForeColor = System.Drawing.Color.ForestGreen;
+                                backupFavoritesButton.Enabled = true;
+                            }
+                            break;
+                        case "MyMusic":
+                            canItFit = selectedDriveSize - folderSize;
+                            musicSizeLabel.Text = folderMB;
+                            if (canItFit < 0)
+                            {
+                                musicSizeLabel.ForeColor = System.Drawing.Color.Red;
+                                backupMusicButton.Enabled = false;
+                            }
+                            else
+                            {
+                                musicSizeLabel.ForeColor = System.Drawing.Color.ForestGreen;
+                                backupMusicButton.Enabled = true;
+                            }
+                            break;
+                        case "MyPictures":
+                            canItFit = selectedDriveSize - folderSize;
+                            picturesSizeLabel.Text = folderMB;
+                            if (canItFit < 0)
+                            {
+                                picturesSizeLabel.ForeColor = System.Drawing.Color.Red;
+                                backupPicturesButton.Enabled = false;
+                            }
+                            else
+                            {
+                                picturesSizeLabel.ForeColor = System.Drawing.Color.ForestGreen;
+                                backupPicturesButton.Enabled = true;
+                            }
+                            break;
+                    }
+                    if (backupDesktopButton.Enabled && backupDocumentsButton.Enabled && backupFavoritesButton.Enabled)
+                    {
+                        backupAllEssentialsButton.Enabled = true;
+                    }
+                }
+
+            }
+            //Set the size & label for the button that backs up Desktop, Documents & Favorites
+            var desktopFolder = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+            long desktopSize = DirSize(new DirectoryInfo(desktopFolder));
+            var documentsFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            long documentsSize = DirSize(new DirectoryInfo(documentsFolder));
+            var favoritesFolder = Environment.GetFolderPath(Environment.SpecialFolder.Favorites);
+            long favoritesSize = DirSize(new DirectoryInfo(favoritesFolder));
+            long totalSize = desktopSize + documentsSize + favoritesSize;
+            string totalMB = FormatBytes(totalSize);
+            allEssentialsSizeLabel.Text = totalMB;
+            //Set the size & label for Sticky Notes
+            string stickyNotesFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            stickyNotesFolder = stickyNotesFolder + "\\Microsoft\\Sticky Notes";
+            if (Directory.Exists(stickyNotesFolder)) //If they have launched sticky notes
+            {
+                long stickyNotesSize = DirSize(new DirectoryInfo(stickyNotesFolder));
+                canItFit = selectedDriveAvailableSize - stickyNotesSize;
+                if (canItFit < 0)
+                {
+                    stickyNotesSizeLabel.ForeColor = System.Drawing.Color.Red;
+                    backupStickyNotesButton.Enabled = false;
+                }
+                else
+                {
+                    stickyNotesSizeLabel.ForeColor = System.Drawing.Color.ForestGreen;
+                    backupStickyNotesButton.Enabled = true;
+                }
+                string stickyNotesMB = FormatBytes(stickyNotesSize);
+                stickyNotesSizeLabel.Text = stickyNotesMB;
+            }
+            else //haven't launched sticky notes
+            {
+                stickyNotesSizeLabel.Text = "N/A";
+            }
         }
         /*
             * ***** *
@@ -1299,10 +1469,11 @@ namespace Helpdesk54
         */
         void restoreEssentialBgWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            //do the code when bgv completes its work
+            //do the code when bgv completes its work            
             restoreEssentialsProgressBar.Visible = false;
             restoreEssentialsBarLabel.Visible = true;
             restoreEssentialsBarLabel.Text = String.Format("Progress: 100% - All {0} Files Restored", itemsChanged);
+            MessageBox.Show("Process Complete. Always verify all data was restored appropriately.");
             //enable the panel
             foreach (Control cont in restoreGroupBox.Controls)
             {
@@ -1596,11 +1767,12 @@ namespace Helpdesk54
             }
             else
             {
-                //do the code when bgv completes its work
+                //do the code when bgv completes its work                
                 restoreAdditionalProgressBar.Visible = false;
-                restoreAdditionalBarLabel.ForeColor = Color.ForestGreen;
+                restoreAdditionalBarLabel.ForeColor = System.Drawing.Color.ForestGreen;
                 restoreAdditionalBarLabel.Text = String.Format("Progress: 100% - All {0} Files Restored", itemsChanged);
                 restoreAdditionalBarLabel.Visible = true;
+                MessageBox.Show("Process Complete. Always verify all data was restored appropriately.");
                 //enable the panel
                 foreach (Control cont in restoreGroupBox.Controls)
                 {
@@ -1713,6 +1885,7 @@ namespace Helpdesk54
             {
                 installSoftwareClick(outlookButton, null);
             }
+            outlookCheckBox.Checked = true;
         }
 
         private void dymoButton_Click(object sender, EventArgs e)
@@ -1739,6 +1912,7 @@ namespace Helpdesk54
             {
                 installSoftwareClick(acrobatButton, null);
             }
+            adobeProCheckBox.Checked = true;
         }
 
         private void scanSnapButton_Click(object sender, EventArgs e)
@@ -1765,6 +1939,7 @@ namespace Helpdesk54
             {
                 installSoftwareClick(quickenButton, null);
             }
+            quickenCheckBox.Checked = true;
         }
 
         private void installPrintersButton_Click(object sender, EventArgs e)
@@ -1781,6 +1956,8 @@ namespace Helpdesk54
                     System.Diagnostics.Process.Start("explorer", @"\\" + serverName);
                 }
             }
+            installPrintersCheckBox.Checked = true;
+            imageRunnerCheckBox.Checked = true;
         }
 
         /*
@@ -1843,13 +2020,13 @@ namespace Helpdesk54
                 if (Directory.Exists(backupName))
                 {
                     backupFoundLabel.Text = "(Backup Found!)";
-                    backupFoundLabel.ForeColor = Color.ForestGreen;
+                    backupFoundLabel.ForeColor = System.Drawing.Color.ForestGreen;
 
                 }
                 else
                 {
                     backupFoundLabel.Text = "(No Backup Found!)";
-                    backupFoundLabel.ForeColor = Color.Crimson;
+                    backupFoundLabel.ForeColor = System.Drawing.Color.Crimson;
                 }
             }
         }
@@ -1876,43 +2053,43 @@ namespace Helpdesk54
                         case "Documents":
                             recoverDocumentsLabel.Enabled = true;
                             recoverDocumentsLabel.Text = "(Found!)";
-                            recoverDocumentsLabel.ForeColor = Color.ForestGreen;
+                            recoverDocumentsLabel.ForeColor = System.Drawing.Color.ForestGreen;
                             restoreDocumentsButton.Enabled = true;
                             break;
                         case "Favorites":
                             recoverFavoritesLabel.Enabled = true;
                             recoverFavoritesLabel.Text = "(Found!)";
-                            recoverFavoritesLabel.ForeColor = Color.ForestGreen;
+                            recoverFavoritesLabel.ForeColor = System.Drawing.Color.ForestGreen;
                             restoreFavoritesButton.Enabled = true;
                             break;
                         case "Desktop":
                             recoverDesktopLabel.Enabled = true;
                             recoverDesktopLabel.Text = "(Found!)";
-                            recoverDesktopLabel.ForeColor = Color.ForestGreen;
+                            recoverDesktopLabel.ForeColor = System.Drawing.Color.ForestGreen;
                             restoreDesktopButton.Enabled = true;
                             break;
                         case "StickyNotes":
                             recoverStickyNotesLabel.Enabled = true;
                             recoverStickyNotesLabel.Text = "(Found!)";
-                            recoverStickyNotesLabel.ForeColor = Color.ForestGreen;
+                            recoverStickyNotesLabel.ForeColor = System.Drawing.Color.ForestGreen;
                             restoreStickyNotesButton.Enabled = true;
                             break;
                         case "Pictures":
                             recoverPicturesLabel.Enabled = true;
                             recoverPicturesLabel.Text = "(Found!)";
-                            recoverPicturesLabel.ForeColor = Color.ForestGreen;
+                            recoverPicturesLabel.ForeColor = System.Drawing.Color.ForestGreen;
                             restorePicturesButton.Enabled = true;
                             break;
                         case "Videos":
                             recoverVideosLabel.Enabled = true;
                             recoverVideosLabel.Text = "(Found!)";
-                            recoverVideosLabel.ForeColor = Color.ForestGreen;
+                            recoverVideosLabel.ForeColor = System.Drawing.Color.ForestGreen;
                             restoreVideosButton.Enabled = true;
                             break;
                         case "Music":
                             recoverMusicLabel.Enabled = true;
                             recoverMusicLabel.Text = "(Found!)";
-                            recoverMusicLabel.ForeColor = Color.ForestGreen;
+                            recoverMusicLabel.ForeColor = System.Drawing.Color.ForestGreen;
                             restoreMusicButton.Enabled = true;
                             break;
                         default:
@@ -1920,6 +2097,351 @@ namespace Helpdesk54
                     }
                 }
             }
+        }
+
+        private void userSetupCompleteButton_Click(object sender, EventArgs e)
+        {
+            //1YWi6rMUie3BD_AXH85Ew0TGJpgP_AVNN4Ury2bpIaQk - setup spreadsheet ID
+            SheetsService service = authenticateServiceAccount();
+
+            ValueRange valueRange = new ValueRange();
+            var oblist = new List<object>() {  };
+
+            //set year
+            string yearDate = DateTime.Today.ToString("yyyy");
+            oblist.Add(yearDate);
+            //set date
+            string monthDay = DateTime.Today.ToString("MM/dd");
+            oblist.Add(monthDay);
+            //set location
+            string serverOutput = Regex.Replace(serverName, @"[\d-]", string.Empty);
+            oblist.Add(serverOutput);
+            //set username
+            oblist.Add(userName);
+
+            //create array of checkboxes in appropriate order for spreadsheet (must match the order of columns in the spreadsheet!)
+            CheckBox[] checkBoxNames =
+            {
+                outlookCheckBox,
+                quickenCheckBox,
+                adobeProCheckBox,
+                icPrintingCheckBox,
+                dymoPrintingCheckBox,
+                scanSnapCheckBox,
+                installPrintersCheckBox,
+                imageRunnerCheckBox,
+                restoreFavoritesCheckBox,
+                homeShortcutCheckBox,
+                efinanceShortcutCheckBox,
+                wordShortcutCheckBox,
+                icShortcutCheckBox,
+                aesopShortcutCheckBox
+            };
+            //set X's for checked and O for unchecked
+            //iterate through checkBoxNames Array
+            foreach (Control c in checkBoxNames)
+            {
+                if ((c is CheckBox) && ((CheckBox)c).Checked)
+                {
+                    oblist.Add("X");
+                }
+                if ((c is CheckBox) && ((CheckBox)c).Checked == false)
+                {
+                    oblist.Add("O");
+                }
+            }
+
+            valueRange.Values = new List<IList<object>> { oblist };
+            String spreadsheetId = "1YWi6rMUie3BD_AXH85Ew0TGJpgP_AVNN4Ury2bpIaQk";
+
+            //If the user has been Setup once before - run an update command on the appropriate row - otherwise append it to end of spreadsheet
+            if (userHasBeenSetup())
+            {
+                int x = existingSetupRowNumber;
+                String customRange = "A" + (x+1);
+                SpreadsheetsResource.ValuesResource.UpdateRequest update = service.Spreadsheets.Values.Update(valueRange, spreadsheetId, customRange);
+                update.ValueInputOption = SpreadsheetsResource.ValuesResource.UpdateRequest.ValueInputOptionEnum.RAW;
+                UpdateValuesResponse result = update.Execute();
+                MessageBox.Show("The users setup information has been updated.");
+            } else {
+                // Define request parameters.
+                
+                String range = "A1";
+                SpreadsheetsResource.ValuesResource.AppendRequest update = service.Spreadsheets.Values.Append(valueRange, spreadsheetId, range);
+                update.ValueInputOption = SpreadsheetsResource.ValuesResource.AppendRequest.ValueInputOptionEnum.RAW;
+                AppendValuesResponse result = update.Execute();
+                MessageBox.Show("The users setup information has been recorded.");
+            }
+
+        }
+
+        private void userBackupCompleteButton_Click(object sender, EventArgs e)
+        {
+            //1XFsFJ2nqrXsxO9ShRJOwQ2MMlDpxf1wmU7RgSKUvmKM - spreadsheet ID
+            SheetsService service = authenticateServiceAccount();
+
+            ValueRange valueRange = new ValueRange();
+            var oblist = new List<object>() { };
+
+            //set year
+            string yearDate = DateTime.Today.ToString("yyyy");
+            oblist.Add(yearDate);
+            //set date
+            string monthDay = DateTime.Today.ToString("MM/dd");
+            oblist.Add(monthDay);
+            //set location
+            string serverOutput = Regex.Replace(serverName, @"[\d-]", string.Empty);
+            oblist.Add(serverOutput);
+            //set username
+            oblist.Add(userName);
+
+            //create array of checkboxes in appropriate order for spreadsheet (must match the order of columns in the spreadsheet!)
+            CheckBox[] checkBoxNames =
+            {
+                desktopBackupCheckBox,
+                documentsBackupCheckBox,
+                favoritesBackupCheckBox,
+                quickenBackupCheckBox,
+                stickyNotesBackupCheckBox,
+                picturesBackupCheckBox,
+                videosBackupCheckBox,
+                musicBackupCheckBox,
+            };
+            //set X's for checked and O for unchecked
+            //iterate through checkBoxNames Array
+            foreach (Control c in checkBoxNames)
+            {
+                if ((c is CheckBox) && ((CheckBox)c).Checked)
+                {
+                    oblist.Add("X");
+                }
+                if ((c is CheckBox) && ((CheckBox)c).Checked == false)
+                {
+                    oblist.Add("O");
+                }
+            }
+
+            valueRange.Values = new List<IList<object>> { oblist };
+
+            // Define request parameters.
+            String spreadsheetId = "1XFsFJ2nqrXsxO9ShRJOwQ2MMlDpxf1wmU7RgSKUvmKM";
+            //If the user has been Setup once before - run an update command on the appropriate row - otherwise append it to end of spreadsheet
+            if (userHasBeenBackedUp())
+            {
+                int x = existingSetupRowNumber;
+                String customRange = "A" + (x + 1);
+                SpreadsheetsResource.ValuesResource.UpdateRequest update = service.Spreadsheets.Values.Update(valueRange, spreadsheetId, customRange);
+                update.ValueInputOption = SpreadsheetsResource.ValuesResource.UpdateRequest.ValueInputOptionEnum.RAW;
+                UpdateValuesResponse result = update.Execute();
+                MessageBox.Show("The users backup information has been updated.");
+            }
+            else
+            {
+                // Define request parameters.
+                String range = "A1";
+                SpreadsheetsResource.ValuesResource.AppendRequest update = service.Spreadsheets.Values.Append(valueRange, spreadsheetId, range);
+                update.ValueInputOption = SpreadsheetsResource.ValuesResource.AppendRequest.ValueInputOptionEnum.RAW;
+                AppendValuesResponse result = update.Execute();
+                MessageBox.Show("The users backup information has been recorded.");
+            }
+        }
+        //Checks the Google Spreadsheet to see if the user exists in the current year as having been setup
+        //If the user DOES exist - it updates the UserChecklist tab accordingly in the Setup section
+        //returns bool
+        public bool userHasBeenSetup()
+        {
+            SheetsService service = authenticateServiceAccount();
+
+            // Define request parameters.
+            String spreadsheetId = "1YWi6rMUie3BD_AXH85Ew0TGJpgP_AVNN4Ury2bpIaQk";
+            String range = "A1:R2000";
+            
+            SpreadsheetsResource.ValuesResource.GetRequest getData = service.Spreadsheets.Values.Get(spreadsheetId, range);
+            getData.MajorDimension = SpreadsheetsResource.ValuesResource.GetRequest.MajorDimensionEnum.ROWS;
+            ValueRange sheetData = getData.Execute();
+
+            int i = 0;
+            foreach (var row in sheetData.Values)
+            {
+                if (row[0].ToString() == DateTime.Today.ToString("yyyy") && row[3].ToString() == userName)
+                {
+                    existingSetupRowNumber = i;
+                    return true;
+                }
+                i++;
+            }
+            return false;
+        }
+        //Updates the user CheckBoxes for their setup if the user exists
+        public void updateUserSetupChecks()
+        {
+            SheetsService service = authenticateServiceAccount();
+
+            // Define request parameters.
+            String spreadsheetId = "1YWi6rMUie3BD_AXH85Ew0TGJpgP_AVNN4Ury2bpIaQk";
+            String range = "A1:R2000";
+
+            SpreadsheetsResource.ValuesResource.GetRequest getData = service.Spreadsheets.Values.Get(spreadsheetId, range);
+            getData.MajorDimension = SpreadsheetsResource.ValuesResource.GetRequest.MajorDimensionEnum.ROWS;
+            ValueRange sheetData = getData.Execute();
+
+            //get the appropriate row
+            var row = sheetData.Values[existingSetupRowNumber];
+
+            //create array of checkboxes in appropriate order for spreadsheet (must match the order of columns in the spreadsheet!)
+            CheckBox[] checkBoxNames =
+            {
+                outlookCheckBox,
+                quickenCheckBox,
+                adobeProCheckBox,
+                icPrintingCheckBox,
+                dymoPrintingCheckBox,
+                scanSnapCheckBox,
+                installPrintersCheckBox,
+                imageRunnerCheckBox,
+                restoreFavoritesCheckBox,
+                homeShortcutCheckBox,
+                efinanceShortcutCheckBox,
+                wordShortcutCheckBox,
+                icShortcutCheckBox,
+                aesopShortcutCheckBox
+            };
+            int i = 4;
+            foreach (CheckBox c in checkBoxNames)
+            {
+                string cellContent = row[i].ToString();
+                if (cellContent == "X")
+                {
+                    c.Checked = true;
+                    i++;
+                }
+                if (cellContent == "O")
+                {
+                    c.Checked = false;
+                    i++;
+                }
+            }
+        }
+        public bool userHasBeenBackedUp()
+        {
+            SheetsService service = authenticateServiceAccount();
+
+            // Define request parameters.
+            String spreadsheetId = "1XFsFJ2nqrXsxO9ShRJOwQ2MMlDpxf1wmU7RgSKUvmKM";
+            String range = "A1:L2000";
+
+            SpreadsheetsResource.ValuesResource.GetRequest getData = service.Spreadsheets.Values.Get(spreadsheetId, range);
+            getData.MajorDimension = SpreadsheetsResource.ValuesResource.GetRequest.MajorDimensionEnum.ROWS;
+            ValueRange sheetData = getData.Execute();
+
+            int i = 0;
+            foreach (var row in sheetData.Values)
+            {
+                if (row[0].ToString() == DateTime.Today.ToString("yyyy") && row[3].ToString() == userName)
+                {
+                    existingBackupRowNumber = i;
+                    return true;
+                }
+                i++;
+            }
+            return false;
+        }
+        public void updateUserBackupChecks()
+        {
+            SheetsService service = authenticateServiceAccount();
+
+            // Define request parameters.
+            String spreadsheetId = "1XFsFJ2nqrXsxO9ShRJOwQ2MMlDpxf1wmU7RgSKUvmKM";
+            String range = "A1:L2000";
+
+            SpreadsheetsResource.ValuesResource.GetRequest getData = service.Spreadsheets.Values.Get(spreadsheetId, range);
+            getData.MajorDimension = SpreadsheetsResource.ValuesResource.GetRequest.MajorDimensionEnum.ROWS;
+            ValueRange sheetData = getData.Execute();
+
+            //get the appropriate row
+            var row = sheetData.Values[existingBackupRowNumber];
+
+            //create array of checkboxes in appropriate order for spreadsheet (must match the order of columns in the spreadsheet!)
+            CheckBox[] checkBoxNames =
+            {
+                desktopBackupCheckBox,
+                documentsBackupCheckBox,
+                favoritesBackupCheckBox,
+                quickenBackupCheckBox,
+                stickyNotesBackupCheckBox,
+                picturesBackupCheckBox,
+                videosBackupCheckBox,
+                musicBackupCheckBox,
+            };
+            int i = 4;
+            foreach (CheckBox c in checkBoxNames)
+            {
+                string cellContent = row[i].ToString();
+                if (cellContent == "X")
+                {
+                    c.Checked = true;
+                    i++;
+                }
+                if (cellContent == "O")
+                {
+                    c.Checked = false;
+                    i++;
+                }
+            }
+        }
+        public bool doesUserGetQuicken()
+        {
+            SheetsService service = authenticateServiceAccount();
+
+            // Define request parameters.
+            String spreadsheetId = "1-wg63_jtlZfT-De6zi2zG705_oIF2TgfkLDijmcZgIc";
+            String range = "A2:A100";
+
+            SpreadsheetsResource.ValuesResource.GetRequest getData = service.Spreadsheets.Values.Get(spreadsheetId, range);
+            getData.MajorDimension = SpreadsheetsResource.ValuesResource.GetRequest.MajorDimensionEnum.ROWS;
+            ValueRange sheetData = getData.Execute();
+
+            var i = 0;
+            var secretaryCount = sheetData.Values.Count();
+
+            while (i < secretaryCount)
+            {
+                foreach (var cell in sheetData.Values[i])
+                {
+                    if (userName == cell.ToString())
+                    {
+                        return true;
+                    }
+                }
+                i++;
+            }
+            return false;
+        }
+        public static SheetsService authenticateServiceAccount()
+        {            
+            try
+            {
+                GoogleCredential credential;
+                string applicationName = "SD54Helper";
+                using (var stream = new FileStream(Environment.CurrentDirectory + @"\json\SD54HelperServiceAccount.json", FileMode.Open, FileAccess.Read))
+                {
+                    credential = GoogleCredential.FromStream(stream)
+                          .CreateScoped(SheetsService.Scope.Spreadsheets, SheetsService.Scope.Drive);
+                }
+                // Create Google Sheets API service.
+                var service = new SheetsService(new BaseClientService.Initializer()
+                {
+                    HttpClientInitializer = credential,
+                    ApplicationName = applicationName,
+                });
+                return service;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Create service account SD54HelperServiceAccount failed" + ex.Message);
+                throw new Exception("Create ServiceAccount Failed", ex);
+            }
+            
         }
         public void checkBackupDirectories(string backupName)
         {
@@ -1944,43 +2466,43 @@ namespace Helpdesk54
                         case "Documents":
                             recoverDocumentsLabel.Enabled = true;
                             recoverDocumentsLabel.Text = "(Found!)";
-                            recoverDocumentsLabel.ForeColor = Color.ForestGreen;
+                            recoverDocumentsLabel.ForeColor = System.Drawing.Color.ForestGreen;
                             restoreDocumentsButton.Enabled = true;
                             break;
                         case "Favorites":
                             recoverFavoritesLabel.Enabled = true;
                             recoverFavoritesLabel.Text = "(Found!)";
-                            recoverFavoritesLabel.ForeColor = Color.ForestGreen;
+                            recoverFavoritesLabel.ForeColor = System.Drawing.Color.ForestGreen;
                             restoreFavoritesButton.Enabled = true;
                             break;
                         case "Desktop":
                             recoverDesktopLabel.Enabled = true;
                             recoverDesktopLabel.Text = "(Found!)";
-                            recoverDesktopLabel.ForeColor = Color.ForestGreen;
+                            recoverDesktopLabel.ForeColor = System.Drawing.Color.ForestGreen;
                             restoreDesktopButton.Enabled = true;
                             break;
                         case "Sticky Notes":
                             recoverStickyNotesLabel.Enabled = true;
                             recoverStickyNotesLabel.Text = "(Found!)";
-                            recoverStickyNotesLabel.ForeColor = Color.ForestGreen;
+                            recoverStickyNotesLabel.ForeColor = System.Drawing.Color.ForestGreen;
                             restoreStickyNotesButton.Enabled = true;
                             break;
                         case "Pictures":
                             recoverPicturesLabel.Enabled = true;
                             recoverPicturesLabel.Text = "(Found!)";
-                            recoverPicturesLabel.ForeColor = Color.ForestGreen;
+                            recoverPicturesLabel.ForeColor = System.Drawing.Color.ForestGreen;
                             restorePicturesButton.Enabled = true;
                             break;
                         case "Videos":
                             recoverVideosLabel.Enabled = true;
                             recoverVideosLabel.Text = "(Found!)";
-                            recoverVideosLabel.ForeColor = Color.ForestGreen;
+                            recoverVideosLabel.ForeColor = System.Drawing.Color.ForestGreen;
                             restoreVideosButton.Enabled = true;
                             break;
                         case "Music":
                             recoverMusicLabel.Enabled = true;
                             recoverMusicLabel.Text = "(Found!)";
-                            recoverMusicLabel.ForeColor = Color.ForestGreen;
+                            recoverMusicLabel.ForeColor = System.Drawing.Color.ForestGreen;
                             restoreMusicButton.Enabled = true;
                             break;
                         default:
