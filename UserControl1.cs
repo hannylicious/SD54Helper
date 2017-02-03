@@ -24,7 +24,7 @@ namespace Helpdesk54
 
     {
         int existingSetupRowNumber, existingBackupRowNumber;
-
+        long canItFit;
         string userDisplayFirstName, userDisplayLastName, userCustomDisplayName;
         string backupDirectoryName;
         string backupName;
@@ -39,6 +39,7 @@ namespace Helpdesk54
         string selectedDrive;
         string clickedButton;
         string itemsChanged;
+        long selectedDriveAvailableSize;
         int totalFileCount;
         string destinationLocation;
         DirectoryInfo source;
@@ -127,23 +128,23 @@ namespace Helpdesk54
             essentialBgWorker.DoWork += new DoWorkEventHandler(essentialBgWorker_DoWork);
             essentialBgWorker.ProgressChanged += new ProgressChangedEventHandler(essentialBgWorker_ProgressChanged);
             essentialBgWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(essentialBgWorker_RunWorkerCompleted);
-            essentialBgWorker.WorkerReportsProgress = true;
+            essentialBgWorker.WorkerReportsProgress = true;            
             //additionalBgWorker
             additionalBgWorker.DoWork += new DoWorkEventHandler(additionalBgWorker_DoWork);
             additionalBgWorker.ProgressChanged += new ProgressChangedEventHandler(additionalBgWorker_ProgressChanged);
             additionalBgWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(additionalBgWorker_RunWorkerCompleted);
-            additionalBgWorker.WorkerReportsProgress = true;
+            additionalBgWorker.WorkerReportsProgress = true;            
             //restoreEssentialsWorker
             restoreEssentialBgWorker.DoWork += new DoWorkEventHandler(restoreEssentialBgWorker_DoWork);
             restoreEssentialBgWorker.ProgressChanged += new ProgressChangedEventHandler(restoreEssentialBgWorker_ProgressChanged);
             restoreEssentialBgWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(restoreEssentialBgWorker_RunWorkerCompleted);
-            restoreEssentialBgWorker.WorkerReportsProgress = true;
+            restoreEssentialBgWorker.WorkerReportsProgress = true;            
             //restoreAdditionalWorker
             restoreAdditionalBgWorker.DoWork += new DoWorkEventHandler(restoreAdditionalBgWorker_DoWork);
             restoreAdditionalBgWorker.ProgressChanged += new ProgressChangedEventHandler(restoreAdditionalBgWorker_ProgressChanged);
             restoreAdditionalBgWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(restoreAdditionalBgWorker_RunWorkerCompleted);
             restoreAdditionalBgWorker.WorkerReportsProgress = true;
-            restoreAdditionalBgWorker.WorkerSupportsCancellation = true;
+            restoreAdditionalBgWorker.WorkerSupportsCancellation = true;            
             //*****
             //set backupDriveCombo to dropdown
             //*****
@@ -171,7 +172,20 @@ namespace Helpdesk54
             try
             {
                 DriveInfo selectedDrive = (DriveInfo)backupDriveCombo.SelectedItem;
-                if (selectedDrive.AvailableFreeSpace > 0)
+                //If it's the homedrive (or a network drive) - we need to do further calculation to determine 'available free space'
+                //Max Available : 3GB
+                if (selectedDrive.DriveType == DriveType.Network)
+                {
+                    long maxAvailableDriveSpace = 3221225472;
+                    string folder = selectedDrive.ToString();
+                    long networkDirectorySize = DirSize(new DirectoryInfo(folder));
+                    selectedDriveAvailableSize = maxAvailableDriveSpace - networkDirectorySize;
+                    string folderMB = FormatBytes(selectedDriveAvailableSize);
+                    //folderMB = used space on network drive
+                    backupDriveLabel.Text = folderMB + " Free";
+                }
+                //otherwise prepare as normal and show appropriate free space
+                else if (selectedDrive.AvailableFreeSpace > 0)
                 {
                     long driveSpace = selectedDrive.AvailableFreeSpace;
                     string driveFreeSpace = FormatBytes(driveSpace);
@@ -201,6 +215,7 @@ namespace Helpdesk54
             try
             {
                 restoreDriveCombo.SelectedIndex = restoreDriveCombo.FindString(homeDirectory);
+                
             }
             catch (Exception e)
             {
@@ -212,79 +227,9 @@ namespace Helpdesk54
             //Check the H:\ drive for a backup
             checkForExistingBackup();
             getFilesToListView();
+            //update labels
+            labelDirectorySizes();
 
-            string[] directoryLocations =
-            {
-            "DesktopDirectory",
-            "MyDocuments",
-            "Favorites",
-            "MyMusic",
-            "MyPictures",
-            "My Videos"
-            };
-            // Get the directory sizes for each directoryLocation & set the label
-            foreach (string directoryLocation in directoryLocations)
-            {
-                string userDirectoryLocation = Environment.GetEnvironmentVariable("userprofile");
-                //'My Videos' is not supported in older frameworks so set it seperately
-                if (directoryLocation == "My Videos")
-                {
-                    string folderName = "Videos";
-                    string folder = userDirectoryLocation + "\\" + folderName;
-                    long folderSize = DirSize(new DirectoryInfo(folder));
-                    string folderMB = FormatBytes(folderSize);
-                    videosSizeLabel.Text = folderMB;
-                }
-                else //iterate through all the other directory Locations
-                {
-                    var dir = (Environment.SpecialFolder)Enum.Parse(typeof(Environment.SpecialFolder), directoryLocation);
-                    string folder = Environment.GetFolderPath(dir);
-                    long folderSize = DirSize(new DirectoryInfo(folder));
-                    string folderMB = FormatBytes(folderSize);
-                    switch (directoryLocation)
-                    {
-                        case "DesktopDirectory":
-                            desktopSizeLabel.Text = folderMB;
-                            break;
-                        case "MyDocuments":
-                            documentsSizeLabel.Text = folderMB;
-                            break;
-                        case "Favorites":
-                            favoritesSizeLabel.Text = folderMB;
-                            break;
-                        case "MyMusic":
-                            musicSizeLabel.Text = folderMB;
-                            break;
-                        case "MyPictures":
-                            picturesSizeLabel.Text = folderMB;
-                            break;
-                    }
-
-                }
-            }
-            //Set the size & label for the button that backs up Desktop, Documents & Favorites
-            var desktopFolder = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
-            long desktopSize = DirSize(new DirectoryInfo(desktopFolder));
-            var documentsFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            long documentsSize = DirSize(new DirectoryInfo(documentsFolder));
-            var favoritesFolder = Environment.GetFolderPath(Environment.SpecialFolder.Favorites);
-            long favoritesSize = DirSize(new DirectoryInfo(favoritesFolder));
-            long totalSize = desktopSize + documentsSize + favoritesSize;
-            string totalMB = FormatBytes(totalSize);
-            allEssentialsSizeLabel.Text = totalMB;
-            //Set the size & label for Sticky Notes
-            string stickyNotesFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            stickyNotesFolder = stickyNotesFolder + "\\Microsoft\\Sticky Notes";
-            if (Directory.Exists(stickyNotesFolder)) //If they have launched sticky notes
-            {
-                long stickyNotesSize = DirSize(new DirectoryInfo(stickyNotesFolder));
-                string stickyNotesMB = FormatBytes(stickyNotesSize);
-                stickyNotesSizeLabel.Text = stickyNotesMB;
-            }
-            else //haven't launched sticky notes
-            {
-                stickyNotesSizeLabel.Text = "N/A";
-            }
 
         }
         //set all the files in the server location to the serverListView tab
@@ -696,9 +641,31 @@ namespace Helpdesk54
         {
             //Set the selected drive freespace label
             DriveInfo selectedDrive = (DriveInfo)backupDriveCombo.SelectedItem;
-            long driveSpace = selectedDrive.AvailableFreeSpace;
-            string driveFreeSpace = FormatBytes(driveSpace);
-            backupDriveLabel.Text = driveFreeSpace + " Free";
+            //If it's the homedrive (or a network drive) - we need to do further calculation to determine 'available free space'
+            //Max Available For Standard Users: 3GB            
+            if (selectedDrive.DriveType == DriveType.Network)
+            {
+                long maxAvailableDriveSpace = 3221225472;
+                string folder = selectedDrive.ToString();
+                long networkDirectorySize = DirSize(new DirectoryInfo(folder));
+                selectedDriveAvailableSize = maxAvailableDriveSpace - networkDirectorySize;
+                string folderMB = FormatBytes(selectedDriveAvailableSize);
+                labelDirectorySizes();
+                //folderMB = used space on network drive
+                backupDriveLabel.Text = folderMB+ " Free";
+            }
+            //otherwise prepare as normal and show appropriate free space
+            else
+            {
+                if (selectedDrive.AvailableFreeSpace > 0)
+                {
+                    selectedDriveAvailableSize = selectedDrive.AvailableFreeSpace;
+                    string driveFreeSpace = FormatBytes(selectedDriveAvailableSize);
+                    labelDirectorySizes();
+                    backupDriveLabel.Text = driveFreeSpace + " Free";
+                }
+            }
+            
         }
         private void restoreDriveCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -838,10 +805,11 @@ namespace Helpdesk54
         */
         void essentialBgWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            //do the code when bgv completes its work
+            //do the code when bgv completes its work           
             essentialItemsProgressBar.Visible = false;
             essentialItemsProgressLabel.Visible = true;
             essentialItemsProgressLabel.Text = String.Format("Progress: 100% - All {0} Files Transferred", itemsChanged);
+            MessageBox.Show("Process Complete. Always verify all data was backed up appropriately.");
             //enable the panel
             foreach (Control cont in dataBackupGroupBox.Controls)
             {
@@ -1006,6 +974,7 @@ namespace Helpdesk54
             additionalItemsProgressBar.Visible = false;
             additionalItemsProgressLabel.Visible = true;
             additionalItemsProgressLabel.Text = String.Format("Progress: 100% - All {0} Files Transferred", itemsChanged);
+            MessageBox.Show("Process complete. Always verify all data was backed up appropriately.");
             //enable the panel
             foreach (Control cont in dataBackupGroupBox.Controls)
             {
@@ -1020,6 +989,166 @@ namespace Helpdesk54
             }
             checkForExistingBackup();
             checkBackupDirectories(backupName);
+        }
+        public void labelDirectorySizes()
+        {
+            string[] directoryLocations =
+            {
+            "DesktopDirectory",
+            "MyDocuments",
+            "Favorites",
+            "MyMusic",
+            "MyPictures",
+            "My Videos"
+            };
+            // Get the directory sizes for each directoryLocation & set the label
+            foreach (string directoryLocation in directoryLocations)
+            {
+                string userDirectoryLocation = Environment.GetEnvironmentVariable("userprofile");
+                //'My Videos' is not supported in older frameworks so set it seperately
+                if (directoryLocation == "My Videos")
+                {
+                    string folderName = "Videos";
+                    string folder = userDirectoryLocation + "\\" + folderName;
+                    long folderSize = DirSize(new DirectoryInfo(folder));
+                    canItFit = selectedDriveAvailableSize - folderSize;
+                    string folderMB = FormatBytes(folderSize);
+                    videosSizeLabel.Text = folderMB;
+                    if (canItFit < 0)
+                    {
+                        videosSizeLabel.ForeColor = System.Drawing.Color.Red;
+                    }
+                    else
+                    {
+                        videosSizeLabel.ForeColor = System.Drawing.Color.ForestGreen;
+                        backupVideosButton.Enabled = true;
+                    }
+                }
+                else //iterate through all the other directory Locations
+                {
+                    var dir = (Environment.SpecialFolder)Enum.Parse(typeof(Environment.SpecialFolder), directoryLocation);
+                    string folder = Environment.GetFolderPath(dir);
+                    long folderSize = DirSize(new DirectoryInfo(folder));
+                    string folderMB = FormatBytes(folderSize);
+                    var selectedDriveSize = selectedDriveAvailableSize;
+                    
+                    switch (directoryLocation)
+                    {
+                        case "DesktopDirectory":
+                            canItFit = selectedDriveSize - folderSize;
+                            desktopSizeLabel.Text = folderMB;
+                            if (canItFit < 0)
+                            {
+                                desktopSizeLabel.ForeColor = System.Drawing.Color.Red;
+                                backupDesktopButton.Enabled = false;
+                                backupAllEssentialsButton.Enabled = false;
+                            }
+                            else
+                            {
+                                desktopSizeLabel.ForeColor = System.Drawing.Color.ForestGreen;
+                                backupDesktopButton.Enabled = true;
+                            }
+                            break;
+                        case "MyDocuments":
+                            canItFit = selectedDriveSize - folderSize;
+                            documentsSizeLabel.Text = folderMB;
+                            if (canItFit < 0)
+                            {
+                                documentsSizeLabel.ForeColor = System.Drawing.Color.Red;
+                                backupDocumentsButton.Enabled = false;
+                                backupAllEssentialsButton.Enabled = false;
+                            }
+                            else
+                            {
+                                documentsSizeLabel.ForeColor = System.Drawing.Color.ForestGreen;
+                                backupDocumentsButton.Enabled = true;
+                            }
+                            break;
+                        case "Favorites":
+                            canItFit = selectedDriveSize - folderSize;
+                            favoritesSizeLabel.Text = folderMB;
+                            if (canItFit < 0)
+                            {
+                                favoritesSizeLabel.ForeColor = System.Drawing.Color.Red;
+                                backupFavoritesButton.Enabled = false;
+                                backupAllEssentialsButton.Enabled = false;
+                            }
+                            else
+                            {
+                                favoritesSizeLabel.ForeColor = System.Drawing.Color.ForestGreen;
+                                backupFavoritesButton.Enabled = true;
+                            }
+                            break;
+                        case "MyMusic":
+                            canItFit = selectedDriveSize - folderSize;
+                            musicSizeLabel.Text = folderMB;
+                            if (canItFit < 0)
+                            {
+                                musicSizeLabel.ForeColor = System.Drawing.Color.Red;
+                                backupMusicButton.Enabled = false;
+                            }
+                            else
+                            {
+                                musicSizeLabel.ForeColor = System.Drawing.Color.ForestGreen;
+                                backupMusicButton.Enabled = true;
+                            }
+                            break;
+                        case "MyPictures":
+                            canItFit = selectedDriveSize - folderSize;
+                            picturesSizeLabel.Text = folderMB;
+                            if (canItFit < 0)
+                            {
+                                picturesSizeLabel.ForeColor = System.Drawing.Color.Red;
+                                backupPicturesButton.Enabled = false;
+                            }
+                            else
+                            {
+                                picturesSizeLabel.ForeColor = System.Drawing.Color.ForestGreen;
+                                backupPicturesButton.Enabled = true;
+                            }
+                            break;
+                    }
+                    if (backupDesktopButton.Enabled && backupDocumentsButton.Enabled && backupFavoritesButton.Enabled)
+                    {
+                        backupAllEssentialsButton.Enabled = true;
+                    }
+                }
+
+            }
+            //Set the size & label for the button that backs up Desktop, Documents & Favorites
+            var desktopFolder = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+            long desktopSize = DirSize(new DirectoryInfo(desktopFolder));
+            var documentsFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            long documentsSize = DirSize(new DirectoryInfo(documentsFolder));
+            var favoritesFolder = Environment.GetFolderPath(Environment.SpecialFolder.Favorites);
+            long favoritesSize = DirSize(new DirectoryInfo(favoritesFolder));
+            long totalSize = desktopSize + documentsSize + favoritesSize;
+            string totalMB = FormatBytes(totalSize);
+            allEssentialsSizeLabel.Text = totalMB;
+            //Set the size & label for Sticky Notes
+            string stickyNotesFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            stickyNotesFolder = stickyNotesFolder + "\\Microsoft\\Sticky Notes";
+            if (Directory.Exists(stickyNotesFolder)) //If they have launched sticky notes
+            {
+                long stickyNotesSize = DirSize(new DirectoryInfo(stickyNotesFolder));
+                canItFit = selectedDriveAvailableSize - stickyNotesSize;
+                if (canItFit < 0)
+                {
+                    stickyNotesSizeLabel.ForeColor = System.Drawing.Color.Red;
+                    backupStickyNotesButton.Enabled = false;
+                }
+                else
+                {
+                    stickyNotesSizeLabel.ForeColor = System.Drawing.Color.ForestGreen;
+                    backupStickyNotesButton.Enabled = true;
+                }
+                string stickyNotesMB = FormatBytes(stickyNotesSize);
+                stickyNotesSizeLabel.Text = stickyNotesMB;
+            }
+            else //haven't launched sticky notes
+            {
+                stickyNotesSizeLabel.Text = "N/A";
+            }
         }
         /*
             * ***** *
@@ -1340,10 +1469,11 @@ namespace Helpdesk54
         */
         void restoreEssentialBgWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            //do the code when bgv completes its work
+            //do the code when bgv completes its work            
             restoreEssentialsProgressBar.Visible = false;
             restoreEssentialsBarLabel.Visible = true;
             restoreEssentialsBarLabel.Text = String.Format("Progress: 100% - All {0} Files Restored", itemsChanged);
+            MessageBox.Show("Process Complete. Always verify all data was restored appropriately.");
             //enable the panel
             foreach (Control cont in restoreGroupBox.Controls)
             {
@@ -1637,11 +1767,12 @@ namespace Helpdesk54
             }
             else
             {
-                //do the code when bgv completes its work
+                //do the code when bgv completes its work                
                 restoreAdditionalProgressBar.Visible = false;
                 restoreAdditionalBarLabel.ForeColor = System.Drawing.Color.ForestGreen;
                 restoreAdditionalBarLabel.Text = String.Format("Progress: 100% - All {0} Files Restored", itemsChanged);
                 restoreAdditionalBarLabel.Visible = true;
+                MessageBox.Show("Process Complete. Always verify all data was restored appropriately.");
                 //enable the panel
                 foreach (Control cont in restoreGroupBox.Controls)
                 {
