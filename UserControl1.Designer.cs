@@ -30,6 +30,7 @@
         {
             this.restoreDriveCombo = new System.Windows.Forms.ComboBox();
             this.startOfYearGroupBox = new System.Windows.Forms.GroupBox();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.quickenButton = new System.Windows.Forms.Button();
             this.scanSnapButton = new System.Windows.Forms.Button();
             this.acrobatButton = new System.Windows.Forms.Button();
@@ -144,7 +145,9 @@
             this.userSetupQuestionLabel = new System.Windows.Forms.Label();
             this.userBackedUpAnswerLabel = new System.Windows.Forms.Label();
             this.userSetupAnswerLabel = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.startOfYearGroupBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.dataBackupGroupBox.SuspendLayout();
             this.essentialItemsGroupBox.SuspendLayout();
             this.additionalItemsGroupBox.SuspendLayout();
@@ -165,6 +168,7 @@
             this.printersPanel.SuspendLayout();
             this.printingPanel.SuspendLayout();
             this.tabPage4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // restoreDriveCombo
@@ -195,6 +199,15 @@
             this.startOfYearGroupBox.TabIndex = 18;
             this.startOfYearGroupBox.TabStop = false;
             this.startOfYearGroupBox.Text = "Software";
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Image = global::Helpdesk54.Properties.Resources.ic_person_indigo_800_24dp;
+            this.pictureBox2.Location = new System.Drawing.Point(31, 3);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(36, 37);
+            this.pictureBox2.TabIndex = 30;
+            this.pictureBox2.TabStop = false;
             // 
             // quickenButton
             // 
@@ -863,7 +876,7 @@
             // 
             this.serverNameLinkLabel.AutoSize = true;
             this.serverNameLinkLabel.Font = new System.Drawing.Font("Helvetica Neue", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.serverNameLinkLabel.Location = new System.Drawing.Point(398, 13);
+            this.serverNameLinkLabel.Location = new System.Drawing.Point(494, 13);
             this.serverNameLinkLabel.Name = "serverNameLinkLabel";
             this.serverNameLinkLabel.Size = new System.Drawing.Size(106, 19);
             this.serverNameLinkLabel.TabIndex = 23;
@@ -875,17 +888,18 @@
             // 
             this.serverLabel.AutoSize = true;
             this.serverLabel.Font = new System.Drawing.Font("Helvetica Neue", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.serverLabel.Location = new System.Drawing.Point(323, 13);
+            this.serverLabel.Location = new System.Drawing.Point(400, 13);
             this.serverLabel.Name = "serverLabel";
             this.serverLabel.Size = new System.Drawing.Size(69, 19);
             this.serverLabel.TabIndex = 22;
             this.serverLabel.Text = "Server:";
+            this.serverLabel.Visible = false;
             // 
             // usernameLabel
             // 
             this.usernameLabel.AutoSize = true;
             this.usernameLabel.Font = new System.Drawing.Font("Helvetica Neue", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.usernameLabel.Location = new System.Drawing.Point(84, 13);
+            this.usernameLabel.Location = new System.Drawing.Point(105, 13);
             this.usernameLabel.Name = "usernameLabel";
             this.usernameLabel.Size = new System.Drawing.Size(90, 19);
             this.usernameLabel.TabIndex = 20;
@@ -900,6 +914,7 @@
             this.userLabel.Size = new System.Drawing.Size(53, 19);
             this.userLabel.TabIndex = 19;
             this.userLabel.Text = "User:";
+            this.userLabel.Visible = false;
             // 
             // tabControl1
             // 
@@ -908,7 +923,7 @@
             this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Controls.Add(this.tabPage5);
             this.tabControl1.Controls.Add(this.tabPage4);
-            this.tabControl1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tabControl1.Font = new System.Drawing.Font(".Helvetica Neue Desk UI", 9.749999F);
             this.tabControl1.Location = new System.Drawing.Point(12, 76);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -918,10 +933,10 @@
             // tabPage1
             // 
             this.tabPage1.Controls.Add(this.startOfYearGroupBox);
-            this.tabPage1.Location = new System.Drawing.Point(4, 25);
+            this.tabPage1.Location = new System.Drawing.Point(4, 24);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(645, 464);
+            this.tabPage1.Size = new System.Drawing.Size(645, 465);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Programs";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -930,10 +945,10 @@
             // 
             this.tabPage2.BackColor = System.Drawing.Color.AliceBlue;
             this.tabPage2.Controls.Add(this.dataBackupGroupBox);
-            this.tabPage2.Location = new System.Drawing.Point(4, 25);
+            this.tabPage2.Location = new System.Drawing.Point(4, 24);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(645, 464);
+            this.tabPage2.Size = new System.Drawing.Size(645, 465);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Data Backup";
             // 
@@ -941,10 +956,10 @@
             // 
             this.tabPage3.BackColor = System.Drawing.Color.AliceBlue;
             this.tabPage3.Controls.Add(this.restoreGroupBox);
-            this.tabPage3.Location = new System.Drawing.Point(4, 25);
+            this.tabPage3.Location = new System.Drawing.Point(4, 24);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(645, 464);
+            this.tabPage3.Size = new System.Drawing.Size(645, 465);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Data Restoration";
             // 
@@ -952,10 +967,10 @@
             // 
             this.tabPage5.Controls.Add(this.endOfYearCheckBoxPanel);
             this.tabPage5.Controls.Add(this.startOfYearCheckBoxPanel);
-            this.tabPage5.Location = new System.Drawing.Point(4, 25);
+            this.tabPage5.Location = new System.Drawing.Point(4, 24);
             this.tabPage5.Name = "tabPage5";
             this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage5.Size = new System.Drawing.Size(645, 464);
+            this.tabPage5.Size = new System.Drawing.Size(645, 465);
             this.tabPage5.TabIndex = 4;
             this.tabPage5.Text = "User Checklist";
             this.tabPage5.UseVisualStyleBackColor = true;
@@ -999,7 +1014,7 @@
             this.musicBackupCheckBox.AutoSize = true;
             this.musicBackupCheckBox.Location = new System.Drawing.Point(7, 97);
             this.musicBackupCheckBox.Name = "musicBackupCheckBox";
-            this.musicBackupCheckBox.Size = new System.Drawing.Size(111, 20);
+            this.musicBackupCheckBox.Size = new System.Drawing.Size(110, 19);
             this.musicBackupCheckBox.TabIndex = 6;
             this.musicBackupCheckBox.Text = "Music Backup";
             this.musicBackupCheckBox.UseVisualStyleBackColor = true;
@@ -1009,7 +1024,7 @@
             this.videosBackupCheckBox.AutoSize = true;
             this.videosBackupCheckBox.Location = new System.Drawing.Point(7, 74);
             this.videosBackupCheckBox.Name = "videosBackupCheckBox";
-            this.videosBackupCheckBox.Size = new System.Drawing.Size(119, 20);
+            this.videosBackupCheckBox.Size = new System.Drawing.Size(115, 19);
             this.videosBackupCheckBox.TabIndex = 5;
             this.videosBackupCheckBox.Text = "Videos Backup";
             this.videosBackupCheckBox.UseVisualStyleBackColor = true;
@@ -1019,7 +1034,7 @@
             this.picturesBackupCheckBox.AutoSize = true;
             this.picturesBackupCheckBox.Location = new System.Drawing.Point(7, 51);
             this.picturesBackupCheckBox.Name = "picturesBackupCheckBox";
-            this.picturesBackupCheckBox.Size = new System.Drawing.Size(124, 20);
+            this.picturesBackupCheckBox.Size = new System.Drawing.Size(122, 19);
             this.picturesBackupCheckBox.TabIndex = 3;
             this.picturesBackupCheckBox.Text = "Pictures Backup";
             this.picturesBackupCheckBox.UseVisualStyleBackColor = true;
@@ -1039,7 +1054,7 @@
             this.stickyNotesBackupCheckBox.AutoSize = true;
             this.stickyNotesBackupCheckBox.Location = new System.Drawing.Point(7, 27);
             this.stickyNotesBackupCheckBox.Name = "stickyNotesBackupCheckBox";
-            this.stickyNotesBackupCheckBox.Size = new System.Drawing.Size(148, 20);
+            this.stickyNotesBackupCheckBox.Size = new System.Drawing.Size(146, 19);
             this.stickyNotesBackupCheckBox.TabIndex = 1;
             this.stickyNotesBackupCheckBox.Text = "StickyNotes Backup";
             this.stickyNotesBackupCheckBox.UseVisualStyleBackColor = true;
@@ -1071,7 +1086,7 @@
             this.favoritesBackupCheckBox.AutoSize = true;
             this.favoritesBackupCheckBox.Location = new System.Drawing.Point(7, 74);
             this.favoritesBackupCheckBox.Name = "favoritesBackupCheckBox";
-            this.favoritesBackupCheckBox.Size = new System.Drawing.Size(132, 20);
+            this.favoritesBackupCheckBox.Size = new System.Drawing.Size(128, 19);
             this.favoritesBackupCheckBox.TabIndex = 5;
             this.favoritesBackupCheckBox.Text = "Favorites Backup";
             this.favoritesBackupCheckBox.UseVisualStyleBackColor = true;
@@ -1081,7 +1096,7 @@
             this.quickenBackupCheckBox.AutoSize = true;
             this.quickenBackupCheckBox.Location = new System.Drawing.Point(7, 97);
             this.quickenBackupCheckBox.Name = "quickenBackupCheckBox";
-            this.quickenBackupCheckBox.Size = new System.Drawing.Size(116, 20);
+            this.quickenBackupCheckBox.Size = new System.Drawing.Size(116, 19);
             this.quickenBackupCheckBox.TabIndex = 4;
             this.quickenBackupCheckBox.Text = "Quicken On H:\\";
             this.quickenBackupCheckBox.UseVisualStyleBackColor = true;
@@ -1091,7 +1106,7 @@
             this.documentsBackupCheckBox.AutoSize = true;
             this.documentsBackupCheckBox.Location = new System.Drawing.Point(7, 51);
             this.documentsBackupCheckBox.Name = "documentsBackupCheckBox";
-            this.documentsBackupCheckBox.Size = new System.Drawing.Size(144, 20);
+            this.documentsBackupCheckBox.Size = new System.Drawing.Size(141, 19);
             this.documentsBackupCheckBox.TabIndex = 3;
             this.documentsBackupCheckBox.Text = "Documents Backup";
             this.documentsBackupCheckBox.UseVisualStyleBackColor = true;
@@ -1111,7 +1126,7 @@
             this.desktopBackupCheckBox.AutoSize = true;
             this.desktopBackupCheckBox.Location = new System.Drawing.Point(7, 27);
             this.desktopBackupCheckBox.Name = "desktopBackupCheckBox";
-            this.desktopBackupCheckBox.Size = new System.Drawing.Size(127, 20);
+            this.desktopBackupCheckBox.Size = new System.Drawing.Size(124, 19);
             this.desktopBackupCheckBox.TabIndex = 1;
             this.desktopBackupCheckBox.Text = "Desktop Backup";
             this.desktopBackupCheckBox.UseVisualStyleBackColor = true;
@@ -1157,7 +1172,7 @@
             this.restoreFavoritesCheckBox.AutoSize = true;
             this.restoreFavoritesCheckBox.Location = new System.Drawing.Point(7, 97);
             this.restoreFavoritesCheckBox.Name = "restoreFavoritesCheckBox";
-            this.restoreFavoritesCheckBox.Size = new System.Drawing.Size(134, 20);
+            this.restoreFavoritesCheckBox.Size = new System.Drawing.Size(128, 19);
             this.restoreFavoritesCheckBox.TabIndex = 6;
             this.restoreFavoritesCheckBox.Text = "Restore Favorites";
             this.restoreFavoritesCheckBox.UseVisualStyleBackColor = true;
@@ -1167,7 +1182,7 @@
             this.adobeProCheckBox.AutoSize = true;
             this.adobeProCheckBox.Location = new System.Drawing.Point(7, 74);
             this.adobeProCheckBox.Name = "adobeProCheckBox";
-            this.adobeProCheckBox.Size = new System.Drawing.Size(130, 20);
+            this.adobeProCheckBox.Size = new System.Drawing.Size(126, 19);
             this.adobeProCheckBox.TabIndex = 5;
             this.adobeProCheckBox.Text = "Adobe Pro Setup";
             this.adobeProCheckBox.UseVisualStyleBackColor = true;
@@ -1177,7 +1192,7 @@
             this.quickenCheckBox.AutoSize = true;
             this.quickenCheckBox.Location = new System.Drawing.Point(7, 51);
             this.quickenCheckBox.Name = "quickenCheckBox";
-            this.quickenCheckBox.Size = new System.Drawing.Size(114, 20);
+            this.quickenCheckBox.Size = new System.Drawing.Size(113, 19);
             this.quickenCheckBox.TabIndex = 3;
             this.quickenCheckBox.Text = "Quicken Setup";
             this.quickenCheckBox.UseVisualStyleBackColor = true;
@@ -1197,7 +1212,7 @@
             this.outlookCheckBox.AutoSize = true;
             this.outlookCheckBox.Location = new System.Drawing.Point(7, 27);
             this.outlookCheckBox.Name = "outlookCheckBox";
-            this.outlookCheckBox.Size = new System.Drawing.Size(111, 20);
+            this.outlookCheckBox.Size = new System.Drawing.Size(110, 19);
             this.outlookCheckBox.TabIndex = 1;
             this.outlookCheckBox.Text = "Outlook Setup";
             this.outlookCheckBox.UseVisualStyleBackColor = true;
@@ -1230,7 +1245,7 @@
             this.icShortcutCheckBox.AutoSize = true;
             this.icShortcutCheckBox.Location = new System.Drawing.Point(6, 97);
             this.icShortcutCheckBox.Name = "icShortcutCheckBox";
-            this.icShortcutCheckBox.Size = new System.Drawing.Size(117, 20);
+            this.icShortcutCheckBox.Size = new System.Drawing.Size(117, 19);
             this.icShortcutCheckBox.TabIndex = 5;
             this.icShortcutCheckBox.Text = "Infinite Campus";
             this.icShortcutCheckBox.UseVisualStyleBackColor = true;
@@ -1240,7 +1255,7 @@
             this.homeShortcutCheckBox.AutoSize = true;
             this.homeShortcutCheckBox.Location = new System.Drawing.Point(6, 27);
             this.homeShortcutCheckBox.Name = "homeShortcutCheckBox";
-            this.homeShortcutCheckBox.Size = new System.Drawing.Size(75, 20);
+            this.homeShortcutCheckBox.Size = new System.Drawing.Size(73, 19);
             this.homeShortcutCheckBox.TabIndex = 4;
             this.homeShortcutCheckBox.Text = "H: Drive";
             this.homeShortcutCheckBox.UseVisualStyleBackColor = true;
@@ -1250,7 +1265,7 @@
             this.aesopShortcutCheckBox.AutoSize = true;
             this.aesopShortcutCheckBox.Location = new System.Drawing.Point(6, 120);
             this.aesopShortcutCheckBox.Name = "aesopShortcutCheckBox";
-            this.aesopShortcutCheckBox.Size = new System.Drawing.Size(73, 20);
+            this.aesopShortcutCheckBox.Size = new System.Drawing.Size(69, 19);
             this.aesopShortcutCheckBox.TabIndex = 3;
             this.aesopShortcutCheckBox.Text = "AESOP";
             this.aesopShortcutCheckBox.UseVisualStyleBackColor = true;
@@ -1270,7 +1285,7 @@
             this.wordShortcutCheckBox.AutoSize = true;
             this.wordShortcutCheckBox.Location = new System.Drawing.Point(6, 74);
             this.wordShortcutCheckBox.Name = "wordShortcutCheckBox";
-            this.wordShortcutCheckBox.Size = new System.Drawing.Size(117, 20);
+            this.wordShortcutCheckBox.Size = new System.Drawing.Size(114, 19);
             this.wordShortcutCheckBox.TabIndex = 0;
             this.wordShortcutCheckBox.Text = "Microsoft Word";
             this.wordShortcutCheckBox.UseVisualStyleBackColor = true;
@@ -1280,7 +1295,7 @@
             this.efinanceShortcutCheckBox.AutoSize = true;
             this.efinanceShortcutCheckBox.Location = new System.Drawing.Point(6, 50);
             this.efinanceShortcutCheckBox.Name = "efinanceShortcutCheckBox";
-            this.efinanceShortcutCheckBox.Size = new System.Drawing.Size(83, 20);
+            this.efinanceShortcutCheckBox.Size = new System.Drawing.Size(78, 19);
             this.efinanceShortcutCheckBox.TabIndex = 1;
             this.efinanceShortcutCheckBox.Text = "eFinance";
             this.efinanceShortcutCheckBox.UseVisualStyleBackColor = true;
@@ -1300,7 +1315,7 @@
             this.imageRunnerCheckBox.AutoSize = true;
             this.imageRunnerCheckBox.Location = new System.Drawing.Point(7, 51);
             this.imageRunnerCheckBox.Name = "imageRunnerCheckBox";
-            this.imageRunnerCheckBox.Size = new System.Drawing.Size(111, 20);
+            this.imageRunnerCheckBox.Size = new System.Drawing.Size(107, 19);
             this.imageRunnerCheckBox.TabIndex = 3;
             this.imageRunnerCheckBox.Text = "Image Runner";
             this.imageRunnerCheckBox.UseVisualStyleBackColor = true;
@@ -1320,7 +1335,7 @@
             this.installPrintersCheckBox.AutoSize = true;
             this.installPrintersCheckBox.Location = new System.Drawing.Point(7, 27);
             this.installPrintersCheckBox.Name = "installPrintersCheckBox";
-            this.installPrintersCheckBox.Size = new System.Drawing.Size(109, 20);
+            this.installPrintersCheckBox.Size = new System.Drawing.Size(108, 19);
             this.installPrintersCheckBox.TabIndex = 1;
             this.installPrintersCheckBox.Text = "Install Printers";
             this.installPrintersCheckBox.UseVisualStyleBackColor = true;
@@ -1341,7 +1356,7 @@
             this.scanSnapCheckBox.AutoSize = true;
             this.scanSnapCheckBox.Location = new System.Drawing.Point(7, 74);
             this.scanSnapCheckBox.Name = "scanSnapCheckBox";
-            this.scanSnapCheckBox.Size = new System.Drawing.Size(93, 20);
+            this.scanSnapCheckBox.Size = new System.Drawing.Size(91, 19);
             this.scanSnapCheckBox.TabIndex = 5;
             this.scanSnapCheckBox.Text = "Scan Snap";
             this.scanSnapCheckBox.UseVisualStyleBackColor = true;
@@ -1351,7 +1366,7 @@
             this.dymoPrintingCheckBox.AutoSize = true;
             this.dymoPrintingCheckBox.Location = new System.Drawing.Point(7, 51);
             this.dymoPrintingCheckBox.Name = "dymoPrintingCheckBox";
-            this.dymoPrintingCheckBox.Size = new System.Drawing.Size(100, 20);
+            this.dymoPrintingCheckBox.Size = new System.Drawing.Size(96, 19);
             this.dymoPrintingCheckBox.TabIndex = 3;
             this.dymoPrintingCheckBox.Text = "Dymo Label";
             this.dymoPrintingCheckBox.UseVisualStyleBackColor = true;
@@ -1371,7 +1386,7 @@
             this.icPrintingCheckBox.AutoSize = true;
             this.icPrintingCheckBox.Location = new System.Drawing.Point(7, 27);
             this.icPrintingCheckBox.Name = "icPrintingCheckBox";
-            this.icPrintingCheckBox.Size = new System.Drawing.Size(123, 20);
+            this.icPrintingCheckBox.Size = new System.Drawing.Size(122, 19);
             this.icPrintingCheckBox.TabIndex = 1;
             this.icPrintingCheckBox.Text = "IC Label Printing";
             this.icPrintingCheckBox.UseVisualStyleBackColor = true;
@@ -1379,10 +1394,10 @@
             // tabPage4
             // 
             this.tabPage4.Controls.Add(this.serverListView);
-            this.tabPage4.Location = new System.Drawing.Point(4, 25);
+            this.tabPage4.Location = new System.Drawing.Point(4, 24);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(645, 464);
+            this.tabPage4.Size = new System.Drawing.Size(645, 465);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Printers";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -1398,50 +1413,61 @@
             // userHasBeenBackedUpLabel
             // 
             this.userHasBeenBackedUpLabel.AutoSize = true;
-            this.userHasBeenBackedUpLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.userHasBeenBackedUpLabel.Location = new System.Drawing.Point(324, 46);
+            this.userHasBeenBackedUpLabel.Font = new System.Drawing.Font(".Helvetica Neue Desk UI", 12F, System.Drawing.FontStyle.Italic);
+            this.userHasBeenBackedUpLabel.Location = new System.Drawing.Point(349, 50);
             this.userHasBeenBackedUpLabel.Name = "userHasBeenBackedUpLabel";
-            this.userHasBeenBackedUpLabel.Size = new System.Drawing.Size(190, 13);
+            this.userHasBeenBackedUpLabel.Size = new System.Drawing.Size(278, 18);
             this.userHasBeenBackedUpLabel.TabIndex = 25;
             this.userHasBeenBackedUpLabel.Text = "User Has Been Backed Up This Year?";
             // 
             // userSetupQuestionLabel
             // 
             this.userSetupQuestionLabel.AutoSize = true;
-            this.userSetupQuestionLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.userSetupQuestionLabel.Location = new System.Drawing.Point(26, 46);
+            this.userSetupQuestionLabel.Font = new System.Drawing.Font(".Helvetica Neue Desk UI", 12F, System.Drawing.FontStyle.Italic);
+            this.userSetupQuestionLabel.Location = new System.Drawing.Point(12, 50);
             this.userSetupQuestionLabel.Name = "userSetupQuestionLabel";
-            this.userSetupQuestionLabel.Size = new System.Drawing.Size(164, 13);
+            this.userSetupQuestionLabel.Size = new System.Drawing.Size(241, 18);
             this.userSetupQuestionLabel.TabIndex = 26;
             this.userSetupQuestionLabel.Text = "User Has Been Setup This Year?";
             // 
             // userBackedUpAnswerLabel
             // 
             this.userBackedUpAnswerLabel.AutoSize = true;
-            this.userBackedUpAnswerLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.userBackedUpAnswerLabel.Font = new System.Drawing.Font(".Helvetica Neue Desk UI", 9.749999F, System.Drawing.FontStyle.Bold);
             this.userBackedUpAnswerLabel.ForeColor = System.Drawing.Color.DarkRed;
-            this.userBackedUpAnswerLabel.Location = new System.Drawing.Point(520, 45);
+            this.userBackedUpAnswerLabel.Location = new System.Drawing.Point(633, 52);
             this.userBackedUpAnswerLabel.Name = "userBackedUpAnswerLabel";
-            this.userBackedUpAnswerLabel.Size = new System.Drawing.Size(25, 13);
+            this.userBackedUpAnswerLabel.Size = new System.Drawing.Size(28, 16);
             this.userBackedUpAnswerLabel.TabIndex = 27;
             this.userBackedUpAnswerLabel.Text = "NO";
             // 
             // userSetupAnswerLabel
             // 
             this.userSetupAnswerLabel.AutoSize = true;
-            this.userSetupAnswerLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.userSetupAnswerLabel.Font = new System.Drawing.Font(".Helvetica Neue Desk UI", 9.749999F, System.Drawing.FontStyle.Bold);
             this.userSetupAnswerLabel.ForeColor = System.Drawing.Color.DarkRed;
-            this.userSetupAnswerLabel.Location = new System.Drawing.Point(196, 45);
+            this.userSetupAnswerLabel.Location = new System.Drawing.Point(269, 52);
             this.userSetupAnswerLabel.Name = "userSetupAnswerLabel";
-            this.userSetupAnswerLabel.Size = new System.Drawing.Size(25, 13);
+            this.userSetupAnswerLabel.Size = new System.Drawing.Size(28, 16);
             this.userSetupAnswerLabel.TabIndex = 28;
             this.userSetupAnswerLabel.Text = "NO";
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = global::Helpdesk54.Properties.Resources.ic_dns_indigo_800_24dp;
+            this.pictureBox1.Location = new System.Drawing.Point(415, 5);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(35, 35);
+            this.pictureBox1.TabIndex = 29;
+            this.pictureBox1.TabStop = false;
             // 
             // UserControl1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(676, 581);
+            this.Controls.Add(this.pictureBox2);
+            this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.userSetupAnswerLabel);
             this.Controls.Add(this.userBackedUpAnswerLabel);
             this.Controls.Add(this.userSetupQuestionLabel);
@@ -1454,6 +1480,7 @@
             this.Name = "UserControl1";
             this.Text = "School District 54 Helper";
             this.startOfYearGroupBox.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.dataBackupGroupBox.ResumeLayout(false);
             this.dataBackupGroupBox.PerformLayout();
             this.essentialItemsGroupBox.ResumeLayout(false);
@@ -1488,6 +1515,7 @@
             this.printingPanel.ResumeLayout(false);
             this.printingPanel.PerformLayout();
             this.tabPage4.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1611,6 +1639,8 @@
         private System.Windows.Forms.Label userSetupQuestionLabel;
         private System.Windows.Forms.Label userBackedUpAnswerLabel;
         private System.Windows.Forms.Label userSetupAnswerLabel;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.PictureBox pictureBox2;
     }
 }
 
