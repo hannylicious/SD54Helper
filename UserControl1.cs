@@ -32,6 +32,7 @@ namespace Helpdesk54
         string homeDirectory;
         string desktopFolder, documentsFolder, favoritesFolder;
         string userName;
+        string wordPath, excelPath, outlookPath;
         BackgroundWorker essentialBgWorker = new BackgroundWorker();
         BackgroundWorker additionalBgWorker = new BackgroundWorker();
         BackgroundWorker restoreEssentialBgWorker = new BackgroundWorker();
@@ -49,17 +50,15 @@ namespace Helpdesk54
         public UserControl1()
         {
             InitializeComponent();
-            
-            //set username - Do this early!
-            userName = Environment.UserName;
-            userDisplayFirstName = UserPrincipal.Current.GivenName;
-            userDisplayLastName = UserPrincipal.Current.Surname;
-            userCustomDisplayName = userDisplayFirstName+userDisplayLastName;
+            //set the paths to wordPath, excelPath and outlookPath           
+            setOfficePaths();
+            //wordPath, excelPath and outlookPath now set globally
+            //Get the userName to the currently logged in user
+            getUsername();
+            //Set the label to the users name
             usernameLabel.Text = userName;
-            
-            //get the drives and set them to an array
-            theDrives = DriveInfo.GetDrives();
-
+            //Get the attached drives
+            getAttachedDrives();
             //set the backupDirectoryName
             backupDirectoryName = userName.ToString() + "-Backups-" + DateTime.Now.Year.ToString();
             
@@ -76,7 +75,7 @@ namespace Helpdesk54
                 quickenBackupCheckBox.Enabled = false;
             }
 
-            //set the servernamelink
+            //set the serverNameLink to link to the appropriate location
             try
             {
                 foreach (DriveInfo currentDrive in theDrives)
@@ -232,6 +231,42 @@ namespace Helpdesk54
 
 
         }
+
+        private void setOfficePaths()
+        {
+            RegistryKey key = Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\App Paths\Winword.exe");
+            wordPath = key.GetValue("").ToString();
+
+            key = Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\App Paths\excel.exe");
+            excelPath = key.GetValue("").ToString();
+
+            key = Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\App Paths\OUTLOOK.exe");
+            outlookPath = key.GetValue("").ToString();
+        }
+
+        /*
+* Returns an array of all attached Drives
+*/
+        private Array getAttachedDrives()
+        {
+            //get the drives and set them to an array
+            theDrives = DriveInfo.GetDrives();
+            return theDrives;
+
+        }
+        /*
+         * Returns a string of the users windows login name
+         */
+        private string getUsername()
+        {
+            //set username - Do this early!
+            userName = Environment.UserName;
+            userDisplayFirstName = UserPrincipal.Current.GivenName;
+            userDisplayLastName = UserPrincipal.Current.Surname;
+            userCustomDisplayName = userDisplayFirstName + userDisplayLastName;
+            return userName;
+        }
+
         //set all the files in the server location to the serverListView tab
         public void getAllDrives()
         {
@@ -248,7 +283,10 @@ namespace Helpdesk54
             }
 */
         }
-        //handle clicking of serverNameLinkLabel
+        /*
+         * serverNameLinkLabel Click Event
+         * Opens Explorer to the server address listed
+         */
         private void serverNameLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             serverNameLinkLabel.LinkVisited = true;
@@ -373,14 +411,14 @@ namespace Helpdesk54
             switch (sentButton.Text.ToString())
             {
                 case "Open Outlook":
-                    path = @"C:\Program Files (x86)\Microsoft Office\Office14\OUTLOOK.EXE";
+                    path = outlookPath;
                     if (System.IO.File.Exists(path))
                     {
                         System.Diagnostics.Process.Start(path);
                     }
                     else
                     {
-                        System.Diagnostics.Process.Start(@"C:\Program Files\Microsoft Office\Office14\OUTLOOK.EXE");
+                        MessageBox.Show("There is an unknown error with the location of the Outlook installation or it has not been installed.");
                     }
                     break;
                 case "Open Dymo":
@@ -569,21 +607,21 @@ namespace Helpdesk54
             {
                 shortcut.TargetPath = targetFileLocation;                 // The path of the file that will launch when the shortcut is run
                 shortcut.Arguments = @"https://campus.sd54.org/campus/schaumburg.jsp";
-                shortcut.IconLocation = @"\\dataserver02\PCUpdate\54Helper\icons\ico\campus.ico";           // The icon of the shortcut
+                shortcut.IconLocation = @"\\dataserver02\PCUpdate\54Helper\icons\campus.ico";           // The icon of the shortcut
                 shortcut.Save();                                    // Save the shortcut
             }
             if (shortcutName == "AESOP")
             {
                 shortcut.TargetPath = targetFileLocation;                 // The path of the file that will launch when the shortcut is run
                 shortcut.Arguments = @"https://www.aesoponline.com/login2.asp";
-                shortcut.IconLocation = @"\\dataserver02\PCUpdate\54Helper\icons\ico\aesop.ico";           // The icon of the shortcut
+                shortcut.IconLocation = @"\\dataserver02\PCUpdate\54Helper\icons\aesop.ico";           // The icon of the shortcut
                 shortcut.Save();
             }
             if (shortcutName == "E-Finance")
             {
                 shortcut.TargetPath = targetFileLocation;                 // The path of the file that will launch when the shortcut is run
-                shortcut.Arguments = @"https://efinance.sd54.org/gas2.50/wa/r/plus/finplus51";
-                shortcut.IconLocation = @"\\dataserver02\PCUpdate\54Helper\icons\ico\efinance.ico";           // The icon of the shortcut
+                shortcut.Arguments = @"https://efinance.sd54.org/gas2.50/wa/r/plus/finplus51/";
+                shortcut.IconLocation = @"\\dataserver02\PCUpdate\54Helper\icons\efinance.ico";           // The icon of the shortcut
                 shortcut.Save();
             }
             else {
@@ -627,8 +665,15 @@ namespace Helpdesk54
                         homeShortcutCheckBox.Checked = true;
                         break;
                     case "Word":
-                        CreateShortcut("Microsoft Word", Environment.GetFolderPath(Environment.SpecialFolder.Desktop), @"C:\Program Files (x86)\Microsoft Office\Office14\WINWORD.exe");
-                        wordShortcutCheckBox.Checked = true;
+                        if (wordPath != "" || wordPath != null)
+                        {
+                            CreateShortcut("Microsoft Word", Environment.GetFolderPath(Environment.SpecialFolder.Desktop), wordPath);
+                            wordShortcutCheckBox.Checked = true;
+                        } else
+                        {
+                            MessageBox.Show("There is an issue with the installation of Word or it is not installed.");
+                            wordShortcutCheckBox.Checked = false;
+                        }
                         break;
                 }
             }

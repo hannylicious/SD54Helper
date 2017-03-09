@@ -93,9 +93,49 @@ namespace Helpdesk54.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap ic_account_balance_indigo_800_24dp {
+            get {
+                object obj = ResourceManager.GetObject("ic_account_balance_indigo_800_24dp", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap ic_dns_indigo_800_24dp {
             get {
                 object obj = ResourceManager.GetObject("ic_dns_indigo_800_24dp", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ic_email_indigo_800_24dp {
+            get {
+                object obj = ResourceManager.GetObject("ic_email_indigo_800_24dp", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ic_label_indigo_800_24dp {
+            get {
+                object obj = ResourceManager.GetObject("ic_label_indigo_800_24dp", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ic_note_indigo_800_24dp {
+            get {
+                object obj = ResourceManager.GetObject("ic_note_indigo_800_24dp", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -113,9 +153,29 @@ namespace Helpdesk54.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap ic_person_indigo_800_24dp1 {
+        internal static System.Drawing.Bitmap ic_picture_as_pdf_indigo_800_24dp {
             get {
-                object obj = ResourceManager.GetObject("ic_person_indigo_800_24dp1", resourceCulture);
+                object obj = ResourceManager.GetObject("ic_picture_as_pdf_indigo_800_24dp", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ic_print_indigo_800_24dp {
+            get {
+                object obj = ResourceManager.GetObject("ic_print_indigo_800_24dp", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ic_scanner_indigo_800_24dp {
+            get {
+                object obj = ResourceManager.GetObject("ic_scanner_indigo_800_24dp", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

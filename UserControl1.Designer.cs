@@ -28,17 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UserControl1));
             this.restoreDriveCombo = new System.Windows.Forms.ComboBox();
             this.startOfYearGroupBox = new System.Windows.Forms.GroupBox();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.quickenButton = new System.Windows.Forms.Button();
             this.scanSnapButton = new System.Windows.Forms.Button();
             this.acrobatButton = new System.Windows.Forms.Button();
-            this.installPrintersButton = new System.Windows.Forms.Button();
-            this.installShortcutsLabel = new System.Windows.Forms.Label();
             this.outlookButton = new System.Windows.Forms.Button();
             this.dymoButton = new System.Windows.Forms.Button();
-            this.installShortcutsButton = new System.Windows.Forms.Button();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.backupDriveCombo = new System.Windows.Forms.ComboBox();
             this.dataBackupGroupBox = new System.Windows.Forms.GroupBox();
             this.essentialItemsGroupBox = new System.Windows.Forms.GroupBox();
@@ -96,6 +94,18 @@
             this.userLabel = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.userBackedUpAnswerLabel = new System.Windows.Forms.Label();
+            this.userSetupAnswerLabel = new System.Windows.Forms.Label();
+            this.userHasBeenBackedUpLabel = new System.Windows.Forms.Label();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.installPrintersButton = new System.Windows.Forms.Button();
+            this.installShortcutsLabel = new System.Windows.Forms.Label();
+            this.installShortcutsButton = new System.Windows.Forms.Button();
+            this.userSetupQuestionLabel = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.tabPage5 = new System.Windows.Forms.TabPage();
@@ -141,10 +151,6 @@
             this.icPrintingCheckBox = new System.Windows.Forms.CheckBox();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.serverListView = new System.Windows.Forms.ListView();
-            this.userHasBeenBackedUpLabel = new System.Windows.Forms.Label();
-            this.userSetupQuestionLabel = new System.Windows.Forms.Label();
-            this.userBackedUpAnswerLabel = new System.Windows.Forms.Label();
-            this.userSetupAnswerLabel = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.startOfYearGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
@@ -156,6 +162,7 @@
             this.restoreAdditionalGroupBox.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.tabPage5.SuspendLayout();
@@ -173,11 +180,11 @@
             // 
             // restoreDriveCombo
             // 
-            this.restoreDriveCombo.Font = new System.Drawing.Font("Helvetica Neue", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.restoreDriveCombo.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.restoreDriveCombo.FormattingEnabled = true;
-            this.restoreDriveCombo.Location = new System.Drawing.Point(227, 26);
+            this.restoreDriveCombo.Location = new System.Drawing.Point(149, 21);
             this.restoreDriveCombo.Name = "restoreDriveCombo";
-            this.restoreDriveCombo.Size = new System.Drawing.Size(121, 26);
+            this.restoreDriveCombo.Size = new System.Drawing.Size(121, 28);
             this.restoreDriveCombo.TabIndex = 7;
             this.restoreDriveCombo.SelectedIndexChanged += new System.EventHandler(this.restoreDriveCombo_SelectedIndexChanged);
             // 
@@ -187,128 +194,107 @@
             this.startOfYearGroupBox.Controls.Add(this.quickenButton);
             this.startOfYearGroupBox.Controls.Add(this.scanSnapButton);
             this.startOfYearGroupBox.Controls.Add(this.acrobatButton);
-            this.startOfYearGroupBox.Controls.Add(this.installPrintersButton);
-            this.startOfYearGroupBox.Controls.Add(this.installShortcutsLabel);
             this.startOfYearGroupBox.Controls.Add(this.outlookButton);
             this.startOfYearGroupBox.Controls.Add(this.dymoButton);
-            this.startOfYearGroupBox.Controls.Add(this.installShortcutsButton);
-            this.startOfYearGroupBox.Font = new System.Drawing.Font("Helvetica Neue", 12F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.startOfYearGroupBox.Location = new System.Drawing.Point(6, 6);
+            this.startOfYearGroupBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.startOfYearGroupBox.Location = new System.Drawing.Point(6, 12);
             this.startOfYearGroupBox.Name = "startOfYearGroupBox";
-            this.startOfYearGroupBox.Size = new System.Drawing.Size(627, 445);
+            this.startOfYearGroupBox.Size = new System.Drawing.Size(328, 380);
             this.startOfYearGroupBox.TabIndex = 18;
             this.startOfYearGroupBox.TabStop = false;
             this.startOfYearGroupBox.Text = "Software";
             // 
-            // pictureBox2
-            // 
-            this.pictureBox2.Image = global::Helpdesk54.Properties.Resources.ic_person_indigo_800_24dp;
-            this.pictureBox2.Location = new System.Drawing.Point(31, 3);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(36, 37);
-            this.pictureBox2.TabIndex = 30;
-            this.pictureBox2.TabStop = false;
-            // 
             // quickenButton
             // 
-            this.quickenButton.Font = new System.Drawing.Font("Helvetica Neue", 9.749999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.quickenButton.ForeColor = System.Drawing.Color.MediumBlue;
-            this.quickenButton.Location = new System.Drawing.Point(6, 198);
+            this.quickenButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.quickenButton.ForeColor = System.Drawing.Color.MidnightBlue;
+            this.quickenButton.Image = global::Helpdesk54.Properties.Resources.ic_account_balance_indigo_800_24dp;
+            this.quickenButton.Location = new System.Drawing.Point(14, 301);
             this.quickenButton.Name = "quickenButton";
-            this.quickenButton.Size = new System.Drawing.Size(167, 36);
+            this.quickenButton.Size = new System.Drawing.Size(300, 60);
             this.quickenButton.TabIndex = 12;
             this.quickenButton.Text = "Quicken";
+            this.quickenButton.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.quickenButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.quickenButton.UseVisualStyleBackColor = true;
             this.quickenButton.Click += new System.EventHandler(this.quickenButton_Click);
             // 
             // scanSnapButton
             // 
-            this.scanSnapButton.Font = new System.Drawing.Font("Helvetica Neue", 9.749999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.scanSnapButton.ForeColor = System.Drawing.Color.MediumBlue;
-            this.scanSnapButton.Location = new System.Drawing.Point(6, 156);
+            this.scanSnapButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.scanSnapButton.ForeColor = System.Drawing.Color.MidnightBlue;
+            this.scanSnapButton.Image = global::Helpdesk54.Properties.Resources.ic_scanner_indigo_800_24dp;
+            this.scanSnapButton.Location = new System.Drawing.Point(14, 235);
             this.scanSnapButton.Name = "scanSnapButton";
-            this.scanSnapButton.Size = new System.Drawing.Size(167, 36);
+            this.scanSnapButton.Size = new System.Drawing.Size(300, 60);
             this.scanSnapButton.TabIndex = 11;
             this.scanSnapButton.Text = "Scan Snap";
+            this.scanSnapButton.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.scanSnapButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.scanSnapButton.UseVisualStyleBackColor = true;
             this.scanSnapButton.Click += new System.EventHandler(this.scanSnapButton_Click);
             // 
             // acrobatButton
             // 
-            this.acrobatButton.Font = new System.Drawing.Font("Helvetica Neue", 9.749999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.acrobatButton.ForeColor = System.Drawing.Color.MediumBlue;
-            this.acrobatButton.Location = new System.Drawing.Point(6, 114);
+            this.acrobatButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.acrobatButton.ForeColor = System.Drawing.Color.MidnightBlue;
+            this.acrobatButton.Image = global::Helpdesk54.Properties.Resources.ic_picture_as_pdf_indigo_800_24dp;
+            this.acrobatButton.Location = new System.Drawing.Point(14, 169);
             this.acrobatButton.Name = "acrobatButton";
-            this.acrobatButton.Size = new System.Drawing.Size(167, 36);
+            this.acrobatButton.Size = new System.Drawing.Size(300, 60);
             this.acrobatButton.TabIndex = 10;
             this.acrobatButton.Text = "Acrobat Pro";
+            this.acrobatButton.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.acrobatButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.acrobatButton.UseVisualStyleBackColor = true;
             this.acrobatButton.Click += new System.EventHandler(this.acrobatButton_Click);
             // 
-            // installPrintersButton
-            // 
-            this.installPrintersButton.Font = new System.Drawing.Font("Helvetica Neue", 9.749999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.installPrintersButton.ForeColor = System.Drawing.Color.MediumBlue;
-            this.installPrintersButton.Location = new System.Drawing.Point(213, 72);
-            this.installPrintersButton.Name = "installPrintersButton";
-            this.installPrintersButton.Size = new System.Drawing.Size(167, 36);
-            this.installPrintersButton.TabIndex = 8;
-            this.installPrintersButton.Text = "Install Printers";
-            this.installPrintersButton.UseVisualStyleBackColor = true;
-            this.installPrintersButton.Click += new System.EventHandler(this.installPrintersButton_Click);
-            // 
-            // installShortcutsLabel
-            // 
-            this.installShortcutsLabel.Font = new System.Drawing.Font("Helvetica Neue", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.installShortcutsLabel.Location = new System.Drawing.Point(386, 36);
-            this.installShortcutsLabel.Name = "installShortcutsLabel";
-            this.installShortcutsLabel.Size = new System.Drawing.Size(237, 36);
-            this.installShortcutsLabel.TabIndex = 7;
-            this.installShortcutsLabel.Text = "Installs Shortcuts To E Finance, AESOP, Infinite Campus, H Drive, and Word\r\n";
-            // 
             // outlookButton
             // 
-            this.outlookButton.Font = new System.Drawing.Font("Helvetica Neue", 9.749999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.outlookButton.ForeColor = System.Drawing.Color.MediumBlue;
-            this.outlookButton.Location = new System.Drawing.Point(6, 30);
+            this.outlookButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.outlookButton.ForeColor = System.Drawing.Color.MidnightBlue;
+            this.outlookButton.Image = global::Helpdesk54.Properties.Resources.ic_email_indigo_800_24dp;
+            this.outlookButton.Location = new System.Drawing.Point(14, 37);
             this.outlookButton.Name = "outlookButton";
-            this.outlookButton.Size = new System.Drawing.Size(167, 36);
+            this.outlookButton.Size = new System.Drawing.Size(300, 60);
             this.outlookButton.TabIndex = 2;
             this.outlookButton.Text = "Outlook";
+            this.outlookButton.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.outlookButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.outlookButton.UseVisualStyleBackColor = true;
             this.outlookButton.Click += new System.EventHandler(this.outlookButton_Click);
             // 
             // dymoButton
             // 
-            this.dymoButton.Font = new System.Drawing.Font("Helvetica Neue", 9.749999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dymoButton.ForeColor = System.Drawing.Color.MediumBlue;
-            this.dymoButton.Location = new System.Drawing.Point(6, 72);
+            this.dymoButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dymoButton.ForeColor = System.Drawing.Color.MidnightBlue;
+            this.dymoButton.Image = global::Helpdesk54.Properties.Resources.ic_label_indigo_800_24dp;
+            this.dymoButton.Location = new System.Drawing.Point(14, 103);
             this.dymoButton.Name = "dymoButton";
-            this.dymoButton.Size = new System.Drawing.Size(167, 36);
+            this.dymoButton.Size = new System.Drawing.Size(300, 60);
             this.dymoButton.TabIndex = 1;
             this.dymoButton.Text = "Dymo";
+            this.dymoButton.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.dymoButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.dymoButton.UseVisualStyleBackColor = true;
             this.dymoButton.Click += new System.EventHandler(this.dymoButton_Click);
             // 
-            // installShortcutsButton
+            // pictureBox2
             // 
-            this.installShortcutsButton.Font = new System.Drawing.Font("Helvetica Neue", 9.749999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.installShortcutsButton.ForeColor = System.Drawing.Color.MediumBlue;
-            this.installShortcutsButton.Location = new System.Drawing.Point(213, 30);
-            this.installShortcutsButton.Name = "installShortcutsButton";
-            this.installShortcutsButton.Size = new System.Drawing.Size(167, 36);
-            this.installShortcutsButton.TabIndex = 0;
-            this.installShortcutsButton.Text = "Install Shortcuts";
-            this.installShortcutsButton.UseVisualStyleBackColor = true;
-            this.installShortcutsButton.Click += new System.EventHandler(this.installShortcutsButton_Click);
+            this.pictureBox2.Image = global::Helpdesk54.Properties.Resources.ic_person_indigo_800_24dp;
+            this.pictureBox2.Location = new System.Drawing.Point(21, 21);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(36, 37);
+            this.pictureBox2.TabIndex = 30;
+            this.pictureBox2.TabStop = false;
             // 
             // backupDriveCombo
             // 
-            this.backupDriveCombo.Font = new System.Drawing.Font("Helvetica Neue", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.backupDriveCombo.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.backupDriveCombo.FormattingEnabled = true;
-            this.backupDriveCombo.Location = new System.Drawing.Point(227, 26);
+            this.backupDriveCombo.Location = new System.Drawing.Point(109, 23);
             this.backupDriveCombo.Name = "backupDriveCombo";
-            this.backupDriveCombo.Size = new System.Drawing.Size(121, 26);
+            this.backupDriveCombo.Size = new System.Drawing.Size(121, 28);
             this.backupDriveCombo.TabIndex = 7;
             this.backupDriveCombo.SelectedIndexChanged += new System.EventHandler(this.backupDriveCombo_SelectedIndexChanged);
             // 
@@ -320,13 +306,12 @@
             this.dataBackupGroupBox.Controls.Add(this.backupDriveLabel);
             this.dataBackupGroupBox.Controls.Add(this.backupDriveCombo);
             this.dataBackupGroupBox.Controls.Add(this.label5);
-            this.dataBackupGroupBox.Font = new System.Drawing.Font("Helvetica Neue", 12F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dataBackupGroupBox.Location = new System.Drawing.Point(6, 6);
+            this.dataBackupGroupBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dataBackupGroupBox.Location = new System.Drawing.Point(3, 3);
             this.dataBackupGroupBox.Name = "dataBackupGroupBox";
-            this.dataBackupGroupBox.Size = new System.Drawing.Size(629, 449);
+            this.dataBackupGroupBox.Size = new System.Drawing.Size(663, 458);
             this.dataBackupGroupBox.TabIndex = 17;
             this.dataBackupGroupBox.TabStop = false;
-            this.dataBackupGroupBox.Text = "Data Backup";
             // 
             // essentialItemsGroupBox
             // 
@@ -341,11 +326,11 @@
             this.essentialItemsGroupBox.Controls.Add(this.desktopSizeLabel);
             this.essentialItemsGroupBox.Controls.Add(this.backupDocumentsButton);
             this.essentialItemsGroupBox.Controls.Add(this.backupFavoritesButton);
-            this.essentialItemsGroupBox.Font = new System.Drawing.Font("Helvetica Neue", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.essentialItemsGroupBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.essentialItemsGroupBox.ForeColor = System.Drawing.Color.Black;
             this.essentialItemsGroupBox.Location = new System.Drawing.Point(6, 59);
             this.essentialItemsGroupBox.Name = "essentialItemsGroupBox";
-            this.essentialItemsGroupBox.Size = new System.Drawing.Size(617, 212);
+            this.essentialItemsGroupBox.Size = new System.Drawing.Size(651, 212);
             this.essentialItemsGroupBox.TabIndex = 12;
             this.essentialItemsGroupBox.TabStop = false;
             this.essentialItemsGroupBox.Text = "Essential Items";
@@ -354,7 +339,7 @@
             // 
             this.essentialItemsProgressLabel.Font = new System.Drawing.Font("Franklin Gothic Demi", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.essentialItemsProgressLabel.ForeColor = System.Drawing.Color.ForestGreen;
-            this.essentialItemsProgressLabel.Location = new System.Drawing.Point(7, 179);
+            this.essentialItemsProgressLabel.Location = new System.Drawing.Point(24, 179);
             this.essentialItemsProgressLabel.Name = "essentialItemsProgressLabel";
             this.essentialItemsProgressLabel.Size = new System.Drawing.Size(604, 22);
             this.essentialItemsProgressLabel.TabIndex = 12;
@@ -366,7 +351,7 @@
             // 
             this.essentialItemsProgressBar.Location = new System.Drawing.Point(7, 173);
             this.essentialItemsProgressBar.Name = "essentialItemsProgressBar";
-            this.essentialItemsProgressBar.Size = new System.Drawing.Size(604, 33);
+            this.essentialItemsProgressBar.Size = new System.Drawing.Size(638, 33);
             this.essentialItemsProgressBar.TabIndex = 11;
             this.essentialItemsProgressBar.Visible = false;
             // 
@@ -386,7 +371,7 @@
             this.allEssentialsSizeLabel.AutoSize = true;
             this.allEssentialsSizeLabel.Location = new System.Drawing.Point(518, 81);
             this.allEssentialsSizeLabel.Name = "allEssentialsSizeLabel";
-            this.allEssentialsSizeLabel.Size = new System.Drawing.Size(71, 18);
+            this.allEssentialsSizeLabel.Size = new System.Drawing.Size(75, 20);
             this.allEssentialsSizeLabel.TabIndex = 10;
             this.allEssentialsSizeLabel.Text = "(size MB)";
             // 
@@ -395,7 +380,7 @@
             this.documentsSizeLabel.AutoSize = true;
             this.documentsSizeLabel.Location = new System.Drawing.Point(193, 81);
             this.documentsSizeLabel.Name = "documentsSizeLabel";
-            this.documentsSizeLabel.Size = new System.Drawing.Size(71, 18);
+            this.documentsSizeLabel.Size = new System.Drawing.Size(75, 20);
             this.documentsSizeLabel.TabIndex = 4;
             this.documentsSizeLabel.Text = "(size MB)";
             // 
@@ -404,7 +389,7 @@
             this.favoritesSizeLabel.AutoSize = true;
             this.favoritesSizeLabel.Location = new System.Drawing.Point(193, 126);
             this.favoritesSizeLabel.Name = "favoritesSizeLabel";
-            this.favoritesSizeLabel.Size = new System.Drawing.Size(71, 18);
+            this.favoritesSizeLabel.Size = new System.Drawing.Size(75, 20);
             this.favoritesSizeLabel.TabIndex = 5;
             this.favoritesSizeLabel.Text = "(size MB)";
             // 
@@ -425,7 +410,7 @@
             this.desktopSizeLabel.AutoSize = true;
             this.desktopSizeLabel.Location = new System.Drawing.Point(193, 38);
             this.desktopSizeLabel.Name = "desktopSizeLabel";
-            this.desktopSizeLabel.Size = new System.Drawing.Size(71, 18);
+            this.desktopSizeLabel.Size = new System.Drawing.Size(75, 20);
             this.desktopSizeLabel.TabIndex = 3;
             this.desktopSizeLabel.Text = "(size MB)";
             // 
@@ -464,11 +449,11 @@
             this.additionalItemsGroupBox.Controls.Add(this.backupStickyNotesButton);
             this.additionalItemsGroupBox.Controls.Add(this.picturesSizeLabel);
             this.additionalItemsGroupBox.Controls.Add(this.stickyNotesSizeLabel);
-            this.additionalItemsGroupBox.Font = new System.Drawing.Font("Helvetica Neue", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.additionalItemsGroupBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.additionalItemsGroupBox.ForeColor = System.Drawing.Color.Black;
             this.additionalItemsGroupBox.Location = new System.Drawing.Point(6, 277);
             this.additionalItemsGroupBox.Name = "additionalItemsGroupBox";
-            this.additionalItemsGroupBox.Size = new System.Drawing.Size(617, 166);
+            this.additionalItemsGroupBox.Size = new System.Drawing.Size(651, 166);
             this.additionalItemsGroupBox.TabIndex = 11;
             this.additionalItemsGroupBox.TabStop = false;
             this.additionalItemsGroupBox.Text = "Additional Items";
@@ -477,7 +462,7 @@
             // 
             this.additionalItemsProgressLabel.Font = new System.Drawing.Font("Franklin Gothic Demi", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.additionalItemsProgressLabel.ForeColor = System.Drawing.Color.ForestGreen;
-            this.additionalItemsProgressLabel.Location = new System.Drawing.Point(7, 133);
+            this.additionalItemsProgressLabel.Location = new System.Drawing.Point(24, 133);
             this.additionalItemsProgressLabel.Name = "additionalItemsProgressLabel";
             this.additionalItemsProgressLabel.Size = new System.Drawing.Size(604, 22);
             this.additionalItemsProgressLabel.TabIndex = 14;
@@ -490,7 +475,7 @@
             this.musicSizeLabel.AutoSize = true;
             this.musicSizeLabel.Location = new System.Drawing.Point(518, 83);
             this.musicSizeLabel.Name = "musicSizeLabel";
-            this.musicSizeLabel.Size = new System.Drawing.Size(71, 18);
+            this.musicSizeLabel.Size = new System.Drawing.Size(75, 20);
             this.musicSizeLabel.TabIndex = 19;
             this.musicSizeLabel.Text = "(size MB)";
             // 
@@ -499,7 +484,7 @@
             this.videosSizeLabel.AutoSize = true;
             this.videosSizeLabel.Location = new System.Drawing.Point(518, 38);
             this.videosSizeLabel.Name = "videosSizeLabel";
-            this.videosSizeLabel.Size = new System.Drawing.Size(71, 18);
+            this.videosSizeLabel.Size = new System.Drawing.Size(75, 20);
             this.videosSizeLabel.TabIndex = 18;
             this.videosSizeLabel.Text = "(size MB)";
             // 
@@ -507,7 +492,7 @@
             // 
             this.additionalItemsProgressBar.Location = new System.Drawing.Point(7, 127);
             this.additionalItemsProgressBar.Name = "additionalItemsProgressBar";
-            this.additionalItemsProgressBar.Size = new System.Drawing.Size(604, 33);
+            this.additionalItemsProgressBar.Size = new System.Drawing.Size(638, 33);
             this.additionalItemsProgressBar.TabIndex = 13;
             this.additionalItemsProgressBar.Visible = false;
             // 
@@ -560,7 +545,7 @@
             this.picturesSizeLabel.AutoSize = true;
             this.picturesSizeLabel.Location = new System.Drawing.Point(187, 87);
             this.picturesSizeLabel.Name = "picturesSizeLabel";
-            this.picturesSizeLabel.Size = new System.Drawing.Size(71, 18);
+            this.picturesSizeLabel.Size = new System.Drawing.Size(75, 20);
             this.picturesSizeLabel.TabIndex = 14;
             this.picturesSizeLabel.Text = "(size MB)";
             // 
@@ -569,45 +554,49 @@
             this.stickyNotesSizeLabel.AutoSize = true;
             this.stickyNotesSizeLabel.Location = new System.Drawing.Point(187, 38);
             this.stickyNotesSizeLabel.Name = "stickyNotesSizeLabel";
-            this.stickyNotesSizeLabel.Size = new System.Drawing.Size(71, 18);
+            this.stickyNotesSizeLabel.Size = new System.Drawing.Size(75, 20);
             this.stickyNotesSizeLabel.TabIndex = 12;
             this.stickyNotesSizeLabel.Text = "(size MB)";
             // 
             // backupDriveLabel
             // 
             this.backupDriveLabel.AutoSize = true;
-            this.backupDriveLabel.Location = new System.Drawing.Point(355, 30);
+            this.backupDriveLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.backupDriveLabel.Location = new System.Drawing.Point(236, 26);
             this.backupDriveLabel.Name = "backupDriveLabel";
-            this.backupDriveLabel.Size = new System.Drawing.Size(111, 19);
+            this.backupDriveLabel.Size = new System.Drawing.Size(109, 20);
             this.backupDriveLabel.TabIndex = 8;
             this.backupDriveLabel.Text = "(x.xx GB Free)";
             // 
             // label5
             // 
             this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label5.ForeColor = System.Drawing.Color.Black;
-            this.label5.Location = new System.Drawing.Point(76, 30);
+            this.label5.Location = new System.Drawing.Point(13, 26);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(152, 19);
+            this.label5.Size = new System.Drawing.Size(90, 20);
             this.label5.TabIndex = 6;
-            this.label5.Text = "Backup Destination";
+            this.label5.Text = "Destination";
             // 
             // restoreLocationLabel
             // 
             this.restoreLocationLabel.AutoSize = true;
+            this.restoreLocationLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.restoreLocationLabel.ForeColor = System.Drawing.Color.Black;
-            this.restoreLocationLabel.Location = new System.Drawing.Point(92, 30);
+            this.restoreLocationLabel.Location = new System.Drawing.Point(14, 25);
             this.restoreLocationLabel.Name = "restoreLocationLabel";
-            this.restoreLocationLabel.Size = new System.Drawing.Size(133, 19);
+            this.restoreLocationLabel.Size = new System.Drawing.Size(128, 20);
             this.restoreLocationLabel.TabIndex = 6;
             this.restoreLocationLabel.Text = "Backup Location";
             // 
             // backupFoundLabel
             // 
             this.backupFoundLabel.AutoSize = true;
-            this.backupFoundLabel.Location = new System.Drawing.Point(355, 30);
+            this.backupFoundLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.backupFoundLabel.Location = new System.Drawing.Point(277, 25);
             this.backupFoundLabel.Name = "backupFoundLabel";
-            this.backupFoundLabel.Size = new System.Drawing.Size(126, 19);
+            this.backupFoundLabel.Size = new System.Drawing.Size(123, 20);
             this.backupFoundLabel.TabIndex = 8;
             this.backupFoundLabel.Text = "(Backup Found)";
             // 
@@ -615,7 +604,7 @@
             // 
             this.restoreEssentialsBarLabel.Font = new System.Drawing.Font("Franklin Gothic Demi", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.restoreEssentialsBarLabel.ForeColor = System.Drawing.Color.ForestGreen;
-            this.restoreEssentialsBarLabel.Location = new System.Drawing.Point(7, 179);
+            this.restoreEssentialsBarLabel.Location = new System.Drawing.Point(24, 179);
             this.restoreEssentialsBarLabel.Name = "restoreEssentialsBarLabel";
             this.restoreEssentialsBarLabel.Size = new System.Drawing.Size(604, 22);
             this.restoreEssentialsBarLabel.TabIndex = 12;
@@ -636,11 +625,11 @@
             this.restoreEssentialGroupBox.Controls.Add(this.recoverDesktopLabel);
             this.restoreEssentialGroupBox.Controls.Add(this.restoreDocumentsButton);
             this.restoreEssentialGroupBox.Controls.Add(this.restoreFavoritesButton);
-            this.restoreEssentialGroupBox.Font = new System.Drawing.Font("Helvetica Neue", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.restoreEssentialGroupBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.restoreEssentialGroupBox.ForeColor = System.Drawing.Color.Black;
             this.restoreEssentialGroupBox.Location = new System.Drawing.Point(6, 59);
             this.restoreEssentialGroupBox.Name = "restoreEssentialGroupBox";
-            this.restoreEssentialGroupBox.Size = new System.Drawing.Size(617, 212);
+            this.restoreEssentialGroupBox.Size = new System.Drawing.Size(651, 212);
             this.restoreEssentialGroupBox.TabIndex = 12;
             this.restoreEssentialGroupBox.TabStop = false;
             this.restoreEssentialGroupBox.Text = "Restore Essential Items";
@@ -649,7 +638,7 @@
             // 
             this.restoreEssentialsProgressBar.Location = new System.Drawing.Point(7, 173);
             this.restoreEssentialsProgressBar.Name = "restoreEssentialsProgressBar";
-            this.restoreEssentialsProgressBar.Size = new System.Drawing.Size(604, 33);
+            this.restoreEssentialsProgressBar.Size = new System.Drawing.Size(638, 33);
             this.restoreEssentialsProgressBar.TabIndex = 11;
             this.restoreEssentialsProgressBar.Visible = false;
             // 
@@ -669,7 +658,7 @@
             this.recoverAllEssentialsLabel.AutoSize = true;
             this.recoverAllEssentialsLabel.Location = new System.Drawing.Point(518, 81);
             this.recoverAllEssentialsLabel.Name = "recoverAllEssentialsLabel";
-            this.recoverAllEssentialsLabel.Size = new System.Drawing.Size(66, 18);
+            this.recoverAllEssentialsLabel.Size = new System.Drawing.Size(71, 20);
             this.recoverAllEssentialsLabel.TabIndex = 10;
             this.recoverAllEssentialsLabel.Text = "(recover)";
             // 
@@ -678,7 +667,7 @@
             this.recoverDocumentsLabel.AutoSize = true;
             this.recoverDocumentsLabel.Location = new System.Drawing.Point(193, 81);
             this.recoverDocumentsLabel.Name = "recoverDocumentsLabel";
-            this.recoverDocumentsLabel.Size = new System.Drawing.Size(66, 18);
+            this.recoverDocumentsLabel.Size = new System.Drawing.Size(71, 20);
             this.recoverDocumentsLabel.TabIndex = 4;
             this.recoverDocumentsLabel.Text = "(recover)";
             // 
@@ -687,7 +676,7 @@
             this.recoverFavoritesLabel.AutoSize = true;
             this.recoverFavoritesLabel.Location = new System.Drawing.Point(193, 126);
             this.recoverFavoritesLabel.Name = "recoverFavoritesLabel";
-            this.recoverFavoritesLabel.Size = new System.Drawing.Size(66, 18);
+            this.recoverFavoritesLabel.Size = new System.Drawing.Size(71, 20);
             this.recoverFavoritesLabel.TabIndex = 5;
             this.recoverFavoritesLabel.Text = "(recover)";
             // 
@@ -708,7 +697,7 @@
             this.recoverDesktopLabel.AutoSize = true;
             this.recoverDesktopLabel.Location = new System.Drawing.Point(193, 38);
             this.recoverDesktopLabel.Name = "recoverDesktopLabel";
-            this.recoverDesktopLabel.Size = new System.Drawing.Size(66, 18);
+            this.recoverDesktopLabel.Size = new System.Drawing.Size(71, 20);
             this.recoverDesktopLabel.TabIndex = 3;
             this.recoverDesktopLabel.Text = "(recover)";
             // 
@@ -742,13 +731,12 @@
             this.restoreGroupBox.Controls.Add(this.backupFoundLabel);
             this.restoreGroupBox.Controls.Add(this.restoreDriveCombo);
             this.restoreGroupBox.Controls.Add(this.restoreLocationLabel);
-            this.restoreGroupBox.Font = new System.Drawing.Font("Helvetica Neue", 12F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.restoreGroupBox.Location = new System.Drawing.Point(6, 6);
+            this.restoreGroupBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.restoreGroupBox.Location = new System.Drawing.Point(3, 3);
             this.restoreGroupBox.Name = "restoreGroupBox";
-            this.restoreGroupBox.Size = new System.Drawing.Size(629, 449);
+            this.restoreGroupBox.Size = new System.Drawing.Size(663, 458);
             this.restoreGroupBox.TabIndex = 21;
             this.restoreGroupBox.TabStop = false;
-            this.restoreGroupBox.Text = "Data Restoration";
             // 
             // restoreAdditionalGroupBox
             // 
@@ -763,11 +751,11 @@
             this.restoreAdditionalGroupBox.Controls.Add(this.restoreStickyNotesButton);
             this.restoreAdditionalGroupBox.Controls.Add(this.recoverPicturesLabel);
             this.restoreAdditionalGroupBox.Controls.Add(this.recoverStickyNotesLabel);
-            this.restoreAdditionalGroupBox.Font = new System.Drawing.Font("Helvetica Neue", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.restoreAdditionalGroupBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.restoreAdditionalGroupBox.ForeColor = System.Drawing.Color.Black;
             this.restoreAdditionalGroupBox.Location = new System.Drawing.Point(6, 277);
             this.restoreAdditionalGroupBox.Name = "restoreAdditionalGroupBox";
-            this.restoreAdditionalGroupBox.Size = new System.Drawing.Size(617, 166);
+            this.restoreAdditionalGroupBox.Size = new System.Drawing.Size(651, 166);
             this.restoreAdditionalGroupBox.TabIndex = 11;
             this.restoreAdditionalGroupBox.TabStop = false;
             this.restoreAdditionalGroupBox.Text = "Restore Additional Items";
@@ -776,7 +764,7 @@
             // 
             this.restoreAdditionalBarLabel.Font = new System.Drawing.Font("Franklin Gothic Demi", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.restoreAdditionalBarLabel.ForeColor = System.Drawing.Color.ForestGreen;
-            this.restoreAdditionalBarLabel.Location = new System.Drawing.Point(7, 133);
+            this.restoreAdditionalBarLabel.Location = new System.Drawing.Point(24, 133);
             this.restoreAdditionalBarLabel.Name = "restoreAdditionalBarLabel";
             this.restoreAdditionalBarLabel.Size = new System.Drawing.Size(604, 22);
             this.restoreAdditionalBarLabel.TabIndex = 14;
@@ -789,7 +777,7 @@
             this.recoverMusicLabel.AutoSize = true;
             this.recoverMusicLabel.Location = new System.Drawing.Point(518, 83);
             this.recoverMusicLabel.Name = "recoverMusicLabel";
-            this.recoverMusicLabel.Size = new System.Drawing.Size(66, 18);
+            this.recoverMusicLabel.Size = new System.Drawing.Size(71, 20);
             this.recoverMusicLabel.TabIndex = 19;
             this.recoverMusicLabel.Text = "(recover)";
             // 
@@ -798,7 +786,7 @@
             this.recoverVideosLabel.AutoSize = true;
             this.recoverVideosLabel.Location = new System.Drawing.Point(518, 38);
             this.recoverVideosLabel.Name = "recoverVideosLabel";
-            this.recoverVideosLabel.Size = new System.Drawing.Size(66, 18);
+            this.recoverVideosLabel.Size = new System.Drawing.Size(71, 20);
             this.recoverVideosLabel.TabIndex = 18;
             this.recoverVideosLabel.Text = "(recover)";
             // 
@@ -806,7 +794,7 @@
             // 
             this.restoreAdditionalProgressBar.Location = new System.Drawing.Point(7, 127);
             this.restoreAdditionalProgressBar.Name = "restoreAdditionalProgressBar";
-            this.restoreAdditionalProgressBar.Size = new System.Drawing.Size(604, 33);
+            this.restoreAdditionalProgressBar.Size = new System.Drawing.Size(638, 33);
             this.restoreAdditionalProgressBar.TabIndex = 13;
             this.restoreAdditionalProgressBar.Visible = false;
             // 
@@ -859,7 +847,7 @@
             this.recoverPicturesLabel.AutoSize = true;
             this.recoverPicturesLabel.Location = new System.Drawing.Point(187, 87);
             this.recoverPicturesLabel.Name = "recoverPicturesLabel";
-            this.recoverPicturesLabel.Size = new System.Drawing.Size(66, 18);
+            this.recoverPicturesLabel.Size = new System.Drawing.Size(71, 20);
             this.recoverPicturesLabel.TabIndex = 14;
             this.recoverPicturesLabel.Text = "(recover)";
             // 
@@ -868,17 +856,17 @@
             this.recoverStickyNotesLabel.AutoSize = true;
             this.recoverStickyNotesLabel.Location = new System.Drawing.Point(187, 38);
             this.recoverStickyNotesLabel.Name = "recoverStickyNotesLabel";
-            this.recoverStickyNotesLabel.Size = new System.Drawing.Size(66, 18);
+            this.recoverStickyNotesLabel.Size = new System.Drawing.Size(71, 20);
             this.recoverStickyNotesLabel.TabIndex = 12;
             this.recoverStickyNotesLabel.Text = "(recover)";
             // 
             // serverNameLinkLabel
             // 
             this.serverNameLinkLabel.AutoSize = true;
-            this.serverNameLinkLabel.Font = new System.Drawing.Font("Helvetica Neue", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.serverNameLinkLabel.Location = new System.Drawing.Point(494, 13);
+            this.serverNameLinkLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.serverNameLinkLabel.Location = new System.Drawing.Point(390, 31);
             this.serverNameLinkLabel.Name = "serverNameLinkLabel";
-            this.serverNameLinkLabel.Size = new System.Drawing.Size(106, 19);
+            this.serverNameLinkLabel.Size = new System.Drawing.Size(102, 20);
             this.serverNameLinkLabel.TabIndex = 23;
             this.serverNameLinkLabel.TabStop = true;
             this.serverNameLinkLabel.Text = "servername";
@@ -887,10 +875,10 @@
             // serverLabel
             // 
             this.serverLabel.AutoSize = true;
-            this.serverLabel.Font = new System.Drawing.Font("Helvetica Neue", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.serverLabel.Location = new System.Drawing.Point(400, 13);
+            this.serverLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.serverLabel.Location = new System.Drawing.Point(334, 31);
             this.serverLabel.Name = "serverLabel";
-            this.serverLabel.Size = new System.Drawing.Size(69, 19);
+            this.serverLabel.Size = new System.Drawing.Size(66, 20);
             this.serverLabel.TabIndex = 22;
             this.serverLabel.Text = "Server:";
             this.serverLabel.Visible = false;
@@ -898,20 +886,20 @@
             // usernameLabel
             // 
             this.usernameLabel.AutoSize = true;
-            this.usernameLabel.Font = new System.Drawing.Font("Helvetica Neue", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.usernameLabel.Location = new System.Drawing.Point(105, 13);
+            this.usernameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.usernameLabel.Location = new System.Drawing.Point(63, 31);
             this.usernameLabel.Name = "usernameLabel";
-            this.usernameLabel.Size = new System.Drawing.Size(90, 19);
+            this.usernameLabel.Size = new System.Drawing.Size(88, 20);
             this.usernameLabel.TabIndex = 20;
             this.usernameLabel.Text = "username";
             // 
             // userLabel
             // 
             this.userLabel.AutoSize = true;
-            this.userLabel.Font = new System.Drawing.Font("Helvetica Neue", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.userLabel.Location = new System.Drawing.Point(25, 13);
+            this.userLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.userLabel.Location = new System.Drawing.Point(15, 31);
             this.userLabel.Name = "userLabel";
-            this.userLabel.Size = new System.Drawing.Size(53, 19);
+            this.userLabel.Size = new System.Drawing.Size(52, 20);
             this.userLabel.TabIndex = 19;
             this.userLabel.Text = "User:";
             this.userLabel.Visible = false;
@@ -923,32 +911,171 @@
             this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Controls.Add(this.tabPage5);
             this.tabControl1.Controls.Add(this.tabPage4);
-            this.tabControl1.Font = new System.Drawing.Font(".Helvetica Neue Desk UI", 9.749999F);
-            this.tabControl1.Location = new System.Drawing.Point(12, 76);
+            this.tabControl1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tabControl1.Location = new System.Drawing.Point(2, 79);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(653, 493);
+            this.tabControl1.Size = new System.Drawing.Size(680, 500);
             this.tabControl1.TabIndex = 24;
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.userBackedUpAnswerLabel);
+            this.tabPage1.Controls.Add(this.userSetupAnswerLabel);
+            this.tabPage1.Controls.Add(this.userHasBeenBackedUpLabel);
+            this.tabPage1.Controls.Add(this.groupBox1);
+            this.tabPage1.Controls.Add(this.userSetupQuestionLabel);
             this.tabPage1.Controls.Add(this.startOfYearGroupBox);
-            this.tabPage1.Location = new System.Drawing.Point(4, 24);
+            this.tabPage1.Location = new System.Drawing.Point(4, 29);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(645, 465);
+            this.tabPage1.Size = new System.Drawing.Size(672, 467);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Programs";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // userBackedUpAnswerLabel
+            // 
+            this.userBackedUpAnswerLabel.AutoSize = true;
+            this.userBackedUpAnswerLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.userBackedUpAnswerLabel.ForeColor = System.Drawing.Color.DarkRed;
+            this.userBackedUpAnswerLabel.Location = new System.Drawing.Point(293, 433);
+            this.userBackedUpAnswerLabel.Name = "userBackedUpAnswerLabel";
+            this.userBackedUpAnswerLabel.Size = new System.Drawing.Size(34, 20);
+            this.userBackedUpAnswerLabel.TabIndex = 32;
+            this.userBackedUpAnswerLabel.Text = "NO";
+            // 
+            // userSetupAnswerLabel
+            // 
+            this.userSetupAnswerLabel.AutoSize = true;
+            this.userSetupAnswerLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.userSetupAnswerLabel.ForeColor = System.Drawing.Color.DarkRed;
+            this.userSetupAnswerLabel.Location = new System.Drawing.Point(257, 401);
+            this.userSetupAnswerLabel.Name = "userSetupAnswerLabel";
+            this.userSetupAnswerLabel.Size = new System.Drawing.Size(34, 20);
+            this.userSetupAnswerLabel.TabIndex = 32;
+            this.userSetupAnswerLabel.Text = "NO";
+            // 
+            // userHasBeenBackedUpLabel
+            // 
+            this.userHasBeenBackedUpLabel.AutoSize = true;
+            this.userHasBeenBackedUpLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.userHasBeenBackedUpLabel.Location = new System.Drawing.Point(6, 433);
+            this.userHasBeenBackedUpLabel.Name = "userHasBeenBackedUpLabel";
+            this.userHasBeenBackedUpLabel.Size = new System.Drawing.Size(281, 20);
+            this.userHasBeenBackedUpLabel.TabIndex = 31;
+            this.userHasBeenBackedUpLabel.Text = "User Has Been Backed Up This Year?";
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.label11);
+            this.groupBox1.Controls.Add(this.label10);
+            this.groupBox1.Controls.Add(this.label9);
+            this.groupBox1.Controls.Add(this.label6);
+            this.groupBox1.Controls.Add(this.installPrintersButton);
+            this.groupBox1.Controls.Add(this.installShortcutsLabel);
+            this.groupBox1.Controls.Add(this.installShortcutsButton);
+            this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox1.Location = new System.Drawing.Point(338, 12);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(328, 380);
+            this.groupBox1.TabIndex = 19;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Additional Tasks";
+            // 
+            // label11
+            // 
+            this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label11.Location = new System.Drawing.Point(35, 153);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(124, 15);
+            this.label11.TabIndex = 15;
+            this.label11.Text = "- H: Drive";
+            // 
+            // label10
+            // 
+            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label10.Location = new System.Drawing.Point(35, 136);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(124, 15);
+            this.label10.TabIndex = 14;
+            this.label10.Text = "- Infinite Campus";
+            // 
+            // label9
+            // 
+            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.Location = new System.Drawing.Point(35, 119);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(124, 15);
+            this.label9.TabIndex = 13;
+            this.label9.Text = "- Aesop";
+            // 
+            // label6
+            // 
+            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(35, 102);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(124, 15);
+            this.label6.TabIndex = 12;
+            this.label6.Text = "- E Finance";
+            // 
+            // installPrintersButton
+            // 
+            this.installPrintersButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.installPrintersButton.ForeColor = System.Drawing.Color.MidnightBlue;
+            this.installPrintersButton.Image = global::Helpdesk54.Properties.Resources.ic_print_indigo_800_24dp;
+            this.installPrintersButton.Location = new System.Drawing.Point(14, 235);
+            this.installPrintersButton.Name = "installPrintersButton";
+            this.installPrintersButton.Size = new System.Drawing.Size(300, 60);
+            this.installPrintersButton.TabIndex = 11;
+            this.installPrintersButton.Text = "Install Printers";
+            this.installPrintersButton.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.installPrintersButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.installPrintersButton.UseVisualStyleBackColor = true;
+            this.installPrintersButton.Click += new System.EventHandler(this.installPrintersButton_Click);
+            // 
+            // installShortcutsLabel
+            // 
+            this.installShortcutsLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.installShortcutsLabel.Location = new System.Drawing.Point(35, 170);
+            this.installShortcutsLabel.Name = "installShortcutsLabel";
+            this.installShortcutsLabel.Size = new System.Drawing.Size(124, 18);
+            this.installShortcutsLabel.TabIndex = 10;
+            this.installShortcutsLabel.Text = "- MS Word";
+            // 
+            // installShortcutsButton
+            // 
+            this.installShortcutsButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.installShortcutsButton.ForeColor = System.Drawing.Color.MidnightBlue;
+            this.installShortcutsButton.Image = global::Helpdesk54.Properties.Resources.ic_note_indigo_800_24dp;
+            this.installShortcutsButton.Location = new System.Drawing.Point(14, 37);
+            this.installShortcutsButton.Name = "installShortcutsButton";
+            this.installShortcutsButton.Size = new System.Drawing.Size(300, 60);
+            this.installShortcutsButton.TabIndex = 9;
+            this.installShortcutsButton.Text = "Install Shortcuts";
+            this.installShortcutsButton.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.installShortcutsButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.installShortcutsButton.UseVisualStyleBackColor = true;
+            this.installShortcutsButton.Click += new System.EventHandler(this.installShortcutsButton_Click);
+            // 
+            // userSetupQuestionLabel
+            // 
+            this.userSetupQuestionLabel.AutoSize = true;
+            this.userSetupQuestionLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.userSetupQuestionLabel.Location = new System.Drawing.Point(6, 401);
+            this.userSetupQuestionLabel.Name = "userSetupQuestionLabel";
+            this.userSetupQuestionLabel.Size = new System.Drawing.Size(245, 20);
+            this.userSetupQuestionLabel.TabIndex = 31;
+            this.userSetupQuestionLabel.Text = "User Has Been Setup This Year?";
             // 
             // tabPage2
             // 
             this.tabPage2.BackColor = System.Drawing.Color.AliceBlue;
             this.tabPage2.Controls.Add(this.dataBackupGroupBox);
-            this.tabPage2.Location = new System.Drawing.Point(4, 24);
+            this.tabPage2.Location = new System.Drawing.Point(4, 29);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(645, 465);
+            this.tabPage2.Size = new System.Drawing.Size(672, 467);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Data Backup";
             // 
@@ -956,10 +1083,10 @@
             // 
             this.tabPage3.BackColor = System.Drawing.Color.AliceBlue;
             this.tabPage3.Controls.Add(this.restoreGroupBox);
-            this.tabPage3.Location = new System.Drawing.Point(4, 24);
+            this.tabPage3.Location = new System.Drawing.Point(4, 29);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(645, 465);
+            this.tabPage3.Size = new System.Drawing.Size(672, 467);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Data Restoration";
             // 
@@ -967,10 +1094,10 @@
             // 
             this.tabPage5.Controls.Add(this.endOfYearCheckBoxPanel);
             this.tabPage5.Controls.Add(this.startOfYearCheckBoxPanel);
-            this.tabPage5.Location = new System.Drawing.Point(4, 24);
+            this.tabPage5.Location = new System.Drawing.Point(4, 29);
             this.tabPage5.Name = "tabPage5";
             this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage5.Size = new System.Drawing.Size(645, 465);
+            this.tabPage5.Size = new System.Drawing.Size(672, 467);
             this.tabPage5.TabIndex = 4;
             this.tabPage5.Text = "User Checklist";
             this.tabPage5.UseVisualStyleBackColor = true;
@@ -984,7 +1111,7 @@
             this.endOfYearCheckBoxPanel.Controls.Add(this.panel8);
             this.endOfYearCheckBoxPanel.Location = new System.Drawing.Point(6, 244);
             this.endOfYearCheckBoxPanel.Name = "endOfYearCheckBoxPanel";
-            this.endOfYearCheckBoxPanel.Size = new System.Drawing.Size(633, 207);
+            this.endOfYearCheckBoxPanel.Size = new System.Drawing.Size(660, 217);
             this.endOfYearCheckBoxPanel.TabIndex = 10;
             // 
             // endOfYearLabel
@@ -1014,7 +1141,7 @@
             this.musicBackupCheckBox.AutoSize = true;
             this.musicBackupCheckBox.Location = new System.Drawing.Point(7, 97);
             this.musicBackupCheckBox.Name = "musicBackupCheckBox";
-            this.musicBackupCheckBox.Size = new System.Drawing.Size(110, 19);
+            this.musicBackupCheckBox.Size = new System.Drawing.Size(127, 24);
             this.musicBackupCheckBox.TabIndex = 6;
             this.musicBackupCheckBox.Text = "Music Backup";
             this.musicBackupCheckBox.UseVisualStyleBackColor = true;
@@ -1024,7 +1151,7 @@
             this.videosBackupCheckBox.AutoSize = true;
             this.videosBackupCheckBox.Location = new System.Drawing.Point(7, 74);
             this.videosBackupCheckBox.Name = "videosBackupCheckBox";
-            this.videosBackupCheckBox.Size = new System.Drawing.Size(115, 19);
+            this.videosBackupCheckBox.Size = new System.Drawing.Size(135, 24);
             this.videosBackupCheckBox.TabIndex = 5;
             this.videosBackupCheckBox.Text = "Videos Backup";
             this.videosBackupCheckBox.UseVisualStyleBackColor = true;
@@ -1034,7 +1161,7 @@
             this.picturesBackupCheckBox.AutoSize = true;
             this.picturesBackupCheckBox.Location = new System.Drawing.Point(7, 51);
             this.picturesBackupCheckBox.Name = "picturesBackupCheckBox";
-            this.picturesBackupCheckBox.Size = new System.Drawing.Size(122, 19);
+            this.picturesBackupCheckBox.Size = new System.Drawing.Size(143, 24);
             this.picturesBackupCheckBox.TabIndex = 3;
             this.picturesBackupCheckBox.Text = "Pictures Backup";
             this.picturesBackupCheckBox.UseVisualStyleBackColor = true;
@@ -1054,7 +1181,7 @@
             this.stickyNotesBackupCheckBox.AutoSize = true;
             this.stickyNotesBackupCheckBox.Location = new System.Drawing.Point(7, 27);
             this.stickyNotesBackupCheckBox.Name = "stickyNotesBackupCheckBox";
-            this.stickyNotesBackupCheckBox.Size = new System.Drawing.Size(146, 19);
+            this.stickyNotesBackupCheckBox.Size = new System.Drawing.Size(170, 24);
             this.stickyNotesBackupCheckBox.TabIndex = 1;
             this.stickyNotesBackupCheckBox.Text = "StickyNotes Backup";
             this.stickyNotesBackupCheckBox.UseVisualStyleBackColor = true;
@@ -1086,7 +1213,7 @@
             this.favoritesBackupCheckBox.AutoSize = true;
             this.favoritesBackupCheckBox.Location = new System.Drawing.Point(7, 74);
             this.favoritesBackupCheckBox.Name = "favoritesBackupCheckBox";
-            this.favoritesBackupCheckBox.Size = new System.Drawing.Size(128, 19);
+            this.favoritesBackupCheckBox.Size = new System.Drawing.Size(151, 24);
             this.favoritesBackupCheckBox.TabIndex = 5;
             this.favoritesBackupCheckBox.Text = "Favorites Backup";
             this.favoritesBackupCheckBox.UseVisualStyleBackColor = true;
@@ -1096,7 +1223,7 @@
             this.quickenBackupCheckBox.AutoSize = true;
             this.quickenBackupCheckBox.Location = new System.Drawing.Point(7, 97);
             this.quickenBackupCheckBox.Name = "quickenBackupCheckBox";
-            this.quickenBackupCheckBox.Size = new System.Drawing.Size(116, 19);
+            this.quickenBackupCheckBox.Size = new System.Drawing.Size(135, 24);
             this.quickenBackupCheckBox.TabIndex = 4;
             this.quickenBackupCheckBox.Text = "Quicken On H:\\";
             this.quickenBackupCheckBox.UseVisualStyleBackColor = true;
@@ -1106,7 +1233,7 @@
             this.documentsBackupCheckBox.AutoSize = true;
             this.documentsBackupCheckBox.Location = new System.Drawing.Point(7, 51);
             this.documentsBackupCheckBox.Name = "documentsBackupCheckBox";
-            this.documentsBackupCheckBox.Size = new System.Drawing.Size(141, 19);
+            this.documentsBackupCheckBox.Size = new System.Drawing.Size(168, 24);
             this.documentsBackupCheckBox.TabIndex = 3;
             this.documentsBackupCheckBox.Text = "Documents Backup";
             this.documentsBackupCheckBox.UseVisualStyleBackColor = true;
@@ -1126,7 +1253,7 @@
             this.desktopBackupCheckBox.AutoSize = true;
             this.desktopBackupCheckBox.Location = new System.Drawing.Point(7, 27);
             this.desktopBackupCheckBox.Name = "desktopBackupCheckBox";
-            this.desktopBackupCheckBox.Size = new System.Drawing.Size(124, 19);
+            this.desktopBackupCheckBox.Size = new System.Drawing.Size(146, 24);
             this.desktopBackupCheckBox.TabIndex = 1;
             this.desktopBackupCheckBox.Text = "Desktop Backup";
             this.desktopBackupCheckBox.UseVisualStyleBackColor = true;
@@ -1142,7 +1269,7 @@
             this.startOfYearCheckBoxPanel.Controls.Add(this.printingPanel);
             this.startOfYearCheckBoxPanel.Location = new System.Drawing.Point(6, 6);
             this.startOfYearCheckBoxPanel.Name = "startOfYearCheckBoxPanel";
-            this.startOfYearCheckBoxPanel.Size = new System.Drawing.Size(633, 232);
+            this.startOfYearCheckBoxPanel.Size = new System.Drawing.Size(660, 232);
             this.startOfYearCheckBoxPanel.TabIndex = 9;
             // 
             // startOfYearLabel
@@ -1162,7 +1289,7 @@
             this.softwarePanel.Controls.Add(this.quickenCheckBox);
             this.softwarePanel.Controls.Add(this.label3);
             this.softwarePanel.Controls.Add(this.outlookCheckBox);
-            this.softwarePanel.Location = new System.Drawing.Point(164, 38);
+            this.softwarePanel.Location = new System.Drawing.Point(173, 38);
             this.softwarePanel.Name = "softwarePanel";
             this.softwarePanel.Size = new System.Drawing.Size(152, 146);
             this.softwarePanel.TabIndex = 7;
@@ -1172,7 +1299,7 @@
             this.restoreFavoritesCheckBox.AutoSize = true;
             this.restoreFavoritesCheckBox.Location = new System.Drawing.Point(7, 97);
             this.restoreFavoritesCheckBox.Name = "restoreFavoritesCheckBox";
-            this.restoreFavoritesCheckBox.Size = new System.Drawing.Size(128, 19);
+            this.restoreFavoritesCheckBox.Size = new System.Drawing.Size(154, 24);
             this.restoreFavoritesCheckBox.TabIndex = 6;
             this.restoreFavoritesCheckBox.Text = "Restore Favorites";
             this.restoreFavoritesCheckBox.UseVisualStyleBackColor = true;
@@ -1182,7 +1309,7 @@
             this.adobeProCheckBox.AutoSize = true;
             this.adobeProCheckBox.Location = new System.Drawing.Point(7, 74);
             this.adobeProCheckBox.Name = "adobeProCheckBox";
-            this.adobeProCheckBox.Size = new System.Drawing.Size(126, 19);
+            this.adobeProCheckBox.Size = new System.Drawing.Size(150, 24);
             this.adobeProCheckBox.TabIndex = 5;
             this.adobeProCheckBox.Text = "Adobe Pro Setup";
             this.adobeProCheckBox.UseVisualStyleBackColor = true;
@@ -1192,7 +1319,7 @@
             this.quickenCheckBox.AutoSize = true;
             this.quickenCheckBox.Location = new System.Drawing.Point(7, 51);
             this.quickenCheckBox.Name = "quickenCheckBox";
-            this.quickenCheckBox.Size = new System.Drawing.Size(113, 19);
+            this.quickenCheckBox.Size = new System.Drawing.Size(133, 24);
             this.quickenCheckBox.TabIndex = 3;
             this.quickenCheckBox.Text = "Quicken Setup";
             this.quickenCheckBox.UseVisualStyleBackColor = true;
@@ -1212,7 +1339,7 @@
             this.outlookCheckBox.AutoSize = true;
             this.outlookCheckBox.Location = new System.Drawing.Point(7, 27);
             this.outlookCheckBox.Name = "outlookCheckBox";
-            this.outlookCheckBox.Size = new System.Drawing.Size(110, 19);
+            this.outlookCheckBox.Size = new System.Drawing.Size(130, 24);
             this.outlookCheckBox.TabIndex = 1;
             this.outlookCheckBox.Text = "Outlook Setup";
             this.outlookCheckBox.UseVisualStyleBackColor = true;
@@ -1245,7 +1372,7 @@
             this.icShortcutCheckBox.AutoSize = true;
             this.icShortcutCheckBox.Location = new System.Drawing.Point(6, 97);
             this.icShortcutCheckBox.Name = "icShortcutCheckBox";
-            this.icShortcutCheckBox.Size = new System.Drawing.Size(117, 19);
+            this.icShortcutCheckBox.Size = new System.Drawing.Size(139, 24);
             this.icShortcutCheckBox.TabIndex = 5;
             this.icShortcutCheckBox.Text = "Infinite Campus";
             this.icShortcutCheckBox.UseVisualStyleBackColor = true;
@@ -1255,7 +1382,7 @@
             this.homeShortcutCheckBox.AutoSize = true;
             this.homeShortcutCheckBox.Location = new System.Drawing.Point(6, 27);
             this.homeShortcutCheckBox.Name = "homeShortcutCheckBox";
-            this.homeShortcutCheckBox.Size = new System.Drawing.Size(73, 19);
+            this.homeShortcutCheckBox.Size = new System.Drawing.Size(84, 24);
             this.homeShortcutCheckBox.TabIndex = 4;
             this.homeShortcutCheckBox.Text = "H: Drive";
             this.homeShortcutCheckBox.UseVisualStyleBackColor = true;
@@ -1265,7 +1392,7 @@
             this.aesopShortcutCheckBox.AutoSize = true;
             this.aesopShortcutCheckBox.Location = new System.Drawing.Point(6, 120);
             this.aesopShortcutCheckBox.Name = "aesopShortcutCheckBox";
-            this.aesopShortcutCheckBox.Size = new System.Drawing.Size(69, 19);
+            this.aesopShortcutCheckBox.Size = new System.Drawing.Size(83, 24);
             this.aesopShortcutCheckBox.TabIndex = 3;
             this.aesopShortcutCheckBox.Text = "AESOP";
             this.aesopShortcutCheckBox.UseVisualStyleBackColor = true;
@@ -1285,7 +1412,7 @@
             this.wordShortcutCheckBox.AutoSize = true;
             this.wordShortcutCheckBox.Location = new System.Drawing.Point(6, 74);
             this.wordShortcutCheckBox.Name = "wordShortcutCheckBox";
-            this.wordShortcutCheckBox.Size = new System.Drawing.Size(114, 19);
+            this.wordShortcutCheckBox.Size = new System.Drawing.Size(135, 24);
             this.wordShortcutCheckBox.TabIndex = 0;
             this.wordShortcutCheckBox.Text = "Microsoft Word";
             this.wordShortcutCheckBox.UseVisualStyleBackColor = true;
@@ -1295,7 +1422,7 @@
             this.efinanceShortcutCheckBox.AutoSize = true;
             this.efinanceShortcutCheckBox.Location = new System.Drawing.Point(6, 50);
             this.efinanceShortcutCheckBox.Name = "efinanceShortcutCheckBox";
-            this.efinanceShortcutCheckBox.Size = new System.Drawing.Size(78, 19);
+            this.efinanceShortcutCheckBox.Size = new System.Drawing.Size(94, 24);
             this.efinanceShortcutCheckBox.TabIndex = 1;
             this.efinanceShortcutCheckBox.Text = "eFinance";
             this.efinanceShortcutCheckBox.UseVisualStyleBackColor = true;
@@ -1305,7 +1432,7 @@
             this.printersPanel.Controls.Add(this.imageRunnerCheckBox);
             this.printersPanel.Controls.Add(this.label4);
             this.printersPanel.Controls.Add(this.installPrintersCheckBox);
-            this.printersPanel.Location = new System.Drawing.Point(322, 38);
+            this.printersPanel.Location = new System.Drawing.Point(340, 38);
             this.printersPanel.Name = "printersPanel";
             this.printersPanel.Size = new System.Drawing.Size(152, 146);
             this.printersPanel.TabIndex = 7;
@@ -1315,7 +1442,7 @@
             this.imageRunnerCheckBox.AutoSize = true;
             this.imageRunnerCheckBox.Location = new System.Drawing.Point(7, 51);
             this.imageRunnerCheckBox.Name = "imageRunnerCheckBox";
-            this.imageRunnerCheckBox.Size = new System.Drawing.Size(107, 19);
+            this.imageRunnerCheckBox.Size = new System.Drawing.Size(130, 24);
             this.imageRunnerCheckBox.TabIndex = 3;
             this.imageRunnerCheckBox.Text = "Image Runner";
             this.imageRunnerCheckBox.UseVisualStyleBackColor = true;
@@ -1335,7 +1462,7 @@
             this.installPrintersCheckBox.AutoSize = true;
             this.installPrintersCheckBox.Location = new System.Drawing.Point(7, 27);
             this.installPrintersCheckBox.Name = "installPrintersCheckBox";
-            this.installPrintersCheckBox.Size = new System.Drawing.Size(108, 19);
+            this.installPrintersCheckBox.Size = new System.Drawing.Size(128, 24);
             this.installPrintersCheckBox.TabIndex = 1;
             this.installPrintersCheckBox.Text = "Install Printers";
             this.installPrintersCheckBox.UseVisualStyleBackColor = true;
@@ -1346,7 +1473,7 @@
             this.printingPanel.Controls.Add(this.dymoPrintingCheckBox);
             this.printingPanel.Controls.Add(this.label2);
             this.printingPanel.Controls.Add(this.icPrintingCheckBox);
-            this.printingPanel.Location = new System.Drawing.Point(480, 38);
+            this.printingPanel.Location = new System.Drawing.Point(507, 38);
             this.printingPanel.Name = "printingPanel";
             this.printingPanel.Size = new System.Drawing.Size(150, 146);
             this.printingPanel.TabIndex = 6;
@@ -1356,7 +1483,7 @@
             this.scanSnapCheckBox.AutoSize = true;
             this.scanSnapCheckBox.Location = new System.Drawing.Point(7, 74);
             this.scanSnapCheckBox.Name = "scanSnapCheckBox";
-            this.scanSnapCheckBox.Size = new System.Drawing.Size(91, 19);
+            this.scanSnapCheckBox.Size = new System.Drawing.Size(107, 24);
             this.scanSnapCheckBox.TabIndex = 5;
             this.scanSnapCheckBox.Text = "Scan Snap";
             this.scanSnapCheckBox.UseVisualStyleBackColor = true;
@@ -1366,7 +1493,7 @@
             this.dymoPrintingCheckBox.AutoSize = true;
             this.dymoPrintingCheckBox.Location = new System.Drawing.Point(7, 51);
             this.dymoPrintingCheckBox.Name = "dymoPrintingCheckBox";
-            this.dymoPrintingCheckBox.Size = new System.Drawing.Size(96, 19);
+            this.dymoPrintingCheckBox.Size = new System.Drawing.Size(112, 24);
             this.dymoPrintingCheckBox.TabIndex = 3;
             this.dymoPrintingCheckBox.Text = "Dymo Label";
             this.dymoPrintingCheckBox.UseVisualStyleBackColor = true;
@@ -1386,7 +1513,7 @@
             this.icPrintingCheckBox.AutoSize = true;
             this.icPrintingCheckBox.Location = new System.Drawing.Point(7, 27);
             this.icPrintingCheckBox.Name = "icPrintingCheckBox";
-            this.icPrintingCheckBox.Size = new System.Drawing.Size(122, 19);
+            this.icPrintingCheckBox.Size = new System.Drawing.Size(144, 24);
             this.icPrintingCheckBox.TabIndex = 1;
             this.icPrintingCheckBox.Text = "IC Label Printing";
             this.icPrintingCheckBox.UseVisualStyleBackColor = true;
@@ -1394,10 +1521,10 @@
             // tabPage4
             // 
             this.tabPage4.Controls.Add(this.serverListView);
-            this.tabPage4.Location = new System.Drawing.Point(4, 24);
+            this.tabPage4.Location = new System.Drawing.Point(4, 29);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(645, 465);
+            this.tabPage4.Size = new System.Drawing.Size(672, 467);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Printers";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -1410,52 +1537,10 @@
             this.serverListView.TabIndex = 0;
             this.serverListView.UseCompatibleStateImageBehavior = false;
             // 
-            // userHasBeenBackedUpLabel
-            // 
-            this.userHasBeenBackedUpLabel.AutoSize = true;
-            this.userHasBeenBackedUpLabel.Font = new System.Drawing.Font(".Helvetica Neue Desk UI", 12F, System.Drawing.FontStyle.Italic);
-            this.userHasBeenBackedUpLabel.Location = new System.Drawing.Point(349, 50);
-            this.userHasBeenBackedUpLabel.Name = "userHasBeenBackedUpLabel";
-            this.userHasBeenBackedUpLabel.Size = new System.Drawing.Size(278, 18);
-            this.userHasBeenBackedUpLabel.TabIndex = 25;
-            this.userHasBeenBackedUpLabel.Text = "User Has Been Backed Up This Year?";
-            // 
-            // userSetupQuestionLabel
-            // 
-            this.userSetupQuestionLabel.AutoSize = true;
-            this.userSetupQuestionLabel.Font = new System.Drawing.Font(".Helvetica Neue Desk UI", 12F, System.Drawing.FontStyle.Italic);
-            this.userSetupQuestionLabel.Location = new System.Drawing.Point(12, 50);
-            this.userSetupQuestionLabel.Name = "userSetupQuestionLabel";
-            this.userSetupQuestionLabel.Size = new System.Drawing.Size(241, 18);
-            this.userSetupQuestionLabel.TabIndex = 26;
-            this.userSetupQuestionLabel.Text = "User Has Been Setup This Year?";
-            // 
-            // userBackedUpAnswerLabel
-            // 
-            this.userBackedUpAnswerLabel.AutoSize = true;
-            this.userBackedUpAnswerLabel.Font = new System.Drawing.Font(".Helvetica Neue Desk UI", 9.749999F, System.Drawing.FontStyle.Bold);
-            this.userBackedUpAnswerLabel.ForeColor = System.Drawing.Color.DarkRed;
-            this.userBackedUpAnswerLabel.Location = new System.Drawing.Point(633, 52);
-            this.userBackedUpAnswerLabel.Name = "userBackedUpAnswerLabel";
-            this.userBackedUpAnswerLabel.Size = new System.Drawing.Size(28, 16);
-            this.userBackedUpAnswerLabel.TabIndex = 27;
-            this.userBackedUpAnswerLabel.Text = "NO";
-            // 
-            // userSetupAnswerLabel
-            // 
-            this.userSetupAnswerLabel.AutoSize = true;
-            this.userSetupAnswerLabel.Font = new System.Drawing.Font(".Helvetica Neue Desk UI", 9.749999F, System.Drawing.FontStyle.Bold);
-            this.userSetupAnswerLabel.ForeColor = System.Drawing.Color.DarkRed;
-            this.userSetupAnswerLabel.Location = new System.Drawing.Point(269, 52);
-            this.userSetupAnswerLabel.Name = "userSetupAnswerLabel";
-            this.userSetupAnswerLabel.Size = new System.Drawing.Size(28, 16);
-            this.userSetupAnswerLabel.TabIndex = 28;
-            this.userSetupAnswerLabel.Text = "NO";
-            // 
             // pictureBox1
             // 
             this.pictureBox1.Image = global::Helpdesk54.Properties.Resources.ic_dns_indigo_800_24dp;
-            this.pictureBox1.Location = new System.Drawing.Point(415, 5);
+            this.pictureBox1.Location = new System.Drawing.Point(349, 23);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(35, 35);
             this.pictureBox1.TabIndex = 29;
@@ -1465,18 +1550,17 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(676, 581);
+            this.ClientSize = new System.Drawing.Size(684, 581);
             this.Controls.Add(this.pictureBox2);
             this.Controls.Add(this.pictureBox1);
-            this.Controls.Add(this.userSetupAnswerLabel);
-            this.Controls.Add(this.userBackedUpAnswerLabel);
-            this.Controls.Add(this.userSetupQuestionLabel);
-            this.Controls.Add(this.userHasBeenBackedUpLabel);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.serverNameLinkLabel);
             this.Controls.Add(this.serverLabel);
             this.Controls.Add(this.usernameLabel);
             this.Controls.Add(this.userLabel);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
             this.Name = "UserControl1";
             this.Text = "School District 54 Helper";
             this.startOfYearGroupBox.ResumeLayout(false);
@@ -1495,6 +1579,8 @@
             this.restoreAdditionalGroupBox.PerformLayout();
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
+            this.tabPage1.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
             this.tabPage5.ResumeLayout(false);
@@ -1528,11 +1614,8 @@
         private System.Windows.Forms.Button quickenButton;
         private System.Windows.Forms.Button scanSnapButton;
         private System.Windows.Forms.Button acrobatButton;
-        private System.Windows.Forms.Button installPrintersButton;
-        private System.Windows.Forms.Label installShortcutsLabel;
         private System.Windows.Forms.Button outlookButton;
         private System.Windows.Forms.Button dymoButton;
-        private System.Windows.Forms.Button installShortcutsButton;
         private System.Windows.Forms.ComboBox backupDriveCombo;
         private System.Windows.Forms.GroupBox dataBackupGroupBox;
         private System.Windows.Forms.GroupBox essentialItemsGroupBox;
@@ -1635,12 +1718,20 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.CheckBox desktopBackupCheckBox;
         private System.Windows.Forms.CheckBox restoreFavoritesCheckBox;
-        private System.Windows.Forms.Label userHasBeenBackedUpLabel;
-        private System.Windows.Forms.Label userSetupQuestionLabel;
-        private System.Windows.Forms.Label userBackedUpAnswerLabel;
-        private System.Windows.Forms.Label userSetupAnswerLabel;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.Label userBackedUpAnswerLabel;
+        private System.Windows.Forms.Label userSetupAnswerLabel;
+        private System.Windows.Forms.Label userHasBeenBackedUpLabel;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Button installPrintersButton;
+        private System.Windows.Forms.Label installShortcutsLabel;
+        private System.Windows.Forms.Button installShortcutsButton;
+        private System.Windows.Forms.Label userSetupQuestionLabel;
     }
 }
 

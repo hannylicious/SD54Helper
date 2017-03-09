@@ -118,22 +118,40 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="ic_person_indigo_800_24dp1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\drawable-hdpi\ic_person_indigo_800_24dp.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="ic_person_indigo_800_24dp" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\drawable-hdpi\ic_person_indigo_800_24dp.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="efinance" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\efinance.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="aesop" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\aesop.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="ic_dns_indigo_800_24dp" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\drawable-hdpi\ic_dns_indigo_800_24dp.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="campus" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Campus.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="ic_dns_indigo_800_24dp" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\drawable-hdpi\ic_dns_indigo_800_24dp.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="aesop" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\aesop.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="efinance" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\efinance.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ic_person_indigo_800_24dp" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\drawable-hdpi\ic_person_indigo_800_24dp.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ic_account_balance_indigo_800_24dp" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\drawable-hdpi\ic_account_balance_indigo_800_24dp.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ic_email_indigo_800_24dp" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\drawable-hdpi\ic_email_indigo_800_24dp.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ic_label_indigo_800_24dp" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\drawable-hdpi\ic_label_indigo_800_24dp.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ic_note_indigo_800_24dp" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\drawable-hdpi\ic_note_indigo_800_24dp.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ic_picture_as_pdf_indigo_800_24dp" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\drawable-hdpi\ic_picture_as_pdf_indigo_800_24dp.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ic_print_indigo_800_24dp" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\drawable-hdpi\ic_print_indigo_800_24dp.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ic_scanner_indigo_800_24dp" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\drawable-hdpi\ic_scanner_indigo_800_24dp.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>
