@@ -60,7 +60,6 @@ namespace Helpdesk54
                 MessageBox.Show("An issue with setting office paths occurred: " + ex.Message);
                 throw new Exception("An issue with setting office paths occurred: ", ex);
             }
-            //wordPath, excelPath and outlookPath now set globally
             //Get the userName to the currently logged in user
             try
             {
@@ -71,13 +70,13 @@ namespace Helpdesk54
                 MessageBox.Show("An issue with getting the username occurred: " + ex.Message);
                 throw new Exception("An issue with getting the username occurred: ", ex);
             }
-            //Set the label to the users name
+            //Set the label to the users name            
             usernameLabel.Text = userName;
-            //Get the attached drives
+            //Get the attached drives            
             getAttachedDrives();
             //set the backupDirectoryName
             backupDirectoryName = userName.ToString() + "-Backups-" + DateTime.Now.Year.ToString();
-            
+
             //check if the user gets access to quicken
             //enable main button and options on setup & backup checkboxes
             if (doesUserGetQuicken())
@@ -90,7 +89,6 @@ namespace Helpdesk54
                 quickenCheckBox.Enabled = false;
                 quickenBackupCheckBox.Enabled = false;
             }
-
             //set the serverNameLink to link to the appropriate location
             try
             {
@@ -128,7 +126,15 @@ namespace Helpdesk54
             }
 
             //check installations
-            checkApplicationInstalls();
+            try
+            {
+                checkApplicationInstalls();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("An issue with checking application installs occurred: " + ex.Message);
+                throw new Exception("An issue with checking application installs occurred: ", ex);
+            }
             //check to see if user has been backed up or restored already
             if (userHasBeenSetup())
             {
@@ -164,7 +170,8 @@ namespace Helpdesk54
             restoreAdditionalBgWorker.ProgressChanged += new ProgressChangedEventHandler(restoreAdditionalBgWorker_ProgressChanged);
             restoreAdditionalBgWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(restoreAdditionalBgWorker_RunWorkerCompleted);
             restoreAdditionalBgWorker.WorkerReportsProgress = true;
-            restoreAdditionalBgWorker.WorkerSupportsCancellation = true;            
+            restoreAdditionalBgWorker.WorkerSupportsCancellation = true;
+        
             //*****
             //set backupDriveCombo to dropdown
             //*****
@@ -186,7 +193,7 @@ namespace Helpdesk54
                 }
                 else
                 {
-
+                    backupDriveCombo.SelectedIndex = 0;                   
                 }
             }
             catch (Exception e)
@@ -202,7 +209,7 @@ namespace Helpdesk54
                 //If it's the homedrive (or a network drive) - we need to do further calculation to determine 'available free space'
                 //Max Available : 3GB
                 if (selectedDrive.DriveType == DriveType.Network)
-                {
+                {                    
                     long maxAvailableDriveSpace = 3221225472;
                     string folder = selectedDrive.ToString();
                     long networkDirectorySize = DirSize(new DirectoryInfo(folder));
@@ -241,8 +248,14 @@ namespace Helpdesk54
             //Try to set the selected drive to the H:/ Drive
             try
             {
-                restoreDriveCombo.SelectedIndex = restoreDriveCombo.FindString(homeDirectory);
-                
+                if (homeDirectory != "Unknown")
+                {
+                    restoreDriveCombo.SelectedIndex = restoreDriveCombo.FindString(homeDirectory);
+                }
+                else
+                {
+                    restoreDriveCombo.SelectedIndex = 0;
+                }                
             }
             catch (Exception e)
             {
@@ -265,13 +278,34 @@ namespace Helpdesk54
         private void setOfficePaths()
         {
             RegistryKey key = Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\App Paths\Winword.exe");
-            wordPath = key.GetValue("").ToString();
+            if (key == null)
+            {
+                wordPath = "";
+            }
+            else
+            {
+                wordPath = key.GetValue("").ToString();
+            }
 
             key = Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\App Paths\excel.exe");
-            excelPath = key.GetValue("").ToString();
+            if (key == null)
+            {
+                excelPath = "";
+            }
+            else
+            {
+                excelPath = key.GetValue("").ToString();
+            }
 
             key = Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\App Paths\OUTLOOK.exe");
-            outlookPath = key.GetValue("").ToString();
+            if (key == null)
+            {
+                outlookPath = "";
+            }
+            else
+            {
+                outlookPath = key.GetValue("").ToString();
+            }
         }
 
         /// <summary>
