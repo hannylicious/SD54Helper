@@ -97,7 +97,7 @@ namespace Helpdesk54
                         Uri uri = new Uri(path);
                         serverName = uri.Host.ToString();
                         serverNameLinkLabel.Text = serverName;
-                    }
+                    }               
                 }
             }
             catch (Exception ex)
@@ -225,13 +225,15 @@ namespace Helpdesk54
 
             //Check the H:\ drive for a backup
             checkForExistingBackup();
-            getFilesToListView();
+
             //update labels
             labelDirectorySizes();
 
-
         }
 
+        /// <summary>
+        /// Sets the office paths.
+        /// </summary>
         private void setOfficePaths()
         {
             RegistryKey key = Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\App Paths\Winword.exe");
@@ -244,9 +246,10 @@ namespace Helpdesk54
             outlookPath = key.GetValue("").ToString();
         }
 
-        /*
-* Returns an array of all attached Drives
-*/
+        /// <summary>
+        /// Gets the attached drives.
+        /// </summary>
+        /// <returns>Array theDrives</returns>
         private Array getAttachedDrives()
         {
             //get the drives and set them to an array
@@ -254,9 +257,11 @@ namespace Helpdesk54
             return theDrives;
 
         }
-        /*
-         * Returns a string of the users windows login name
-         */
+
+        /// <summary>
+        /// Gets the username.
+        /// </summary>
+        /// <returns>String userName</returns>
         private string getUsername()
         {
             //set username - Do this early!
@@ -267,32 +272,20 @@ namespace Helpdesk54
             return userName;
         }
 
-        //set all the files in the server location to the serverListView tab
-        public void getAllDrives()
-        {
-
-        }
-        public void getFilesToListView()
-        {
-/*
-            string[] files = System.IO.Directory.GetFiles(serverName);
-
-            for (int x = 0; x < files.Length; x++)
-            {
-                serverListView.Items.Add(files[x]);
-            }
-*/
-        }
-        /*
-         * serverNameLinkLabel Click Event
-         * Opens Explorer to the server address listed
-         */
+        /// <summary>
+        /// Handles the LinkClicked event of the serverNameLinkLabel control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="LinkLabelLinkClickedEventArgs"/> instance containing the event data.</param>
         private void serverNameLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             serverNameLinkLabel.LinkVisited = true;
             System.Diagnostics.Process.Start("explorer", @"\\" + serverNameLinkLabel.Text.ToString());
         }
-        /*Check for existing backups on the H: drive*/
+
+        /// <summary>
+        /// Checks for existing backup on H: drive.
+        /// </summary>
         private void checkForExistingBackup() {
                     try
                     {
@@ -311,9 +304,10 @@ namespace Helpdesk54
                         throw;
                     }
         }
-        /*
-         * ***** CHECK TO SEE IF APPLICATIONS ARE INSTALLED ***** *
-         */
+
+        /// <summary>
+        /// Checks the application installs.
+        /// </summary>
         private void checkApplicationInstalls()
         {
             string[] applicationList =
@@ -399,11 +393,12 @@ namespace Helpdesk54
             }
 
         }
-        /*
-        * ***** *
-        * Open software for configuration
-        * ***** *
-        */
+
+        /// <summary>
+        /// Opens the software click.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         void openSoftwareClick(object sender, EventArgs e)
         {
             string path;
@@ -467,11 +462,12 @@ namespace Helpdesk54
                     break;
             }
         }
-        /*
-        * ***** *
-        * Go to \\dataserver02 and begin the installers for the software
-        * ***** *
-        */
+
+        /// <summary>
+        /// Installs the software click.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         void installSoftwareClick(object sender, EventArgs e)
         {
             string path;
@@ -527,11 +523,12 @@ namespace Helpdesk54
                     break;
             }
         }
-        /*
-        * ***** *
-        * Format the bytes string into appropriately chosen string
-        * ***** *
-        */
+
+        /// <summary>
+        /// Formats the bytes string into appropriately size (GB, MB, etc.).
+        /// </summary>
+        /// <param name="bytes">The bytes</param>
+        /// <returns></returns>
         public string FormatBytes(long bytes)
         {
             const int scale = 1024;
@@ -547,11 +544,12 @@ namespace Helpdesk54
             }
             return "0 Bytes";
         }
-        /*
-        * ***** *
-        * Create Shortcut URL's on users Desktop *
-        * ***** *
-        */
+
+        /// <summary>
+        /// URLs the shortcut to desktop.
+        /// </summary>
+        /// <param name="linkName">Name of the link.</param>
+        /// <param name="linkUrl">The link URL.</param>
         private void urlShortcutToDesktop(string linkName, string linkUrl)
         {
             string deskDir = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
@@ -566,11 +564,12 @@ namespace Helpdesk54
                 writer.Flush();
             }
         }
-        /*
-        * ***** *
-        * Get Directory Size *
-        * ***** *
-        */
+
+        /// <summary>
+        /// Gets the size of the directory.
+        /// </summary>
+        /// <param name="d">The directory</param>
+        /// <returns>Long size</returns>
         public static long DirSize(DirectoryInfo d)
         {
             long size = 0;
@@ -595,6 +594,13 @@ namespace Helpdesk54
             }
             return size;
         }
+
+        /// <summary>
+        /// Creates the shortcut.
+        /// </summary>
+        /// <param name="shortcutName">Name of the shortcut.</param>
+        /// <param name="shortcutPath">The shortcut path.</param>
+        /// <param name="targetFileLocation">The target file location.</param>
         public static void CreateShortcut(string shortcutName, string shortcutPath, string targetFileLocation)
         {
             string shortcutLocation = System.IO.Path.Combine(shortcutPath, shortcutName + ".lnk");
@@ -630,10 +636,12 @@ namespace Helpdesk54
             }
 
         }
-        /* ***** *
-         * Install Shortcuts Button
-         * ***** *
-         */
+
+        /// <summary>
+        /// Handles the Click event of the installShortcutsButton control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void installShortcutsButton_Click(object sender, EventArgs e)
         {
             string[] linkNames = {
@@ -678,10 +686,12 @@ namespace Helpdesk54
                 }
             }
         }
-        /* ***** *
-        * Drive selection dropdown changes *
-        * ***** *
-        */
+
+        /// <summary>
+        /// Handles the SelectedIndexChanged event of the backupDriveCombo control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void backupDriveCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
             //Set the selected drive freespace label
@@ -712,6 +722,11 @@ namespace Helpdesk54
             }
             
         }
+        /// <summary>
+        /// Handles the SelectedIndexChanged event of the restoreDriveCombo control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void restoreDriveCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
             //Set the selected drive freespace label
@@ -723,16 +738,20 @@ namespace Helpdesk54
                 checkBackupDirectories(backupName);
             }
         }
-/* ***** *
-* ***** * ***** * ***** *
-* ***** * ***** * ***** *
-* BACKUP BUTTONS SECTION
-* ***** * ***** * ***** *
-* ***** * ***** * ***** *
-* ***** */
-/*
-         * ***** DESKTOP BACKUP ***** *
-        */
+
+        /* ***** *
+        * ***** * ***** * ***** *
+        * ***** * ***** * ***** *
+        * BACKUP BUTTONS SECTION
+        * ***** * ***** * ***** *
+        * ***** * ***** * ***** *
+        * ***** */
+
+        /// <summary>
+        /// Handles the Click event of the backupDesktopButton control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void backupDesktopButton_Click(object sender, EventArgs e)
         {
             desktopBackupCheckBox.Checked = true;
@@ -741,9 +760,12 @@ namespace Helpdesk54
             selectedDrive = backupDriveCombo.SelectedItem.ToString();
             essentialBgWorker.RunWorkerAsync();
         }
-        /*
-         * ***** DOCUMENTS BACKUP ***** *
-        */
+
+        /// <summary>
+        /// Handles the Click event of the backupDocumentsButton control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void backupDocumentsButton_Click(object sender, EventArgs e)
         {
             documentsBackupCheckBox.Checked = true;
@@ -752,9 +774,12 @@ namespace Helpdesk54
             selectedDrive = backupDriveCombo.SelectedItem.ToString();
             essentialBgWorker.RunWorkerAsync();
         }
-        /*
-         * ***** FAVORITES BACKUP ***** *
-        */
+
+        /// <summary>
+        /// Handles the Click event of the backupFavoritesButton control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void backupFavoritesButton_Click(object sender, EventArgs e)
         {
             favoritesBackupCheckBox.Checked = true;
@@ -763,9 +788,12 @@ namespace Helpdesk54
             selectedDrive = backupDriveCombo.SelectedItem.ToString();
             essentialBgWorker.RunWorkerAsync();
         }
-        /*
-         * ***** DOCUMENTS, FAVORITES & DESKTOP BACKUP ***** *
-        */
+
+        /// <summary>
+        /// Handles the Click event of the backupAllEssentialsButton control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void backupAllEssentialsButton_Click(object sender, EventArgs e)
         {
             desktopBackupCheckBox.Checked = true;
@@ -776,11 +804,12 @@ namespace Helpdesk54
             selectedDrive = backupDriveCombo.SelectedItem.ToString();
             essentialBgWorker.RunWorkerAsync();
         }
-        /* 
-         * *****
-         * essentialBgWorker Do Work Method *
-         * *****
-        */
+
+        /// <summary>
+        /// Handles the DoWork event of the essentialBgWorker control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="DoWorkEventArgs"/> instance containing the event data.</param>
         void essentialBgWorker_DoWork(object sender, DoWorkEventArgs e)
         {            
             string buttonSender = clickedButton; //backupDesktopButton, backupDocumentsButton, etc.
@@ -805,11 +834,12 @@ namespace Helpdesk54
                     break;
             }
         }
-        /* 
-         * *****
-         * essentialBgWorker Process Changed *
-         * *****
-        */
+
+        /// <summary>
+        /// Handles the ProgressChanged event of the essentialBgWorker control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="ProgressChangedEventArgs"/> instance containing the event data.</param>
         void essentialBgWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             essentialItemsProgressBar.Visible = true;
@@ -843,11 +873,12 @@ namespace Helpdesk54
             //essentialItemsProgressLabel.Text = String.Format("Progress: {0} % - All {1} Files Transferred", e.ProgressPercentage, clickedButton);
             //essentialItemsProgressLabel.Text = String.Format("Total items transfered: {0}", e.UserState);
         }
-        /* 
-         * *****
-         * essentialBgWorker Completed *
-         * *****
-        */
+
+        /// <summary>
+        /// Handles the RunWorkerCompleted event of the essentialBgWorker control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="RunWorkerCompletedEventArgs"/> instance containing the event data.</param>
         void essentialBgWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             //do the code when bgv completes its work           
@@ -870,9 +901,12 @@ namespace Helpdesk54
             checkForExistingBackup();
             checkBackupDirectories(backupName);
         }
-        /*
-         * ***** STICKY NOTES BACKUP ***** *
-        */
+
+        /// <summary>
+        /// Handles the Click event of the backupStickyNotesButton control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void backupStickyNotesButton_Click(object sender, EventArgs e)
         {
             stickyNotesBackupCheckBox.Checked = true;
@@ -881,9 +915,12 @@ namespace Helpdesk54
             selectedDrive = backupDriveCombo.SelectedItem.ToString();
             additionalBgWorker.RunWorkerAsync();
         }
-        /*
-         * ***** PICTURES BACKUP ***** *
-        */
+
+        /// <summary>
+        /// Handles the Click event of the backupPicturesButton control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void backupPicturesButton_Click(object sender, EventArgs e)
         {
             picturesBackupCheckBox.Checked = true;
@@ -892,9 +929,12 @@ namespace Helpdesk54
             selectedDrive = backupDriveCombo.SelectedItem.ToString();
             additionalBgWorker.RunWorkerAsync();
         }
-        /*
-         * ***** VIDEOS BACKUP ***** *
-        */
+
+        /// <summary>
+        /// Handles the Click event of the backupVideosButton control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void backupVideosButton_Click(object sender, EventArgs e)
         {
             videosBackupCheckBox.Checked = true;
@@ -903,9 +943,12 @@ namespace Helpdesk54
             selectedDrive = backupDriveCombo.SelectedItem.ToString();
             additionalBgWorker.RunWorkerAsync();
         }
-        /*
-         * ***** MUSIC BACKUP ***** *
-        */
+
+        /// <summary>
+        /// Handles the Click event of the backupMusicButton control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void backupMusicButton_Click(object sender, EventArgs e)
         {
             musicBackupCheckBox.Checked = true;
@@ -914,11 +957,12 @@ namespace Helpdesk54
             selectedDrive = backupDriveCombo.SelectedItem.ToString();
             additionalBgWorker.RunWorkerAsync();
         }
-        /* 
-         * *****
-         * additionalBgWorker Do Work Method *
-         * *****
-        */
+
+        /// <summary>
+        /// Handles the DoWork event of the additionalBgWorker control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="DoWorkEventArgs"/> instance containing the event data.</param>
         void additionalBgWorker_DoWork(object sender, DoWorkEventArgs e)
         {
 
@@ -970,11 +1014,12 @@ namespace Helpdesk54
             }
             CopyFilesRecursively(source, target);
         }
-        /* 
-         * *****
-         * additionalBgWorker Process Changed *
-         * *****
-        */
+
+        /// <summary>
+        /// Handles the ProgressChanged event of the additionalBgWorker control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="ProgressChangedEventArgs"/> instance containing the event data.</param>
         void additionalBgWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             additionalItemsProgressBar.Visible = true;
@@ -1008,11 +1053,12 @@ namespace Helpdesk54
             //additionalItemsProgressLabel.Text = String.Format("Progress: {0} % - All {1} Files Transferred", e.ProgressPercentage, clickedButton);
             //additionalItemsProgressLabel.Text = String.Format("Total items transfered: {0}", e.UserState);
         }
-        /* 
-         * *****
-         * additionalBgWorker Completed *
-         * *****
-        */
+
+        /// <summary>
+        /// Handles the RunWorkerCompleted event of the additionalBgWorker control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="RunWorkerCompletedEventArgs"/> instance containing the event data.</param>
         void additionalBgWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             //do the code when bgv completes its work
@@ -1035,6 +1081,10 @@ namespace Helpdesk54
             checkForExistingBackup();
             checkBackupDirectories(backupName);
         }
+
+        /// <summary>
+        /// Labels the directory sizes.
+        /// </summary>
         public void labelDirectorySizes()
         {
             string[] directoryLocations =
@@ -1195,11 +1245,10 @@ namespace Helpdesk54
                 stickyNotesSizeLabel.Text = "N/A";
             }
         }
-        /*
-            * ***** *
-            * Backup Desktop
-            * ***** *
-        */
+
+        /// <summary>
+        /// Backups the desktop.
+        /// </summary>
         private void backupDesktop()
         {
             destinationLocation = selectedDrive + backupDirectoryName + "\\Desktop\\";
@@ -1232,11 +1281,10 @@ namespace Helpdesk54
             }
             CopyFilesRecursively(desktopSource, target);
         }
-        /*
-            * ***** *
-            * Backup Favorites
-            * ***** *
-        */
+
+        /// <summary>
+        /// Backups the favorites.
+        /// </summary>
         private void backupFavorites()
         {
             /*FAVORITES*/
@@ -1270,11 +1318,10 @@ namespace Helpdesk54
             }
             CopyFilesRecursively(favoritesSource, target);
         }
-        /*
-            * ***** *
-            * Backup My Documents
-            * ***** *
-        */
+
+        /// <summary>
+        /// Backups the documents.
+        /// </summary>
         private void backupDocuments()
         {
             /*DOCUMENTS*/
@@ -1337,12 +1384,11 @@ namespace Helpdesk54
             CopyFilesRecursively(documentsSource, target);
         }
 
-
-        /*
-         * ***** *
-         * Copy all directories and files recursively
-         * ***** *
-        */
+        /// <summary>
+        /// Copies the files recursively.
+        /// </summary>
+        /// <param name="source">The source.</param>
+        /// <param name="target">The target.</param>
         public void CopyFilesRecursively(DirectoryInfo source, DirectoryInfo target)
                 {
                     foreach (DirectoryInfo dir in source.GetDirectories())
@@ -1359,16 +1405,20 @@ namespace Helpdesk54
                     foreach (FileInfo file in source.GetFiles())
                         file.CopyTo(Path.Combine(target.FullName, file.Name), true); //overwrites the existing files with newer
                 }
-/* ***** *
-* ***** * ***** * ***** *
-* ***** * ***** * ***** *
-* RESTORE BUTTONS SECTION
-* ***** * ***** * ***** *
-* ***** * ***** * ***** *
-* ***** */
-        /*
-         * ***** DESKTOP RESTORE ***** *
-        */
+
+        /* ***** *
+        * ***** * ***** * ***** *
+        * ***** * ***** * ***** *
+        * RESTORE BUTTONS SECTION
+        * ***** * ***** * ***** *
+        * ***** * ***** * ***** *
+        * ***** */
+
+        /// <summary>
+        /// Handles the Click event of the restoreDesktopButton control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void restoreDesktopButton_Click(object sender, EventArgs e)
         {
             clickedButton = ((Button)sender).Name.ToString();
@@ -1376,9 +1426,12 @@ namespace Helpdesk54
             selectedDrive = restoreDriveCombo.SelectedItem.ToString();
             restoreEssentialBgWorker.RunWorkerAsync();
         }
-        /*
-         * ***** DOCUMENTS RESTORE ***** *
-        */
+
+        /// <summary>
+        /// Handles the Click event of the restoreDocumentsButton control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void restoreDocumentsButton_Click(object sender, EventArgs e)
         {
             clickedButton = ((Button)sender).Name.ToString();
@@ -1386,9 +1439,12 @@ namespace Helpdesk54
             selectedDrive = backupDriveCombo.SelectedItem.ToString();
             restoreEssentialBgWorker.RunWorkerAsync();
         }
-        /*
-         * ***** FAVORITES RESTORE ***** *
-        */
+
+        /// <summary>
+        /// Handles the Click event of the restoreFavoritesButton control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void restoreFavoritesButton_Click(object sender, EventArgs e)
         {
             clickedButton = ((Button)sender).Name.ToString();
@@ -1396,9 +1452,12 @@ namespace Helpdesk54
             selectedDrive = backupDriveCombo.SelectedItem.ToString();
             restoreEssentialBgWorker.RunWorkerAsync();
         }
-        /*
-         * ***** DOCUMENTS, FAVORITES & DESKTOP RESTORE ***** *
-        */
+
+        /// <summary>
+        /// Handles the Click event of the restoreAllEssentialsButton control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void restoreAllEssentialsButton_Click(object sender, EventArgs e)
         {
             clickedButton = ((Button)sender).Name.ToString();
@@ -1438,11 +1497,12 @@ namespace Helpdesk54
                 CopyFilesRecursively(source, target);
             }
         }
-        /* 
-         * *****
-         * restoreWorker Do Work Method *
-         * *****
-        */
+
+        /// <summary>
+        /// Handles the DoWork event of the restoreEssentialBgWorker control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="DoWorkEventArgs"/> instance containing the event data.</param>
         void restoreEssentialBgWorker_DoWork(object sender, DoWorkEventArgs e)
         {
             
@@ -1469,11 +1529,12 @@ namespace Helpdesk54
             }
 
         }
-        /* 
-         * *****
-         * restoreWorker Process Changed *
-         * *****
-        */
+
+        /// <summary>
+        /// Handles the ProgressChanged event of the restoreEssentialBgWorker control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="ProgressChangedEventArgs"/> instance containing the event data.</param>
         void restoreEssentialBgWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             restoreEssentialsProgressBar.Visible = true;
@@ -1507,11 +1568,12 @@ namespace Helpdesk54
             //essentialItemsProgressLabel.Text = String.Format("Progress: {0} % - All {1} Files Transferred", e.ProgressPercentage, clickedButton);
             //essentialItemsProgressLabel.Text = String.Format("Total items transfered: {0}", e.UserState);
         }
-        /* 
-         * *****
-         * restoreWorker Completed *
-         * *****
-        */
+
+        /// <summary>
+        /// Handles the RunWorkerCompleted event of the restoreEssentialBgWorker control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="RunWorkerCompletedEventArgs"/> instance containing the event data.</param>
         void restoreEssentialBgWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             //do the code when bgv completes its work            
@@ -1533,6 +1595,10 @@ namespace Helpdesk54
             }
             
         }
+
+        /// <summary>
+        /// Restores the desktop.
+        /// </summary>
         private void restoreDesktop()
         {
             string userDirectory = @"C:\Users\" + usernameLabel.Text.ToString();
@@ -1558,6 +1624,10 @@ namespace Helpdesk54
             }
             RestoreFilesRecursively(source, target);
         }
+
+        /// <summary>
+        /// Restores the favorites.
+        /// </summary>
         private void restoreFavorites()
         {
             string userDirectory = @"C:\Users\" + usernameLabel.Text.ToString();
@@ -1583,6 +1653,10 @@ namespace Helpdesk54
             }
             RestoreFilesRecursively(source, target);
         }
+
+        /// <summary>
+        /// Restores the documents.
+        /// </summary>
         private void restoreDocuments()
         {
             string userDirectory = @"C:\Users\" + usernameLabel.Text.ToString();
@@ -1608,9 +1682,12 @@ namespace Helpdesk54
             }
             RestoreFilesRecursively(source, target);
         }
-        /*
-         * ***** STICKY NOTES RESTORE ***** *
-        */
+
+        /// <summary>
+        /// Handles the Click event of the restoreStickyNotesButton control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void restoreStickyNotesButton_Click(object sender, EventArgs e)
         {
             clickedButton = ((Button)sender).Name.ToString();
@@ -1619,9 +1696,12 @@ namespace Helpdesk54
             restoreAdditionalBgWorker.RunWorkerAsync();
             restoreAdditionalBarLabel.Visible = false;
         }
-        /*
-         * ***** PICTURES RESTORE ***** *
-        */
+
+        /// <summary>
+        /// Handles the Click event of the restorePicturesButton control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void restorePicturesButton_Click(object sender, EventArgs e)
         {
             clickedButton = ((Button)sender).Name.ToString();
@@ -1630,9 +1710,12 @@ namespace Helpdesk54
             restoreAdditionalBgWorker.RunWorkerAsync();
             restoreAdditionalBarLabel.Visible = false;
         }
-        /*
-         * ***** VIDEOS RESTORE ***** *
-        */
+
+        /// <summary>
+        /// Handles the Click event of the restoreVideosButton control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void restoreVideosButton_Click(object sender, EventArgs e)
         {
             clickedButton = ((Button)sender).Name.ToString();
@@ -1641,9 +1724,12 @@ namespace Helpdesk54
             restoreAdditionalBgWorker.RunWorkerAsync();
             restoreAdditionalBarLabel.Visible = false;
         }
-        /*
-         * ***** MUSIC RESTORE ***** *
-        */
+
+        /// <summary>
+        /// Handles the Click event of the restoreMusicButton control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void restoreMusicButton_Click(object sender, EventArgs e)
         {
             clickedButton = ((Button)sender).Name.ToString();
@@ -1652,11 +1738,12 @@ namespace Helpdesk54
             restoreAdditionalBgWorker.RunWorkerAsync();
             restoreAdditionalBarLabel.Visible = false;
         }
-        /* 
-         * *****
-         * restoreAdditionalBgWorker Do Work Method *
-         * *****
-        */
+
+        /// <summary>
+        /// Handles the DoWork event of the restoreAdditionalBgWorker control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="DoWorkEventArgs"/> instance containing the event data.</param>
         void restoreAdditionalBgWorker_DoWork(object sender, DoWorkEventArgs e)
         {
             string userDirectory = @"C:\Users\" + usernameLabel.Text.ToString();
@@ -1749,11 +1836,12 @@ namespace Helpdesk54
                 return;
             }
         }
-        /* 
-         * *****
-         * restoreAdditionalBgWorker Process Changed *
-         * *****
-        */
+
+        /// <summary>
+        /// Handles the ProgressChanged event of the restoreAdditionalBgWorker control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="ProgressChangedEventArgs"/> instance containing the event data.</param>
         void restoreAdditionalBgWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             restoreAdditionalProgressBar.Visible = true;
@@ -1787,11 +1875,12 @@ namespace Helpdesk54
             //essentialItemsProgressLabel.Text = String.Format("Progress: {0} % - All {1} Files Transferred", e.ProgressPercentage, clickedButton);
             //essentialItemsProgressLabel.Text = String.Format("Total items transfered: {0}", e.UserState);
         }
-        /* 
-         * *****
-         * restoreWorker Completed *
-         * *****
-        */
+
+        /// <summary>
+        /// Handles the RunWorkerCompleted event of the restoreAdditionalBgWorker control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="RunWorkerCompletedEventArgs"/> instance containing the event data.</param>
         void restoreAdditionalBgWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             // First, handle the case where an exception was thrown.
@@ -1834,11 +1923,12 @@ namespace Helpdesk54
 
 
         }
-        /*
-         * ***** *
-         * Restore all directories and files recursively
-         * ***** *
-        */
+
+        /// <summary>
+        /// Restores the files recursively.
+        /// </summary>
+        /// <param name="source">The source.</param>
+        /// <param name="target">The target.</param>
         public void RestoreFilesRecursively(DirectoryInfo source, DirectoryInfo target)
         {
             foreach (DirectoryInfo dir in source.GetDirectories())
@@ -1855,9 +1945,14 @@ namespace Helpdesk54
             foreach (FileInfo file in source.GetFiles())
                 file.CopyTo(Path.Combine(target.FullName, file.Name), true); //overwrites the existing files with newer
         }
-        /*
-        * ***** CHECK REGISTRY TO SEE IF PROGRAM IS INSTALLED ***** *
-        */
+
+        /// <summary>
+        /// Determines whether the application is installed via the registry.
+        /// </summary>
+        /// <param name="p_name">Name of the program.</param>
+        /// <returns>
+        ///   Bool
+        /// </returns>
         public static bool IsApplicationInstalled(string p_name)
         {
             string keyName;
@@ -1892,9 +1987,15 @@ namespace Helpdesk54
 
             return false;
         }
-        /*
-        * ***** CHECK REGISTRY TO SEE IF PROGRAM IS INSTALLED VIA MSI ISNTALLER ***** *
-        */
+
+        /// <summary>
+        /// Check registry to see if program exists via MSI Installer.
+        /// </summary>
+        /// <param name="p_root">RegistryKey Root key</param>
+        /// <param name="p_subKeyName">String Name of the program sub key.</param>
+        /// <param name="p_attributeName">String Name of the program attribute.</param>
+        /// <param name="p_name">String Name of the program.</param>
+        /// <returns></returns>
         private static bool ExistsInSubKey(RegistryKey p_root, string p_subKeyName, string p_attributeName, string p_name)
         {
             RegistryKey subkey;
@@ -1919,6 +2020,12 @@ namespace Helpdesk54
             }
             return false;
         }
+
+        /// <summary>
+        /// Handles the Click event of the outlookButton control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void outlookButton_Click(object sender, EventArgs e)
         {
             Button sentButton = sender as Button;
@@ -1933,6 +2040,11 @@ namespace Helpdesk54
             outlookCheckBox.Checked = true;
         }
 
+        /// <summary>
+        /// Handles the Click event of the dymoButton control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void dymoButton_Click(object sender, EventArgs e)
         {
             Button sentButton = sender as Button;
@@ -1946,6 +2058,11 @@ namespace Helpdesk54
             }
         }
 
+        /// <summary>
+        /// Handles the Click event of the acrobatButton control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void acrobatButton_Click(object sender, EventArgs e)
         {
             Button sentButton = sender as Button;
@@ -1960,6 +2077,11 @@ namespace Helpdesk54
             adobeProCheckBox.Checked = true;
         }
 
+        /// <summary>
+        /// Handles the Click event of the scanSnapButton control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void scanSnapButton_Click(object sender, EventArgs e)
         {
             Button sentButton = sender as Button;
@@ -1973,6 +2095,11 @@ namespace Helpdesk54
             }
         }
 
+        /// <summary>
+        /// Handles the Click event of the quickenButton control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void quickenButton_Click(object sender, EventArgs e)
         {
             Button sentButton = sender as Button;
@@ -1987,6 +2114,11 @@ namespace Helpdesk54
             quickenCheckBox.Checked = true;
         }
 
+        /// <summary>
+        /// Handles the Click event of the installPrintersButton control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void installPrintersButton_Click(object sender, EventArgs e)
         {
             DriveInfo[] theDrives = DriveInfo.GetDrives();
@@ -2015,6 +2147,12 @@ namespace Helpdesk54
             [MarshalAs(UnmanagedType.LPTStr)] string localName,
             [MarshalAs(UnmanagedType.LPTStr)] StringBuilder remoteName,
             ref int length);
+
+        /// <summary>
+        /// Gets the unc path.
+        /// </summary>
+        /// <param name="originalPath">The original path.</param>
+        /// <returns>String newPath</returns>
         public static string GetUNCPath(string originalPath)
         {
             StringBuilder sb = new StringBuilder(512);
@@ -2036,7 +2174,8 @@ namespace Helpdesk54
 
                         string path = Path.GetFullPath(originalPath)
                             .Substring(Path.GetPathRoot(originalPath).Length);
-                        return Path.Combine(sb.ToString().TrimEnd(), path);
+                        string newPath = Path.Combine(sb.ToString().TrimEnd(), path);
+                        return newPath;
                     }
                 }
             }
@@ -2044,18 +2183,10 @@ namespace Helpdesk54
             return originalPath;
         }
 
-
-        /*
-        * ***** *
-        * ***** END GET UNC PATH ***** *
-        * ***** *
-        */
-
-        /*
-         * ***** *
-         * SEARCH FOR BACKUP DIRECTORY
-         * ***** *
-         */
+        /// <summary>
+        /// Searches the directory for backup.
+        /// </summary>
+        /// <param name="targetDirectory">The target directory.</param>
         public void searchDirectoryForBackup(string targetDirectory)
         {
             string[] subdirectoryEntries = Directory.GetDirectories(targetDirectory);
@@ -2075,6 +2206,11 @@ namespace Helpdesk54
                 }
             }
         }
+        /// <summary>
+        /// Restores from backup.
+        /// </summary>
+        /// <param name="directoryName">Name of the directory.</param>
+        /// <param name="userName">Name of the user.</param>
         public void restoreFromBackup(string directoryName, string userName)
         {
             string userDirectory;
@@ -2144,6 +2280,11 @@ namespace Helpdesk54
             }
         }
 
+        /// <summary>
+        /// Handles the Click event of the userSetupCompleteButton control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void userSetupCompleteButton_Click(object sender, EventArgs e)
         {
             //1YWi6rMUie3BD_AXH85Ew0TGJpgP_AVNN4Ury2bpIaQk - setup spreadsheet ID
@@ -2220,6 +2361,11 @@ namespace Helpdesk54
 
         }
 
+        /// <summary>
+        /// Handles the Click event of the userBackupCompleteButton control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void userBackupCompleteButton_Click(object sender, EventArgs e)
         {
             //1XFsFJ2nqrXsxO9ShRJOwQ2MMlDpxf1wmU7RgSKUvmKM - spreadsheet ID
@@ -2290,9 +2436,12 @@ namespace Helpdesk54
                 MessageBox.Show("The users backup information has been recorded.");
             }
         }
-        //Checks the Google Spreadsheet to see if the user exists in the current year as having been setup
-        //If the user DOES exist - it updates the UserChecklist tab accordingly in the Setup section
-        //returns bool
+
+        /// <summary>
+        /// Checks the Google Spreadsheet to see if the user exists in the current year as having been setup.
+        /// If the user DOES exist - it updates the UserChecklist tab accordingly in the Setup section
+        /// </summary>
+        /// <returns>Bool</returns>
         public bool userHasBeenSetup()
         {
             SheetsService service = authenticateServiceAccount();
@@ -2317,7 +2466,10 @@ namespace Helpdesk54
             }
             return false;
         }
-        //Updates the user CheckBoxes for their setup if the user exists
+
+        /// <summary>
+        /// Updates the user setup checks.
+        /// </summary>
         public void updateUserSetupChecks()
         {
             SheetsService service = authenticateServiceAccount();
@@ -2367,6 +2519,10 @@ namespace Helpdesk54
                 }
             }
         }
+        /// <summary>
+        /// Check to see if the user has been backed up.
+        /// </summary>
+        /// <returns>Bool</returns>
         public bool userHasBeenBackedUp()
         {
             SheetsService service = authenticateServiceAccount();
@@ -2391,6 +2547,10 @@ namespace Helpdesk54
             }
             return false;
         }
+
+        /// <summary>
+        /// Updates the user backup checkboxes.
+        /// </summary>
         public void updateUserBackupChecks()
         {
             SheetsService service = authenticateServiceAccount();
@@ -2434,6 +2594,11 @@ namespace Helpdesk54
                 }
             }
         }
+
+        /// <summary>
+        /// Checks to see if the user has access to get quicken.
+        /// </summary>
+        /// <returns>Bool</returns>
         public bool doesUserGetQuicken()
         {
             SheetsService service = authenticateServiceAccount();
@@ -2462,6 +2627,12 @@ namespace Helpdesk54
             }
             return false;
         }
+
+        /// <summary>
+        /// Authenticates the service account.
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="Exception">Create ServiceAccount Failed</exception>
         public static SheetsService authenticateServiceAccount()
         {            
             try
@@ -2488,6 +2659,11 @@ namespace Helpdesk54
             }
             
         }
+
+        /// <summary>
+        /// Checks the backup directories and updates the labels.
+        /// </summary>
+        /// <param name="backupName">Name of the backup.</param>
         public void checkBackupDirectories(string backupName)
         {
             string subDirectoryURL;
@@ -2557,6 +2733,10 @@ namespace Helpdesk54
 
             }
         }
+
+        /// <summary>
+        /// Disables the restore buttons.
+        /// </summary>
         private void disableRestoreButtons()
         {
             //disable buttons in restore Panel
