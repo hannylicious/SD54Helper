@@ -51,10 +51,26 @@ namespace Helpdesk54
         {
             InitializeComponent();
             //set the paths to wordPath, excelPath and outlookPath           
-            setOfficePaths();
+            try
+            {
+                setOfficePaths();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("An issue with setting office paths occurred: " + ex.Message);
+                throw new Exception("An issue with setting office paths occurred: ", ex);
+            }
             //wordPath, excelPath and outlookPath now set globally
             //Get the userName to the currently logged in user
-            getUsername();
+            try
+            {
+                getUsername();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("An issue with getting the username occurred: " + ex.Message);
+                throw new Exception("An issue with getting the username occurred: ", ex);
+            }
             //Set the label to the users name
             usernameLabel.Text = userName;
             //Get the attached drives
@@ -97,7 +113,12 @@ namespace Helpdesk54
                         Uri uri = new Uri(path);
                         serverName = uri.Host.ToString();
                         serverNameLinkLabel.Text = serverName;
-                    }               
+                    }
+                    else
+                    {
+                        homeDirectory = "Unknown";
+                        serverNameLinkLabel.Text = "Unknown";
+                    }              
                 }
             }
             catch (Exception ex)
@@ -159,7 +180,14 @@ namespace Helpdesk54
             //Try to set the selected drive to the H:/ Drive
             try
             {
-                backupDriveCombo.SelectedIndex = backupDriveCombo.FindString(homeDirectory);
+                if (homeDirectory != "Unknown")
+                {
+                    backupDriveCombo.SelectedIndex = backupDriveCombo.FindString(homeDirectory);
+                }
+                else
+                {
+
+                }
             }
             catch (Exception e)
             {
