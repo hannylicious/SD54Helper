@@ -256,6 +256,7 @@
             this.outlookButton.Image = global::Helpdesk54.Properties.Resources.ic_email_indigo_800_24dp;
             this.outlookButton.Location = new System.Drawing.Point(14, 37);
             this.outlookButton.Name = "outlookButton";
+            this.outlookButton.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.outlookButton.Size = new System.Drawing.Size(300, 60);
             this.outlookButton.TabIndex = 2;
             this.outlookButton.Text = "Outlook";

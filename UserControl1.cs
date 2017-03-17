@@ -51,34 +51,15 @@ namespace Helpdesk54
         {
             InitializeComponent();
             //set the paths to wordPath, excelPath and outlookPath           
-            try
-            {
-                setOfficePaths();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("An issue with setting office paths occurred: " + ex.Message);
-                throw new Exception("An issue with setting office paths occurred: ", ex);
-            }
+            setOfficePaths();
             //Get the userName to the currently logged in user
-            try
-            {
-                getUsername();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("An issue with getting the username occurred: " + ex.Message);
-                throw new Exception("An issue with getting the username occurred: ", ex);
-            }
-            //Set the label to the users name            
+            getUsername();         
             usernameLabel.Text = userName;
             //Get the attached drives            
             getAttachedDrives();
             //set the backupDirectoryName
             backupDirectoryName = userName.ToString() + "-Backups-" + DateTime.Now.Year.ToString();
-
             //check if the user gets access to quicken
-            //enable main button and options on setup & backup checkboxes
             if (doesUserGetQuicken())
             {
                 quickenButton.Enabled = true;
@@ -90,51 +71,34 @@ namespace Helpdesk54
                 quickenBackupCheckBox.Enabled = false;
             }
             //set the serverNameLink to link to the appropriate location
-            try
+            foreach (DriveInfo currentDrive in theDrives)
             {
-                foreach (DriveInfo currentDrive in theDrives)
+                if (currentDrive.DriveType == DriveType.Network)
                 {
-                    if (currentDrive.DriveType == DriveType.Network)
+                    string currentDriveString = currentDrive.Name.ToString();
+                    string path = GetUNCPath(currentDriveString);
+                    if (path.ToLower().Contains(userName.ToLower()))
                     {
-                        string currentDriveString = currentDrive.Name.ToString();
-                        string path = GetUNCPath(currentDriveString);
-                        if (path.ToLower().Contains(userName.ToLower()))
-                        {
-                            // This is the Home drive! // 
-                            homeDirectory = currentDrive.Name;
-                        }
-                        if (path.ToLower().Contains(userCustomDisplayName.ToLower()))
-                        {
-                            // This is the Home drive! // 
-                            homeDirectory = currentDrive.Name;
-                        }
-                        Uri uri = new Uri(path);
-                        serverName = uri.Host.ToString();
-                        serverNameLinkLabel.Text = serverName;
+                        // This is the Home drive! // 
+                        homeDirectory = currentDrive.Name;
                     }
-                    else
+                    if (path.ToLower().Contains(userCustomDisplayName.ToLower()))
                     {
-                        homeDirectory = "Unknown";
-                        serverNameLinkLabel.Text = "Unknown";
-                    }              
+                        // This is the Home drive! // 
+                        homeDirectory = currentDrive.Name;
+                    }
+                    Uri uri = new Uri(path);
+                    serverName = uri.Host.ToString();
+                    serverNameLinkLabel.Text = serverName;
                 }
+                else
+                {
+                    homeDirectory = "Unknown";
+                    serverNameLinkLabel.Text = "Unknown";
+                }              
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show("An issue with getting the drives occurred: " + ex.Message);
-                throw new Exception("An issue with getting the drives occurred: ", ex);
-            }
-
             //check installations
-            try
-            {
-                checkApplicationInstalls();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("An issue with checking application installs occurred: " + ex.Message);
-                throw new Exception("An issue with checking application installs occurred: ", ex);
-            }
+            checkApplicationInstalls();
             //check to see if user has been backed up or restored already
             if (userHasBeenSetup())
             {
@@ -170,8 +134,7 @@ namespace Helpdesk54
             restoreAdditionalBgWorker.ProgressChanged += new ProgressChangedEventHandler(restoreAdditionalBgWorker_ProgressChanged);
             restoreAdditionalBgWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(restoreAdditionalBgWorker_RunWorkerCompleted);
             restoreAdditionalBgWorker.WorkerReportsProgress = true;
-            restoreAdditionalBgWorker.WorkerSupportsCancellation = true;
-        
+            restoreAdditionalBgWorker.WorkerSupportsCancellation = true;        
             //*****
             //set backupDriveCombo to dropdown
             //*****
@@ -183,56 +146,36 @@ namespace Helpdesk54
                     backupDriveCombo.Items.Add(currentDrive);
                 }
             }
-
-            //Try to set the selected drive to the H:/ Drive
-            try
+            //Set the selected drive to the H:/ Drive or the first in the list if unknown
+            if (homeDirectory != "Unknown")
             {
-                if (homeDirectory != "Unknown")
-                {
-                    backupDriveCombo.SelectedIndex = backupDriveCombo.FindString(homeDirectory);
-                }
-                else
-                {
-                    backupDriveCombo.SelectedIndex = 0;                   
-                }
+                backupDriveCombo.SelectedIndex = backupDriveCombo.FindString(homeDirectory);
             }
-            catch (Exception e)
+            else
             {
-                MessageBox.Show("Exception with setting the backup drive to H:/: {0}", e.Source);
-
-                throw;
+                backupDriveCombo.SelectedIndex = 0;                   
             }
             //Set the selected drive freespace label        
-            try
-            {
-                DriveInfo selectedDrive = (DriveInfo)backupDriveCombo.SelectedItem;
-                //If it's the homedrive (or a network drive) - we need to do further calculation to determine 'available free space'
-                //Max Available : 3GB
-                if (selectedDrive.DriveType == DriveType.Network)
-                {                    
-                    long maxAvailableDriveSpace = 3221225472;
-                    string folder = selectedDrive.ToString();
-                    long networkDirectorySize = DirSize(new DirectoryInfo(folder));
-                    selectedDriveAvailableSize = maxAvailableDriveSpace - networkDirectorySize;
-                    string folderMB = FormatBytes(selectedDriveAvailableSize);
-                    //folderMB = used space on network drive
-                    backupDriveLabel.Text = folderMB + " Free";
-                }
-                //otherwise prepare as normal and show appropriate free space
-                else if (selectedDrive.AvailableFreeSpace > 0)
-                {
-                    long driveSpace = selectedDrive.AvailableFreeSpace;
-                    string driveFreeSpace = FormatBytes(driveSpace);
-                    backupDriveLabel.Text = driveFreeSpace + " Free";
-                }
+            DriveInfo selectedDrive = (DriveInfo)backupDriveCombo.SelectedItem;
+            //If it's the homedrive (or a network drive) - we need to do further calculation to determine 'available free space'
+            //Max Available : 3GB
+            if (selectedDrive.DriveType == DriveType.Network)
+            {                    
+                long maxAvailableDriveSpace = 3221225472;
+                string folder = selectedDrive.ToString();
+                long networkDirectorySize = DirSize(new DirectoryInfo(folder));
+                selectedDriveAvailableSize = maxAvailableDriveSpace - networkDirectorySize;
+                string folderMB = FormatBytes(selectedDriveAvailableSize);
+                //folderMB = used space on network drive
+                backupDriveLabel.Text = folderMB + " Free";
             }
-            catch (IOException e)
+            //otherwise prepare as normal and show appropriate free space
+            else if (selectedDrive.AvailableFreeSpace > 0)
             {
-                MessageBox.Show("Exception with setting the freespace label: "+ e.Message);
-
-                throw;
+                long driveSpace = selectedDrive.AvailableFreeSpace;
+                string driveFreeSpace = FormatBytes(driveSpace);
+                backupDriveLabel.Text = driveFreeSpace + " Free";
             }
-
             //*****
             //set restoreDriveCombo to dropdown
             //*****
@@ -244,32 +187,19 @@ namespace Helpdesk54
                     restoreDriveCombo.Items.Add(currentDrive);
                 }
             }
-
             //Try to set the selected drive to the H:/ Drive
-            try
+            if (homeDirectory != "Unknown")
             {
-                if (homeDirectory != "Unknown")
-                {
-                    restoreDriveCombo.SelectedIndex = restoreDriveCombo.FindString(homeDirectory);
-                }
-                else
-                {
-                    restoreDriveCombo.SelectedIndex = 0;
-                }                
+                restoreDriveCombo.SelectedIndex = restoreDriveCombo.FindString(homeDirectory);
             }
-            catch (Exception e)
+            else
             {
-                MessageBox.Show("Exception with setting the restore drive to H:/: {0}", e.Source);
-
-                throw;
-            }
-
+                restoreDriveCombo.SelectedIndex = 0;
+            }  
             //Check the H:\ drive for a backup
             checkForExistingBackup();
-
             //update labels
             labelDirectorySizes();
-
         }
 
         /// <summary>
