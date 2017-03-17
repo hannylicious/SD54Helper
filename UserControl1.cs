@@ -71,6 +71,138 @@ namespace Helpdesk54
                 quickenBackupCheckBox.Enabled = false;
             }
             //set the serverNameLink to link to the appropriate location
+            setServerNameLink();
+            //check installations
+            checkApplicationInstalls();
+            //check to see if user has been backed up or restored already
+            if (userHasBeenSetup())
+            {
+                updateUserSetupChecks();
+                userSetupAnswerLabel.Text = "YES";
+                userSetupAnswerLabel.ForeColor = System.Drawing.Color.ForestGreen;
+
+            }
+            if (userHasBeenBackedUp())
+            {
+                updateUserBackupChecks();
+                userBackedUpAnswerLabel.Text = "YES";
+                userBackedUpAnswerLabel.ForeColor = System.Drawing.Color.ForestGreen;
+            }
+            //set backupDriveCombo dropdown
+            setBackupDriveCombo();
+            //set restoreDriveCombo to dropdown
+            setRestoreDriveCombo();
+            //Set the selected drive freespace label 
+            setBackupDriveFreeSpaceLabel();
+            //Check the H:\ drive for a backup
+            checkForExistingBackup();
+            //update labels
+            labelDirectorySizes();
+            //setup background worker for progress bars
+            //essentialBgWorker
+            essentialBgWorker.DoWork += new DoWorkEventHandler(essentialBgWorker_DoWork);
+            essentialBgWorker.ProgressChanged += new ProgressChangedEventHandler(essentialBgWorker_ProgressChanged);
+            essentialBgWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(essentialBgWorker_RunWorkerCompleted);
+            essentialBgWorker.WorkerReportsProgress = true;            
+            //additionalBgWorker
+            additionalBgWorker.DoWork += new DoWorkEventHandler(additionalBgWorker_DoWork);
+            additionalBgWorker.ProgressChanged += new ProgressChangedEventHandler(additionalBgWorker_ProgressChanged);
+            additionalBgWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(additionalBgWorker_RunWorkerCompleted);
+            additionalBgWorker.WorkerReportsProgress = true;            
+            //restoreEssentialsWorker
+            restoreEssentialBgWorker.DoWork += new DoWorkEventHandler(restoreEssentialBgWorker_DoWork);
+            restoreEssentialBgWorker.ProgressChanged += new ProgressChangedEventHandler(restoreEssentialBgWorker_ProgressChanged);
+            restoreEssentialBgWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(restoreEssentialBgWorker_RunWorkerCompleted);
+            restoreEssentialBgWorker.WorkerReportsProgress = true;            
+            //restoreAdditionalWorker
+            restoreAdditionalBgWorker.DoWork += new DoWorkEventHandler(restoreAdditionalBgWorker_DoWork);
+            restoreAdditionalBgWorker.ProgressChanged += new ProgressChangedEventHandler(restoreAdditionalBgWorker_ProgressChanged);
+            restoreAdditionalBgWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(restoreAdditionalBgWorker_RunWorkerCompleted);
+            restoreAdditionalBgWorker.WorkerReportsProgress = true;
+            restoreAdditionalBgWorker.WorkerSupportsCancellation = true;
+        }
+
+        /// <summary>
+        /// Sets the backup drive combo.
+        /// </summary>
+        private void setBackupDriveCombo()
+        {
+            backupDriveCombo.DropDownStyle = ComboBoxStyle.DropDownList;
+            foreach (DriveInfo currentDrive in theDrives)
+            {
+                if (currentDrive.IsReady == true)
+                {
+                    backupDriveCombo.Items.Add(currentDrive);
+                }
+            }
+            //Set the selected drive to the H:/ Drive or the first in the list if unknown
+            if (homeDirectory != "Unknown")
+            {
+                backupDriveCombo.SelectedIndex = backupDriveCombo.FindString(homeDirectory);
+            }
+            else
+            {
+                backupDriveCombo.SelectedIndex = 0;
+            }
+        }
+
+        /// <summary>
+        /// Sets the restore drive combo.
+        /// </summary>
+        private void setRestoreDriveCombo()
+        {
+            restoreDriveCombo.DropDownStyle = ComboBoxStyle.DropDownList;
+            foreach (DriveInfo currentDrive in theDrives)
+            {
+                if (currentDrive.IsReady == true)
+                {
+                    restoreDriveCombo.Items.Add(currentDrive);
+                }
+            }
+            //Try to set the selected drive to the H:/ Drive
+            if (homeDirectory != "Unknown")
+            {
+                restoreDriveCombo.SelectedIndex = restoreDriveCombo.FindString(homeDirectory);
+            }
+            else
+            {
+                restoreDriveCombo.SelectedIndex = 0;
+            }
+        }
+
+        /// <summary>
+        /// Sets the backup drive free space label.
+        /// </summary>
+        private void setBackupDriveFreeSpaceLabel()
+        {
+            //Set the selected drive freespace label        
+            DriveInfo selectedDrive = (DriveInfo)backupDriveCombo.SelectedItem;
+            //If it's the homedrive (or a network drive) - we need to do further calculation to determine 'available free space'
+            //Max Available : 3GB
+            if (selectedDrive.DriveType == DriveType.Network)
+            {
+                long maxAvailableDriveSpace = 3221225472;
+                string folder = selectedDrive.ToString();
+                long networkDirectorySize = DirSize(new DirectoryInfo(folder));
+                selectedDriveAvailableSize = maxAvailableDriveSpace - networkDirectorySize;
+                string folderMB = FormatBytes(selectedDriveAvailableSize);
+                //folderMB = used space on network drive
+                backupDriveLabel.Text = folderMB + " Free";
+            }
+            //otherwise prepare as normal and show appropriate free space
+            else if (selectedDrive.AvailableFreeSpace > 0)
+            {
+                long driveSpace = selectedDrive.AvailableFreeSpace;
+                string driveFreeSpace = FormatBytes(driveSpace);
+                backupDriveLabel.Text = driveFreeSpace + " Free";
+            }
+        }
+
+        /// <summary>
+        /// Sets the server name link.
+        /// </summary>
+        private void setServerNameLink()
+        {
             foreach (DriveInfo currentDrive in theDrives)
             {
                 if (currentDrive.DriveType == DriveType.Network)
@@ -95,111 +227,8 @@ namespace Helpdesk54
                 {
                     homeDirectory = "Unknown";
                     serverNameLinkLabel.Text = "Unknown";
-                }              
-            }
-            //check installations
-            checkApplicationInstalls();
-            //check to see if user has been backed up or restored already
-            if (userHasBeenSetup())
-            {
-                updateUserSetupChecks();
-                userSetupAnswerLabel.Text = "YES";
-                userSetupAnswerLabel.ForeColor = System.Drawing.Color.ForestGreen;
-
-            }
-            if (userHasBeenBackedUp())
-            {
-                updateUserBackupChecks();
-                userBackedUpAnswerLabel.Text = "YES";
-                userBackedUpAnswerLabel.ForeColor = System.Drawing.Color.ForestGreen;
-            }
-            //setup background worker for progress bars
-            //essentialBgWorker
-            essentialBgWorker.DoWork += new DoWorkEventHandler(essentialBgWorker_DoWork);
-            essentialBgWorker.ProgressChanged += new ProgressChangedEventHandler(essentialBgWorker_ProgressChanged);
-            essentialBgWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(essentialBgWorker_RunWorkerCompleted);
-            essentialBgWorker.WorkerReportsProgress = true;            
-            //additionalBgWorker
-            additionalBgWorker.DoWork += new DoWorkEventHandler(additionalBgWorker_DoWork);
-            additionalBgWorker.ProgressChanged += new ProgressChangedEventHandler(additionalBgWorker_ProgressChanged);
-            additionalBgWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(additionalBgWorker_RunWorkerCompleted);
-            additionalBgWorker.WorkerReportsProgress = true;            
-            //restoreEssentialsWorker
-            restoreEssentialBgWorker.DoWork += new DoWorkEventHandler(restoreEssentialBgWorker_DoWork);
-            restoreEssentialBgWorker.ProgressChanged += new ProgressChangedEventHandler(restoreEssentialBgWorker_ProgressChanged);
-            restoreEssentialBgWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(restoreEssentialBgWorker_RunWorkerCompleted);
-            restoreEssentialBgWorker.WorkerReportsProgress = true;            
-            //restoreAdditionalWorker
-            restoreAdditionalBgWorker.DoWork += new DoWorkEventHandler(restoreAdditionalBgWorker_DoWork);
-            restoreAdditionalBgWorker.ProgressChanged += new ProgressChangedEventHandler(restoreAdditionalBgWorker_ProgressChanged);
-            restoreAdditionalBgWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(restoreAdditionalBgWorker_RunWorkerCompleted);
-            restoreAdditionalBgWorker.WorkerReportsProgress = true;
-            restoreAdditionalBgWorker.WorkerSupportsCancellation = true;        
-            //*****
-            //set backupDriveCombo to dropdown
-            //*****
-            backupDriveCombo.DropDownStyle = ComboBoxStyle.DropDownList;
-            foreach (DriveInfo currentDrive in theDrives)
-            {
-                if (currentDrive.IsReady == true)
-                {
-                    backupDriveCombo.Items.Add(currentDrive);
                 }
             }
-            //Set the selected drive to the H:/ Drive or the first in the list if unknown
-            if (homeDirectory != "Unknown")
-            {
-                backupDriveCombo.SelectedIndex = backupDriveCombo.FindString(homeDirectory);
-            }
-            else
-            {
-                backupDriveCombo.SelectedIndex = 0;                   
-            }
-            //Set the selected drive freespace label        
-            DriveInfo selectedDrive = (DriveInfo)backupDriveCombo.SelectedItem;
-            //If it's the homedrive (or a network drive) - we need to do further calculation to determine 'available free space'
-            //Max Available : 3GB
-            if (selectedDrive.DriveType == DriveType.Network)
-            {                    
-                long maxAvailableDriveSpace = 3221225472;
-                string folder = selectedDrive.ToString();
-                long networkDirectorySize = DirSize(new DirectoryInfo(folder));
-                selectedDriveAvailableSize = maxAvailableDriveSpace - networkDirectorySize;
-                string folderMB = FormatBytes(selectedDriveAvailableSize);
-                //folderMB = used space on network drive
-                backupDriveLabel.Text = folderMB + " Free";
-            }
-            //otherwise prepare as normal and show appropriate free space
-            else if (selectedDrive.AvailableFreeSpace > 0)
-            {
-                long driveSpace = selectedDrive.AvailableFreeSpace;
-                string driveFreeSpace = FormatBytes(driveSpace);
-                backupDriveLabel.Text = driveFreeSpace + " Free";
-            }
-            //*****
-            //set restoreDriveCombo to dropdown
-            //*****
-            restoreDriveCombo.DropDownStyle = ComboBoxStyle.DropDownList;
-            foreach (DriveInfo currentDrive in theDrives)
-            {
-                if (currentDrive.IsReady == true)
-                {
-                    restoreDriveCombo.Items.Add(currentDrive);
-                }
-            }
-            //Try to set the selected drive to the H:/ Drive
-            if (homeDirectory != "Unknown")
-            {
-                restoreDriveCombo.SelectedIndex = restoreDriveCombo.FindString(homeDirectory);
-            }
-            else
-            {
-                restoreDriveCombo.SelectedIndex = 0;
-            }  
-            //Check the H:\ drive for a backup
-            checkForExistingBackup();
-            //update labels
-            labelDirectorySizes();
         }
 
         /// <summary>
