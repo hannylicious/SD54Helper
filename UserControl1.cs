@@ -715,33 +715,35 @@ namespace Helpdesk54
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void backupDriveCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //Set the selected drive freespace label
-            DriveInfo selectedDrive = (DriveInfo)backupDriveCombo.SelectedItem;
-            //If it's the homedrive (or a network drive) - we need to do further calculation to determine 'available free space'
-            //Max Available For Standard Users: 3GB            
-            if (selectedDrive.DriveType == DriveType.Network)
+            using (BeginWaitCursorBlock())
             {
-                long maxAvailableDriveSpace = 3221225472;
-                string folder = selectedDrive.ToString();
-                long networkDirectorySize = DirSize(new DirectoryInfo(folder));
-                selectedDriveAvailableSize = maxAvailableDriveSpace - networkDirectorySize;
-                string folderMB = FormatBytes(selectedDriveAvailableSize);
-                labelDirectorySizes();
-                //folderMB = used space on network drive
-                backupDriveLabel.Text = folderMB+ " Free";
-            }
-            //otherwise prepare as normal and show appropriate free space
-            else
-            {
-                if (selectedDrive.AvailableFreeSpace > 0)
+                //Set the selected drive freespace label
+                DriveInfo selectedDrive = (DriveInfo)backupDriveCombo.SelectedItem;
+                //If it's the homedrive (or a network drive) - we need to do further calculation to determine 'available free space'
+                //Max Available For Standard Users: 3GB            
+                if (selectedDrive.DriveType == DriveType.Network)
                 {
-                    selectedDriveAvailableSize = selectedDrive.AvailableFreeSpace;
-                    string driveFreeSpace = FormatBytes(selectedDriveAvailableSize);
+                    long maxAvailableDriveSpace = 3221225472;
+                    string folder = selectedDrive.ToString();
+                    long networkDirectorySize = DirSize(new DirectoryInfo(folder));
+                    selectedDriveAvailableSize = maxAvailableDriveSpace - networkDirectorySize;
+                    string folderMB = FormatBytes(selectedDriveAvailableSize);
                     labelDirectorySizes();
-                    backupDriveLabel.Text = driveFreeSpace + " Free";
+                    //folderMB = used space on network drive
+                    backupDriveLabel.Text = folderMB + " Free";
+                }
+                //otherwise prepare as normal and show appropriate free space
+                else
+                {
+                    if (selectedDrive.AvailableFreeSpace > 0)
+                    {
+                        selectedDriveAvailableSize = selectedDrive.AvailableFreeSpace;
+                        string driveFreeSpace = FormatBytes(selectedDriveAvailableSize);
+                        labelDirectorySizes();
+                        backupDriveLabel.Text = driveFreeSpace + " Free";
+                    }
                 }
             }
-            
         }
         /// <summary>
         /// Handles the SelectedIndexChanged event of the restoreDriveCombo control.
@@ -750,13 +752,16 @@ namespace Helpdesk54
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void restoreDriveCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //Set the selected drive freespace label
-            disableRestoreButtons();
-            DriveInfo selectedDrive = (DriveInfo)restoreDriveCombo.SelectedItem;
-            searchDirectoryForBackup(selectedDrive.ToString());
-            if (backupFoundLabel.Text.ToString() == "(Backup Found!)")
+            using (BeginWaitCursorBlock())
             {
-                checkBackupDirectories(backupName);
+                //Set the selected drive freespace label
+                disableRestoreButtons();
+                DriveInfo selectedDrive = (DriveInfo)restoreDriveCombo.SelectedItem;
+                searchDirectoryForBackup(selectedDrive.ToString());
+                if (backupFoundLabel.Text.ToString() == "(Backup Found!)")
+                {
+                    checkBackupDirectories(backupName);
+                }
             }
         }
 
@@ -2308,27 +2313,27 @@ namespace Helpdesk54
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void userSetupCompleteButton_Click(object sender, EventArgs e)
         {
-            //1YWi6rMUie3BD_AXH85Ew0TGJpgP_AVNN4Ury2bpIaQk - setup spreadsheet ID
-            SheetsService service = authenticateServiceAccount();
-
-            ValueRange valueRange = new ValueRange();
-            var oblist = new List<object>() {  };
-
-            //set year
-            string yearDate = DateTime.Today.ToString("yyyy");
-            oblist.Add(yearDate);
-            //set date
-            string monthDay = DateTime.Today.ToString("MM/dd");
-            oblist.Add(monthDay);
-            //set location
-            string serverOutput = Regex.Replace(serverName, @"[\d-]", string.Empty);
-            oblist.Add(serverOutput);
-            //set username
-            oblist.Add(userName);
-
-            //create array of checkboxes in appropriate order for spreadsheet (must match the order of columns in the spreadsheet!)
-            CheckBox[] checkBoxNames =
+            using (BeginWaitCursorBlock())
             {
+                //1YWi6rMUie3BD_AXH85Ew0TGJpgP_AVNN4Ury2bpIaQk - setup spreadsheet ID
+                SheetsService service = authenticateServiceAccount();
+                ValueRange valueRange = new ValueRange();
+                var oblist = new List<object>() { };
+                //set year
+                string yearDate = DateTime.Today.ToString("yyyy");
+                oblist.Add(yearDate);
+                //set date
+                string monthDay = DateTime.Today.ToString("MM/dd");
+                oblist.Add(monthDay);
+                //set location
+                string serverOutput = Regex.Replace(serverName, @"[\d-]", string.Empty);
+                oblist.Add(serverOutput);
+                //set username
+                oblist.Add(userName);
+
+                //create array of checkboxes in appropriate order for spreadsheet (must match the order of columns in the spreadsheet!)
+                CheckBox[] checkBoxNames =
+                {
                 outlookCheckBox,
                 quickenCheckBox,
                 adobeProCheckBox,
@@ -2344,42 +2349,47 @@ namespace Helpdesk54
                 icShortcutCheckBox,
                 aesopShortcutCheckBox
             };
-            //set X's for checked and O for unchecked
-            //iterate through checkBoxNames Array
-            foreach (Control c in checkBoxNames)
-            {
-                if ((c is CheckBox) && ((CheckBox)c).Checked)
+                //set X's for checked and O for unchecked
+                //iterate through checkBoxNames Array
+                foreach (Control c in checkBoxNames)
                 {
-                    oblist.Add("X");
+                    if ((c is CheckBox) && ((CheckBox)c).Checked)
+                    {
+                        oblist.Add("X");
+                    }
+                    if ((c is CheckBox) && ((CheckBox)c).Checked == false)
+                    {
+                        oblist.Add("O");
+                    }
                 }
-                if ((c is CheckBox) && ((CheckBox)c).Checked == false)
+                valueRange.Values = new List<IList<object>> { oblist };
+                String spreadsheetId = "1YWi6rMUie3BD_AXH85Ew0TGJpgP_AVNN4Ury2bpIaQk";
+                //If the user has been Setup once before - run an update command on the appropriate row - otherwise append it to end of spreadsheet
+                if (userHasBeenSetup())
                 {
-                    oblist.Add("O");
+                    int x = existingSetupRowNumber;
+                    String customRange = "A" + (x + 1);
+                    SpreadsheetsResource.ValuesResource.UpdateRequest update = service.Spreadsheets.Values.Update(valueRange, spreadsheetId, customRange);
+                    update.ValueInputOption = SpreadsheetsResource.ValuesResource.UpdateRequest.ValueInputOptionEnum.RAW;
+                    UpdateValuesResponse result = update.Execute();
+                    updateUserSetupChecks();
+                    userSetupAnswerLabel.Text = "YES";
+                    userSetupAnswerLabel.ForeColor = System.Drawing.Color.ForestGreen;
+                    MessageBox.Show("The users setup information has been updated.");
+                }
+                else
+                {
+                    // Define request parameters.
+                    String range = "A1";
+                    SpreadsheetsResource.ValuesResource.AppendRequest update = service.Spreadsheets.Values.Append(valueRange, spreadsheetId, range);
+                    update.ValueInputOption = SpreadsheetsResource.ValuesResource.AppendRequest.ValueInputOptionEnum.RAW;
+                    AppendValuesResponse result = update.Execute();
+                    updateUserSetupChecks();
+                    userSetupAnswerLabel.Text = "YES";
+                    userSetupAnswerLabel.ForeColor = System.Drawing.Color.ForestGreen;
+                    MessageBox.Show("The users setup information has been recorded.");
                 }
             }
-
-            valueRange.Values = new List<IList<object>> { oblist };
-            String spreadsheetId = "1YWi6rMUie3BD_AXH85Ew0TGJpgP_AVNN4Ury2bpIaQk";
-
-            //If the user has been Setup once before - run an update command on the appropriate row - otherwise append it to end of spreadsheet
-            if (userHasBeenSetup())
-            {
-                int x = existingSetupRowNumber;
-                String customRange = "A" + (x+1);
-                SpreadsheetsResource.ValuesResource.UpdateRequest update = service.Spreadsheets.Values.Update(valueRange, spreadsheetId, customRange);
-                update.ValueInputOption = SpreadsheetsResource.ValuesResource.UpdateRequest.ValueInputOptionEnum.RAW;
-                UpdateValuesResponse result = update.Execute();
-                MessageBox.Show("The users setup information has been updated.");
-            } else {
-                // Define request parameters.
-                
-                String range = "A1";
-                SpreadsheetsResource.ValuesResource.AppendRequest update = service.Spreadsheets.Values.Append(valueRange, spreadsheetId, range);
-                update.ValueInputOption = SpreadsheetsResource.ValuesResource.AppendRequest.ValueInputOptionEnum.RAW;
-                AppendValuesResponse result = update.Execute();
-                MessageBox.Show("The users setup information has been recorded.");
-            }
-
         }
 
         /// <summary>
@@ -2389,27 +2399,26 @@ namespace Helpdesk54
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void userBackupCompleteButton_Click(object sender, EventArgs e)
         {
-            //1XFsFJ2nqrXsxO9ShRJOwQ2MMlDpxf1wmU7RgSKUvmKM - spreadsheet ID
-            SheetsService service = authenticateServiceAccount();
-
-            ValueRange valueRange = new ValueRange();
-            var oblist = new List<object>() { };
-
-            //set year
-            string yearDate = DateTime.Today.ToString("yyyy");
-            oblist.Add(yearDate);
-            //set date
-            string monthDay = DateTime.Today.ToString("MM/dd");
-            oblist.Add(monthDay);
-            //set location
-            string serverOutput = Regex.Replace(serverName, @"[\d-]", string.Empty);
-            oblist.Add(serverOutput);
-            //set username
-            oblist.Add(userName);
-
-            //create array of checkboxes in appropriate order for spreadsheet (must match the order of columns in the spreadsheet!)
-            CheckBox[] checkBoxNames =
+            using (BeginWaitCursorBlock())
             {
+                //1XFsFJ2nqrXsxO9ShRJOwQ2MMlDpxf1wmU7RgSKUvmKM - spreadsheet ID
+                SheetsService service = authenticateServiceAccount();
+                ValueRange valueRange = new ValueRange();
+                var oblist = new List<object>() { };
+                //set year
+                string yearDate = DateTime.Today.ToString("yyyy");
+                oblist.Add(yearDate);
+                //set date
+                string monthDay = DateTime.Today.ToString("MM/dd");
+                oblist.Add(monthDay);
+                //set location
+                string serverOutput = Regex.Replace(serverName, @"[\d-]", string.Empty);
+                oblist.Add(serverOutput);
+                //set username
+                oblist.Add(userName);
+                //create array of checkboxes in appropriate order for spreadsheet (must match the order of columns in the spreadsheet!)
+                CheckBox[] checkBoxNames =
+                {
                 desktopBackupCheckBox,
                 documentsBackupCheckBox,
                 favoritesBackupCheckBox,
@@ -2419,42 +2428,47 @@ namespace Helpdesk54
                 videosBackupCheckBox,
                 musicBackupCheckBox,
             };
-            //set X's for checked and O for unchecked
-            //iterate through checkBoxNames Array
-            foreach (Control c in checkBoxNames)
-            {
-                if ((c is CheckBox) && ((CheckBox)c).Checked)
+                //set X's for checked and O for unchecked
+                //iterate through checkBoxNames Array
+                foreach (Control c in checkBoxNames)
                 {
-                    oblist.Add("X");
+                    if ((c is CheckBox) && ((CheckBox)c).Checked)
+                    {
+                        oblist.Add("X");
+                    }
+                    if ((c is CheckBox) && ((CheckBox)c).Checked == false)
+                    {
+                        oblist.Add("O");
+                    }
                 }
-                if ((c is CheckBox) && ((CheckBox)c).Checked == false)
-                {
-                    oblist.Add("O");
-                }
-            }
-
-            valueRange.Values = new List<IList<object>> { oblist };
-
-            // Define request parameters.
-            String spreadsheetId = "1XFsFJ2nqrXsxO9ShRJOwQ2MMlDpxf1wmU7RgSKUvmKM";
-            //If the user has been Setup once before - run an update command on the appropriate row - otherwise append it to end of spreadsheet
-            if (userHasBeenBackedUp())
-            {
-                int x = existingSetupRowNumber;
-                String customRange = "A" + (x + 1);
-                SpreadsheetsResource.ValuesResource.UpdateRequest update = service.Spreadsheets.Values.Update(valueRange, spreadsheetId, customRange);
-                update.ValueInputOption = SpreadsheetsResource.ValuesResource.UpdateRequest.ValueInputOptionEnum.RAW;
-                UpdateValuesResponse result = update.Execute();
-                MessageBox.Show("The users backup information has been updated.");
-            }
-            else
-            {
+                valueRange.Values = new List<IList<object>> { oblist };
                 // Define request parameters.
-                String range = "A1";
-                SpreadsheetsResource.ValuesResource.AppendRequest update = service.Spreadsheets.Values.Append(valueRange, spreadsheetId, range);
-                update.ValueInputOption = SpreadsheetsResource.ValuesResource.AppendRequest.ValueInputOptionEnum.RAW;
-                AppendValuesResponse result = update.Execute();
-                MessageBox.Show("The users backup information has been recorded.");
+                String spreadsheetId = "1XFsFJ2nqrXsxO9ShRJOwQ2MMlDpxf1wmU7RgSKUvmKM";
+                //If the user has been Setup once before - run an update command on the appropriate row - otherwise append it to end of spreadsheet
+                if (userHasBeenBackedUp())
+                {
+                    int x = existingSetupRowNumber;
+                    String customRange = "A" + (x + 1);
+                    SpreadsheetsResource.ValuesResource.UpdateRequest update = service.Spreadsheets.Values.Update(valueRange, spreadsheetId, customRange);
+                    update.ValueInputOption = SpreadsheetsResource.ValuesResource.UpdateRequest.ValueInputOptionEnum.RAW;
+                    UpdateValuesResponse result = update.Execute();
+                    updateUserBackupChecks();
+                    userBackedUpAnswerLabel.Text = "YES";
+                    userBackedUpAnswerLabel.ForeColor = System.Drawing.Color.ForestGreen;
+                    MessageBox.Show("The users backup information has been updated.");
+                }
+                else
+                {
+                    // Define request parameters.
+                    String range = "A1";
+                    SpreadsheetsResource.ValuesResource.AppendRequest update = service.Spreadsheets.Values.Append(valueRange, spreadsheetId, range);
+                    update.ValueInputOption = SpreadsheetsResource.ValuesResource.AppendRequest.ValueInputOptionEnum.RAW;
+                    AppendValuesResponse result = update.Execute();
+                    updateUserBackupChecks();
+                    userBackedUpAnswerLabel.Text = "YES";
+                    userBackedUpAnswerLabel.ForeColor = System.Drawing.Color.ForestGreen;
+                    MessageBox.Show("The users backup information has been recorded.");
+                }
             }
         }
 
@@ -2752,6 +2766,31 @@ namespace Helpdesk54
                     }
                 }
 
+            }
+        }
+
+        /// <summary>
+        /// Begins the wait cursor block.
+        /// </summary>
+        /// <returns></returns>
+        public static IDisposable BeginWaitCursorBlock()
+        {
+            return ((!_waitCursorIsActive) ? (IDisposable)new waitCursor() : null);
+        }
+        private static bool _waitCursorIsActive;
+        private class waitCursor : IDisposable
+        {
+            private Cursor oldCur;
+            public waitCursor()
+            {
+                _waitCursorIsActive = true;
+                oldCur = Cursor.Current;
+                Cursor.Current = Cursors.WaitCursor;
+            }
+            public void Dispose()
+            {
+                Cursor.Current = oldCur;
+                _waitCursorIsActive = false;
             }
         }
 
