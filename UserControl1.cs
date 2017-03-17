@@ -16,7 +16,10 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using IWshRuntimeLibrary;
 using System.DirectoryServices.AccountManagement;
-
+using System.Management;
+using System.Security.Principal;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace Helpdesk54
 {
@@ -49,6 +52,19 @@ namespace Helpdesk54
 
         public UserControl1()
         {
+
+            Hide();
+            bool done = false;
+            ThreadPool.QueueUserWorkItem((x) =>
+            {
+                using (var splashForm = new Splash())
+                {
+                    splashForm.Show();
+                    while (!done)
+                        Application.DoEvents();
+                    splashForm.Close();
+                }
+            });
             InitializeComponent();
             //set the paths to wordPath, excelPath and outlookPath           
             setOfficePaths();
@@ -120,6 +136,10 @@ namespace Helpdesk54
             restoreAdditionalBgWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(restoreAdditionalBgWorker_RunWorkerCompleted);
             restoreAdditionalBgWorker.WorkerReportsProgress = true;
             restoreAdditionalBgWorker.WorkerSupportsCancellation = true;
+
+            done = true;
+            Show();
+
         }
 
         /// <summary>
@@ -2628,6 +2648,16 @@ namespace Helpdesk54
                     i++;
                 }
             }
+        }
+
+        /// <summary>
+        /// Handles the SelectedIndexChanged event of the userBackupSelectCombo control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        private void userBackupSelectCombo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
 
         /// <summary>

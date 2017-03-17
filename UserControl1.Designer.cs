@@ -152,6 +152,8 @@
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.serverListView = new System.Windows.Forms.ListView();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.userBackupSelectCombo = new System.Windows.Forms.ComboBox();
+            this.userBackupSelectComboLabel = new System.Windows.Forms.Label();
             this.startOfYearGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.dataBackupGroupBox.SuspendLayout();
@@ -302,6 +304,8 @@
             // dataBackupGroupBox
             // 
             this.dataBackupGroupBox.BackColor = System.Drawing.Color.AliceBlue;
+            this.dataBackupGroupBox.Controls.Add(this.userBackupSelectComboLabel);
+            this.dataBackupGroupBox.Controls.Add(this.userBackupSelectCombo);
             this.dataBackupGroupBox.Controls.Add(this.essentialItemsGroupBox);
             this.dataBackupGroupBox.Controls.Add(this.additionalItemsGroupBox);
             this.dataBackupGroupBox.Controls.Add(this.backupDriveLabel);
@@ -1547,6 +1551,25 @@
             this.pictureBox1.TabIndex = 29;
             this.pictureBox1.TabStop = false;
             // 
+            // userBackupSelectCombo
+            // 
+            this.userBackupSelectCombo.FormattingEnabled = true;
+            this.userBackupSelectCombo.Location = new System.Drawing.Point(421, 19);
+            this.userBackupSelectCombo.Name = "userBackupSelectCombo";
+            this.userBackupSelectCombo.Size = new System.Drawing.Size(230, 32);
+            this.userBackupSelectCombo.TabIndex = 13;
+            this.userBackupSelectCombo.SelectedIndexChanged += new System.EventHandler(this.userBackupSelectCombo_SelectedIndexChanged);
+            // 
+            // userBackupSelectComboLabel
+            // 
+            this.userBackupSelectComboLabel.AutoSize = true;
+            this.userBackupSelectComboLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.userBackupSelectComboLabel.Location = new System.Drawing.Point(372, 26);
+            this.userBackupSelectComboLabel.Name = "userBackupSelectComboLabel";
+            this.userBackupSelectComboLabel.Size = new System.Drawing.Size(43, 20);
+            this.userBackupSelectComboLabel.TabIndex = 14;
+            this.userBackupSelectComboLabel.Text = "User";
+            // 
             // UserControl1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1733,6 +1756,8 @@
         private System.Windows.Forms.Label installShortcutsLabel;
         private System.Windows.Forms.Button installShortcutsButton;
         private System.Windows.Forms.Label userSetupQuestionLabel;
+        private System.Windows.Forms.Label userBackupSelectComboLabel;
+        private System.Windows.Forms.ComboBox userBackupSelectCombo;
     }
 }
 
