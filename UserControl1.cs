@@ -114,6 +114,8 @@ namespace Helpdesk54
             checkForExistingBackup();
             //update labels
             labelDirectorySizes();
+            //load existing users
+            loadExistingWindowsUsersIntoBackupCombo();
             //setup background worker for progress bars
             //essentialBgWorker
             essentialBgWorker.DoWork += new DoWorkEventHandler(essentialBgWorker_DoWork);
@@ -139,6 +141,27 @@ namespace Helpdesk54
 
             done = true;
             Show();
+
+        }
+
+        /// <summary>
+        /// Loads the existing windows users.
+        /// </summary>
+        private void loadExistingWindowsUsersIntoBackupCombo()
+        {
+
+            userBackupSelectCombo.DropDownStyle = ComboBoxStyle.DropDownList;
+
+            string[] folders = System.IO.Directory.GetDirectories(@"C:\Users\", "*", System.IO.SearchOption.TopDirectoryOnly);
+
+            foreach (string folder in folders)
+            {
+                //get the username (strip off 'C:\Users\'
+                string localUserFolderName = folder.Substring(9);
+                userBackupSelectCombo.Items.Add(localUserFolderName);
+            }
+            userBackupSelectCombo.SelectedIndex = userBackupSelectCombo.FindString(userName);
+
 
         }
 
