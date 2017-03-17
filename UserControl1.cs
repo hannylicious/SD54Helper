@@ -30,7 +30,7 @@ namespace Helpdesk54
         long canItFit;
         string userDisplayFirstName, userDisplayLastName, userCustomDisplayName;
         string backupDirectoryName;
-        string backupName;
+        string backupName, userToBeBackedUp;
         string serverName;
         string homeDirectory;
         string desktopFolder, documentsFolder, favoritesFolder;
@@ -73,8 +73,6 @@ namespace Helpdesk54
             usernameLabel.Text = userName;
             //Get the attached drives            
             getAttachedDrives();
-            //set the backupDirectoryName
-            backupDirectoryName = userName.ToString() + "-Backups-" + DateTime.Now.Year.ToString();
             //check if the user gets access to quicken
             if (doesUserGetQuicken())
             {
@@ -149,9 +147,7 @@ namespace Helpdesk54
         /// </summary>
         private void loadExistingWindowsUsersIntoBackupCombo()
         {
-
             userBackupSelectCombo.DropDownStyle = ComboBoxStyle.DropDownList;
-
             string[] folders = System.IO.Directory.GetDirectories(@"C:\Users\", "*", System.IO.SearchOption.TopDirectoryOnly);
 
             foreach (string folder in folders)
@@ -161,8 +157,6 @@ namespace Helpdesk54
                 userBackupSelectCombo.Items.Add(localUserFolderName);
             }
             userBackupSelectCombo.SelectedIndex = userBackupSelectCombo.FindString(userName);
-
-
         }
 
         /// <summary>
@@ -1321,34 +1315,46 @@ namespace Helpdesk54
         private void backupDesktop()
         {
             destinationLocation = selectedDrive + backupDirectoryName + "\\Desktop\\";
-            desktopFolder = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            source = new DirectoryInfo(desktopFolder);
-            DirectoryInfo desktopSource = new DirectoryInfo(desktopFolder);
-            DirectoryInfo target = new DirectoryInfo(destinationLocation);
-            try
+            //Backup the logged in users Desktop
+            if (userToBeBackedUp == userName)
             {
-                fileCount = source.GetFiles("*", SearchOption.AllDirectories).Length;
+                MessageBox.Show("backing up logged in desktop");
+                desktopFolder = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             }
-            catch (Exception e)
+            if (userToBeBackedUp != userName)
+            //backup the selected users Desktop
             {
-                MessageBox.Show(e.ToString());
+                MessageBox.Show("backing up someone elses desktop" + userToBeBackedUp.ToString());
+                desktopFolder = "C:\\Users\\" + userToBeBackedUp + "\\Desktop\\";
+                MessageBox.Show(desktopFolder);
             }
-            totalFileCount = fileCount;
-            int total = totalFileCount; //total things being transferred
-            for (int i = 0; i <= total; i++) //report those numbers
-            {
-                System.Threading.Thread.Sleep(100);
-                int percents = (i * 100) / total;
-                essentialBgWorker.ReportProgress(percents, i);
-                //2 arguments:
-                //1. procenteges (from 0 t0 100) - i do a calcumation 
-                //2. some current value!
-            }
-            if (!Directory.Exists(destinationLocation))
-            {
-                Directory.CreateDirectory(destinationLocation);
-            }
-            CopyFilesRecursively(desktopSource, target);
+                source = new DirectoryInfo(desktopFolder);
+                DirectoryInfo desktopSource = new DirectoryInfo(desktopFolder);
+                DirectoryInfo target = new DirectoryInfo(destinationLocation);
+                try
+                {
+                    fileCount = source.GetFiles("*", SearchOption.AllDirectories).Length;
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.ToString());
+                }
+                totalFileCount = fileCount;
+                int total = totalFileCount; //total things being transferred
+                for (int i = 0; i <= total; i++) //report those numbers
+                {
+                    System.Threading.Thread.Sleep(100);
+                    int percents = (i * 100) / total;
+                    essentialBgWorker.ReportProgress(percents, i);
+                    //2 arguments:
+                    //1. procenteges (from 0 t0 100) - i do a calcumation 
+                    //2. some current value!
+                }
+                if (!Directory.Exists(destinationLocation))
+                {
+                    Directory.CreateDirectory(destinationLocation);
+                }
+                CopyFilesRecursively(desktopSource, target);            
         }
 
         /// <summary>
@@ -2680,7 +2686,9 @@ namespace Helpdesk54
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void userBackupSelectCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            userToBeBackedUp = userBackupSelectCombo.SelectedItem.ToString();
+            //set the backupDirectoryName
+            backupDirectoryName = userToBeBackedUp.ToString() + "-Backups-" + DateTime.Now.Year.ToString();
         }
 
         /// <summary>
