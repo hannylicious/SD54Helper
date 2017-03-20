@@ -1473,7 +1473,7 @@ namespace Helpdesk54
         {
             /*FAVORITES*/
             destinationLocation = selectedDrive + backupDirectoryName + "\\Favorites\\";
-            //Backup the logged in users Desktop
+            //Backup the logged in users Favorites
             if (userToBeBackedUp == userName)
             {
                 favoritesFolder = Environment.GetFolderPath(Environment.SpecialFolder.Favorites);
@@ -1519,7 +1519,16 @@ namespace Helpdesk54
         {
             /*DOCUMENTS*/
             destinationLocation = selectedDrive + backupDirectoryName + "\\Documents\\";
-            documentsFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            //Backup the logged in users Documents
+            if (userToBeBackedUp == userName)
+            {
+                documentsFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            }
+            if (userToBeBackedUp != userName)
+            //backup the selected users Desktop
+            {
+                documentsFolder = "C:\\Users\\" + userToBeBackedUp + "\\Documents\\";
+            }           
             source = new DirectoryInfo(documentsFolder);
             DirectoryInfo target = new DirectoryInfo(destinationLocation);
             DirectoryInfo documentsSource = new DirectoryInfo(documentsFolder);
