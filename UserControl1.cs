@@ -111,7 +111,7 @@ namespace Helpdesk54
             //Check the H:\ drive for a backup
             checkForExistingBackup();
             //update labels
-            labelDirectorySizes();
+            labelDirectorySizes(userName);
             //load existing users
             loadExistingWindowsUsersIntoBackupCombo();
             //setup background worker for progress bars
@@ -154,7 +154,14 @@ namespace Helpdesk54
             {
                 //get the username (strip off 'C:\Users\'
                 string localUserFolderName = folder.Substring(9);
-                userBackupSelectCombo.Items.Add(localUserFolderName);
+                if (localUserFolderName == "All Users" || localUserFolderName == "Public")
+                {
+
+                } else
+                {
+                    userBackupSelectCombo.Items.Add(localUserFolderName);
+                }
+                
             }
             userBackupSelectCombo.SelectedIndex = userBackupSelectCombo.FindString(userName);
         }
@@ -765,7 +772,7 @@ namespace Helpdesk54
                     long networkDirectorySize = DirSize(new DirectoryInfo(folder));
                     selectedDriveAvailableSize = maxAvailableDriveSpace - networkDirectorySize;
                     string folderMB = FormatBytes(selectedDriveAvailableSize);
-                    labelDirectorySizes();
+
                     //folderMB = used space on network drive
                     backupDriveLabel.Text = folderMB + " Free";
                 }
@@ -776,7 +783,7 @@ namespace Helpdesk54
                     {
                         selectedDriveAvailableSize = selectedDrive.AvailableFreeSpace;
                         string driveFreeSpace = FormatBytes(selectedDriveAvailableSize);
-                        labelDirectorySizes();
+
                         backupDriveLabel.Text = driveFreeSpace + " Free";
                     }
                 }
@@ -1148,26 +1155,56 @@ namespace Helpdesk54
         /// <summary>
         /// Labels the directory sizes.
         /// </summary>
-        public void labelDirectorySizes()
+        public void labelDirectorySizes(string userToBeBackedUp)
         {
+            string userDirectoryLocation;
             string[] directoryLocations =
+                {
+                    "DesktopDirectory",
+                    "MyDocuments",
+                    "Favorites",
+                    "MyMusic",
+                    "MyPictures",
+                    "My Videos"
+                };
+
+            if (userToBeBackedUp != userName)
             {
-            "DesktopDirectory",
-            "MyDocuments",
-            "Favorites",
-            "MyMusic",
-            "MyPictures",
-            "My Videos"
-            };
+                userDirectoryLocation = "C:\\Users\\" + userToBeBackedUp;
+                //Set the size & label for the button that backs up Desktop, Documents & Favorites
+                var desktopFolder = userDirectoryLocation + "\\Desktop"; 
+                long desktopSize = DirSize(new DirectoryInfo(desktopFolder));
+                var documentsFolder = userDirectoryLocation + "\\Documents"; 
+                long documentsSize = DirSize(new DirectoryInfo(documentsFolder));
+                var favoritesFolder = userDirectoryLocation + "\\Favorites";
+                long favoritesSize = DirSize(new DirectoryInfo(favoritesFolder));
+                long totalSize = desktopSize + documentsSize + favoritesSize;
+                string totalMB = FormatBytes(totalSize);
+                allEssentialsSizeLabel.Text = totalMB;
+            }
+            else
+            {
+                userDirectoryLocation = Environment.GetEnvironmentVariable("userprofile");
+                //Set the size & label for the button that backs up Desktop, Documents & Favorites
+                var desktopFolder = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+                long desktopSize = DirSize(new DirectoryInfo(desktopFolder));
+                var documentsFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                long documentsSize = DirSize(new DirectoryInfo(documentsFolder));
+                var favoritesFolder = Environment.GetFolderPath(Environment.SpecialFolder.Favorites);
+                long favoritesSize = DirSize(new DirectoryInfo(favoritesFolder));
+                long totalSize = desktopSize + documentsSize + favoritesSize;
+                string totalMB = FormatBytes(totalSize);
+                allEssentialsSizeLabel.Text = totalMB;
+            }
             // Get the directory sizes for each directoryLocation & set the label
             foreach (string directoryLocation in directoryLocations)
             {
-                string userDirectoryLocation = Environment.GetEnvironmentVariable("userprofile");
+                string folder;
                 //'My Videos' is not supported in older frameworks so set it seperately
                 if (directoryLocation == "My Videos")
                 {
                     string folderName = "Videos";
-                    string folder = userDirectoryLocation + "\\" + folderName;
+                    folder = userDirectoryLocation + "\\" + folderName;
                     long folderSize = DirSize(new DirectoryInfo(folder));
                     canItFit = selectedDriveAvailableSize - folderSize;
                     string folderMB = FormatBytes(folderSize);
@@ -1184,15 +1221,27 @@ namespace Helpdesk54
                 }
                 else //iterate through all the other directory Locations
                 {
-                    var dir = (Environment.SpecialFolder)Enum.Parse(typeof(Environment.SpecialFolder), directoryLocation);
-                    string folder = Environment.GetFolderPath(dir);
-                    long folderSize = DirSize(new DirectoryInfo(folder));
-                    string folderMB = FormatBytes(folderSize);
-                    var selectedDriveSize = selectedDriveAvailableSize;
-                    
                     switch (directoryLocation)
                     {
                         case "DesktopDirectory":
+                            long selectedDriveSize, folderSize;
+                            string folderMB;
+                            if (userToBeBackedUp != userName)
+                            {
+                                //set to the other users directory
+                                var dir = userDirectoryLocation + "\\Desktop";
+                                folderSize = DirSize(new DirectoryInfo(dir));
+                                folderMB = FormatBytes(folderSize);
+                                selectedDriveSize = selectedDriveAvailableSize;
+                            }
+                            else
+                            {
+                                var dir = (Environment.SpecialFolder)Enum.Parse(typeof(Environment.SpecialFolder), directoryLocation);
+                                folder = Environment.GetFolderPath(dir);
+                                folderSize = DirSize(new DirectoryInfo(folder));
+                                folderMB = FormatBytes(folderSize);
+                                selectedDriveSize = selectedDriveAvailableSize;
+                            }
                             canItFit = selectedDriveSize - folderSize;
                             desktopSizeLabel.Text = folderMB;
                             if (canItFit < 0)
@@ -1208,6 +1257,22 @@ namespace Helpdesk54
                             }
                             break;
                         case "MyDocuments":
+                            if (userToBeBackedUp != userName)
+                            {
+                                //set to the other users directory
+                                var dir = userDirectoryLocation + "\\Documents";
+                                folderSize = DirSize(new DirectoryInfo(dir));
+                                folderMB = FormatBytes(folderSize);
+                                selectedDriveSize = selectedDriveAvailableSize;
+                            }
+                            else
+                            {
+                                var dir = (Environment.SpecialFolder)Enum.Parse(typeof(Environment.SpecialFolder), directoryLocation);
+                                folder = Environment.GetFolderPath(dir);
+                                folderSize = DirSize(new DirectoryInfo(folder));
+                                folderMB = FormatBytes(folderSize);
+                                selectedDriveSize = selectedDriveAvailableSize;
+                            }
                             canItFit = selectedDriveSize - folderSize;
                             documentsSizeLabel.Text = folderMB;
                             if (canItFit < 0)
@@ -1223,6 +1288,22 @@ namespace Helpdesk54
                             }
                             break;
                         case "Favorites":
+                            if (userToBeBackedUp != userName)
+                            {
+                                //set to the other users directory
+                                var dir = userDirectoryLocation + "\\Favorites";
+                                folderSize = DirSize(new DirectoryInfo(dir));
+                                folderMB = FormatBytes(folderSize);
+                                selectedDriveSize = selectedDriveAvailableSize;
+                            }
+                            else
+                            {
+                                var dir = (Environment.SpecialFolder)Enum.Parse(typeof(Environment.SpecialFolder), directoryLocation);
+                                folder = Environment.GetFolderPath(dir);
+                                folderSize = DirSize(new DirectoryInfo(folder));
+                                folderMB = FormatBytes(folderSize);
+                                selectedDriveSize = selectedDriveAvailableSize;
+                            }
                             canItFit = selectedDriveSize - folderSize;
                             favoritesSizeLabel.Text = folderMB;
                             if (canItFit < 0)
@@ -1238,6 +1319,22 @@ namespace Helpdesk54
                             }
                             break;
                         case "MyMusic":
+                            if (userToBeBackedUp != userName)
+                            {
+                                //set to the other users directory
+                                var dir = userDirectoryLocation + "\\Music";
+                                folderSize = DirSize(new DirectoryInfo(dir));
+                                folderMB = FormatBytes(folderSize);
+                                selectedDriveSize = selectedDriveAvailableSize;
+                            }
+                            else
+                            {
+                                var dir = (Environment.SpecialFolder)Enum.Parse(typeof(Environment.SpecialFolder), directoryLocation);
+                                folder = Environment.GetFolderPath(dir);
+                                folderSize = DirSize(new DirectoryInfo(folder));
+                                folderMB = FormatBytes(folderSize);
+                                selectedDriveSize = selectedDriveAvailableSize;
+                            }
                             canItFit = selectedDriveSize - folderSize;
                             musicSizeLabel.Text = folderMB;
                             if (canItFit < 0)
@@ -1252,6 +1349,22 @@ namespace Helpdesk54
                             }
                             break;
                         case "MyPictures":
+                            if (userToBeBackedUp != userName)
+                            {
+                                //set to the other users directory
+                                var dir = userDirectoryLocation + "\\Pictures";
+                                folderSize = DirSize(new DirectoryInfo(dir));
+                                folderMB = FormatBytes(folderSize);
+                                selectedDriveSize = selectedDriveAvailableSize;
+                            }
+                            else
+                            {
+                                var dir = (Environment.SpecialFolder)Enum.Parse(typeof(Environment.SpecialFolder), directoryLocation);
+                                folder = Environment.GetFolderPath(dir);
+                                folderSize = DirSize(new DirectoryInfo(folder));
+                                folderMB = FormatBytes(folderSize);
+                                selectedDriveSize = selectedDriveAvailableSize;
+                            }
                             canItFit = selectedDriveSize - folderSize;
                             picturesSizeLabel.Text = folderMB;
                             if (canItFit < 0)
@@ -1273,19 +1386,18 @@ namespace Helpdesk54
                 }
 
             }
-            //Set the size & label for the button that backs up Desktop, Documents & Favorites
-            var desktopFolder = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
-            long desktopSize = DirSize(new DirectoryInfo(desktopFolder));
-            var documentsFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            long documentsSize = DirSize(new DirectoryInfo(documentsFolder));
-            var favoritesFolder = Environment.GetFolderPath(Environment.SpecialFolder.Favorites);
-            long favoritesSize = DirSize(new DirectoryInfo(favoritesFolder));
-            long totalSize = desktopSize + documentsSize + favoritesSize;
-            string totalMB = FormatBytes(totalSize);
-            allEssentialsSizeLabel.Text = totalMB;
             //Set the size & label for Sticky Notes
-            string stickyNotesFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            stickyNotesFolder = stickyNotesFolder + "\\Microsoft\\Sticky Notes";
+            string stickyNotesFolder;
+            if (WinMajorVersion == 10)
+            //windows 10
+            {
+                stickyNotesFolder = "C:\\Users\\" + userToBeBackedUp + "\\AppData\\Local\\Packages\\Microsoft.MicrosoftStickyNotes_8wekyb3d8bbwe";
+            }
+            else 
+            {
+            //windows 7
+                stickyNotesFolder = "C:\\Users\\" + userToBeBackedUp + "\\AppData\\Roaming\\Microsoft\\Sticky Notes";
+            }
             if (Directory.Exists(stickyNotesFolder)) //If they have launched sticky notes
             {
                 long stickyNotesSize = DirSize(new DirectoryInfo(stickyNotesFolder));
@@ -2689,6 +2801,7 @@ namespace Helpdesk54
             userToBeBackedUp = userBackupSelectCombo.SelectedItem.ToString();
             //set the backupDirectoryName
             backupDirectoryName = userToBeBackedUp.ToString() + "-Backups-" + DateTime.Now.Year.ToString();
+            labelDirectorySizes(userToBeBackedUp);
         }
 
         /// <summary>
@@ -2879,6 +2992,43 @@ namespace Helpdesk54
             }
 
         }
+        public static uint WinMajorVersion
+        {
+            get
+            {
+                dynamic major;
+                // The 'CurrentMajorVersionNumber' string value in the CurrentVersion key is new for Windows 10, 
+                // and will most likely (hopefully) be there for some time before MS decides to change this - again...
+                if (TryGetRegistryKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion", "CurrentMajorVersionNumber", out major))
+                {
+                    return (uint)major;
+                }
 
+                // When the 'CurrentMajorVersionNumber' value is not present we fallback to reading the previous key used for this: 'CurrentVersion'
+                dynamic version;
+                if (!TryGetRegistryKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion", "CurrentVersion", out version))
+                    return 0;
+
+                var versionParts = ((string)version).Split('.');
+                if (versionParts.Length != 2) return 0;
+                uint majorAsUInt;
+                return uint.TryParse(versionParts[0], out majorAsUInt) ? majorAsUInt : 0;
+            }
+        }
+        private static bool TryGetRegistryKey(string path, string key, out dynamic value)
+        {
+            value = null;
+            try
+            {
+                var rk = Registry.LocalMachine.OpenSubKey(path);
+                if (rk == null) return false;
+                value = rk.GetValue(key);
+                return value != null;
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }
