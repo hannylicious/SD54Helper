@@ -102,14 +102,14 @@ namespace Helpdesk54
                 userBackedUpAnswerLabel.Text = "YES";
                 userBackedUpAnswerLabel.ForeColor = System.Drawing.Color.ForestGreen;
             }
+            //set the backupDirectoryName
+            backupDirectoryName = userName.ToString() + "-54Help-" + DateTime.Now.Year.ToString();
             //set backupDriveCombo dropdown
             setBackupDriveCombo();
             //set restoreDriveCombo to dropdown
             setRestoreDriveCombo();
             //Set the selected drive freespace label 
             setBackupDriveFreeSpaceLabel();
-            //Check the H:\ drive for a backup
-            checkForExistingBackup();
             //update labels
             labelDirectorySizes(userName);
             //load existing users
@@ -140,6 +140,56 @@ namespace Helpdesk54
             done = true;
             Show();
 
+        }
+
+        private void setRestorePageOptions()
+        {
+            userRestoreSelectCombo.Items.Clear();
+            string directoryToHouseBackups = "54HelperBackups";
+            string selectedDrive = restoreDriveCombo.SelectedItem.ToString();
+            string fullPathForBackups = selectedDrive + directoryToHouseBackups;
+            //there are backups
+            if (doBackupsExist(fullPathForBackups))
+            {
+                //do things because backups were found
+                backupFoundLabel.Text = "(Backups Found!)";
+                backupFoundLabel.ForeColor = System.Drawing.Color.ForestGreen;
+                userRestoreSelectCombo.Visible = true;
+                //set the dropdown to display the existing backups
+                string[] backupDirectories = Directory.GetDirectories(fullPathForBackups);
+                foreach (string backupDirectory in backupDirectories)
+                {
+                    string shortenedBackupDirectory = backupDirectory.Contains("\\") && backupDirectory.Split('\\').GetLength(0) > 2 ? string.Join("\\", backupDirectory.Split('\\').Skip(2).ToList()) : backupDirectory;
+                    userRestoreSelectCombo.Items.Add(shortenedBackupDirectory);
+                }
+            }
+            else //there are no backups
+            {
+                //mark no backups found
+                backupFoundLabel.Text = "(No Backup Found!)";
+                backupFoundLabel.ForeColor = System.Drawing.Color.Crimson;
+                userRestoreSelectCombo.Visible = false;
+            }
+        }
+
+        private bool doBackupsExist(string fullPathForBackups)
+        {            
+            if (Directory.Exists(fullPathForBackups))
+            {
+                int directoryCount = Directory.GetDirectories(fullPathForBackups).Length;
+                if ( directoryCount > 0 ) {
+                    return true;
+                } 
+                else 
+                {
+                    return false;
+                }
+                
+            }
+            else
+            {
+                return false;
+            }
         }
 
         /// <summary>
@@ -352,22 +402,22 @@ namespace Helpdesk54
         /// Checks for existing backup on H: drive.
         /// </summary>
         private void checkForExistingBackup() {
-                    try
-                    {
-                        //Check the selected restoreComboDrive for a backup matching: username-Backup-year
-                        DriveInfo restoreSelectedDrive = (DriveInfo)restoreDriveCombo.SelectedItem;
-                        searchDirectoryForBackup(restoreSelectedDrive.ToString());
-                        if (backupFoundLabel.Text.ToString() == "(Backup Found!)")
-                        {
-                            checkBackupDirectories(backupName);
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        MessageBox.Show("Exception source from checkForExistingBackup() : {0}", e.Source);
+            try
+            {
+                //Check the selected restoreComboDrive for a backup matching: username-Backup-year
+                DriveInfo restoreSelectedDrive = (DriveInfo)restoreDriveCombo.SelectedItem;
+                searchDirectoryForBackup(restoreSelectedDrive.ToString());
+                if (backupFoundLabel.Text.ToString() == "(Backup Found!)")
+                {
+                    checkBackupDirectories(backupName);
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Exception source from checkForExistingBackup() : {0}", e.Source);
 
-                        throw;
-                    }
+                throw;
+            }
         }
 
         /// <summary>
@@ -811,7 +861,9 @@ namespace Helpdesk54
                 //Set the selected drive freespace label
                 disableRestoreButtons();
                 DriveInfo selectedDrive = (DriveInfo)restoreDriveCombo.SelectedItem;
-                searchDirectoryForBackup(selectedDrive.ToString());
+                //searchDirectoryForBackup(selectedDrive.ToString());
+                setRestorePageOptions();
+                //checkForExistingBackups(selectedDrive.ToString());
                 if (backupFoundLabel.Text.ToString() == "(Backup Found!)")
                 {
                     checkBackupDirectories(backupName);
@@ -978,7 +1030,8 @@ namespace Helpdesk54
                     cont.Enabled = true;
                 }
             }
-            checkForExistingBackup();
+            setRestorePageOptions();
+            //checkForExistingBackups(selectedDrive.ToString());
             checkBackupDirectories(backupName);
         }
 
@@ -1051,7 +1104,7 @@ namespace Helpdesk54
             switch (buttonSender)
             {
                 case "backupStickyNotesButton":
-                    destinationLocation = selectedDrive + backupDirectoryName + "\\Sticky Notes\\";
+                    destinationLocation = selectedDrive + "\\54HelperBackups\\" + backupDirectoryName + "\\Sticky Notes\\";
                     if (WinMajorVersion == 10)
                     //windows 10
                     {
@@ -1065,7 +1118,7 @@ namespace Helpdesk54
                     source = new DirectoryInfo(stickyNotesFolder);
                     break;
                 case "backupPicturesButton":
-                    destinationLocation = selectedDrive + backupDirectoryName + "\\Pictures\\";
+                    destinationLocation = selectedDrive + "\\54HelperBackups\\" + backupDirectoryName + "\\Pictures\\";
                     picturesFolder = "";
                     //Backup the logged in users Desktop
                     if (userToBeBackedUp == userName)
@@ -1081,7 +1134,7 @@ namespace Helpdesk54
                     break;
                 case "backupVideosButton":
                     string pathWithEvn = @"%USERPROFILE%\Videos";
-                    destinationLocation = selectedDrive + backupDirectoryName + "\\Videos\\";
+                    destinationLocation = selectedDrive + "\\54HelperBackups\\" + backupDirectoryName + "\\Videos\\";
                     videosFolder = "";
                     //Backup the logged in users Desktop
                     if (userToBeBackedUp == userName)
@@ -1096,7 +1149,7 @@ namespace Helpdesk54
                     source = new DirectoryInfo(videosFolder);
                     break;
                 case "backupMusicButton":
-                    destinationLocation = selectedDrive + backupDirectoryName + "\\Music\\";
+                    destinationLocation = selectedDrive + "\\54HelperBackups\\" + backupDirectoryName + "\\Music\\";
                     musicFolder = "";
                     //Backup the logged in users Desktop
                     if (userToBeBackedUp == userName)
@@ -1197,7 +1250,8 @@ namespace Helpdesk54
                     cont.Enabled = true;
                 }
             }
-            checkForExistingBackup();
+            setRestorePageOptions();
+            //checkForExistingBackups(selectedDrive.ToString());
             checkBackupDirectories(backupName);
         }
 
@@ -1475,7 +1529,7 @@ namespace Helpdesk54
         /// </summary>
         private void backupDesktop()
         {
-            destinationLocation = selectedDrive + backupDirectoryName + "\\Desktop\\";
+            destinationLocation = selectedDrive + "\\54HelperBackups\\" + backupDirectoryName + "\\Desktop\\";
             //Backup the logged in users Desktop
             if (userToBeBackedUp == userName)
             {
@@ -1521,7 +1575,7 @@ namespace Helpdesk54
         private void backupFavorites()
         {
             /*FAVORITES*/
-            destinationLocation = selectedDrive + backupDirectoryName + "\\Favorites\\";
+            destinationLocation = selectedDrive + "\\54HelperBackups\\" + backupDirectoryName + "\\Favorites\\";
             //Backup the logged in users Favorites
             if (userToBeBackedUp == userName)
             {
@@ -1567,7 +1621,7 @@ namespace Helpdesk54
         private void backupDocuments()
         {
             /*DOCUMENTS*/
-            destinationLocation = selectedDrive + backupDirectoryName + "\\Documents\\";
+            destinationLocation = selectedDrive + "\\54HelperBackups\\" + backupDirectoryName + "\\Documents\\";
             //Backup the logged in users Documents
             if (userToBeBackedUp == userName)
             {
@@ -2439,21 +2493,25 @@ namespace Helpdesk54
         /// </summary>
         /// <param name="targetDirectory">The target directory.</param>
         public void searchDirectoryForBackup(string targetDirectory)
-        {
+        {            
             string[] subdirectoryEntries = Directory.GetDirectories(targetDirectory);
             backupName = targetDirectory + backupDirectoryName;
+            MessageBox.Show(backupName);
             foreach (string subdirectory in subdirectoryEntries)
             {
                 if (Directory.Exists(backupName))
                 {
                     backupFoundLabel.Text = "(Backup Found!)";
                     backupFoundLabel.ForeColor = System.Drawing.Color.ForestGreen;
-
+                    userRestoreSelectCombo.Visible = true;
+                    userRestoreSelectCombo.Items.Add(backupDirectoryName);
+                    userRestoreSelectCombo.SelectedItem = userRestoreSelectCombo.FindString(backupDirectoryName);
                 }
                 else
                 {
                     backupFoundLabel.Text = "(No Backup Found!)";
                     backupFoundLabel.ForeColor = System.Drawing.Color.Crimson;
+                    userRestoreSelectCombo.Visible = false;
                 }
             }
         }
@@ -2864,7 +2922,7 @@ namespace Helpdesk54
         {
             userToBeBackedUp = userBackupSelectCombo.SelectedItem.ToString();
             //set the backupDirectoryName
-            backupDirectoryName = userToBeBackedUp.ToString() + "-Backups-" + DateTime.Now.Year.ToString();
+            backupDirectoryName = userToBeBackedUp.ToString() + "-54Help-" + DateTime.Now.Year.ToString();
             labelDirectorySizes(userToBeBackedUp);
         }
 
@@ -2899,6 +2957,16 @@ namespace Helpdesk54
                 i++;
             }
             return false;
+        }
+
+        /// <summary>
+        /// Handles the SelectedIndexChanged event of the userRestoreSelectCombo control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        private void userRestoreSelectCombo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
 
         /// <summary>
