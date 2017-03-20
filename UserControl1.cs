@@ -447,7 +447,17 @@ namespace Helpdesk54
                 }
             }
             //check to see if stickynotes has been ran - if file exists enable button - otherwise disable and set to 'none'
-            string stickyNotesDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Microsoft\Sticky Notes\";
+            string stickyNotesDirectory;
+            if (WinMajorVersion == 10)
+            //windows 10
+            {
+                stickyNotesDirectory = "C:\\Users\\" + userToBeBackedUp + "\\AppData\\Local\\Packages\\Microsoft.MicrosoftStickyNotes_8wekyb3d8bbwe";
+            }
+            else
+            {
+                //windows 7
+                stickyNotesDirectory = "C:\\Users\\" + userToBeBackedUp + "\\AppData\\Roaming\\Microsoft\\Sticky Notes";
+            }
             if (Directory.Exists(stickyNotesDirectory))
             {
                 backupStickyNotesButton.Enabled = true;
@@ -1042,23 +1052,62 @@ namespace Helpdesk54
             {
                 case "backupStickyNotesButton":
                     destinationLocation = selectedDrive + backupDirectoryName + "\\Sticky Notes\\";
-                    stickyNotesFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Microsoft\Sticky Notes\";
+                    if (WinMajorVersion == 10)
+                    //windows 10
+                    {
+                        stickyNotesFolder = "C:\\Users\\" + userToBeBackedUp + "\\AppData\\Local\\Packages\\Microsoft.MicrosoftStickyNotes_8wekyb3d8bbwe";
+                    }
+                    else
+                    {
+                        //windows 7
+                        stickyNotesFolder = "C:\\Users\\" + userToBeBackedUp + "\\AppData\\Roaming\\Microsoft\\Sticky Notes";
+                    }
                     source = new DirectoryInfo(stickyNotesFolder);
                     break;
                 case "backupPicturesButton":
                     destinationLocation = selectedDrive + backupDirectoryName + "\\Pictures\\";
-                    picturesFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
+                    picturesFolder = "";
+                    //Backup the logged in users Desktop
+                    if (userToBeBackedUp == userName)
+                    {
+                        picturesFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
+                    }
+                    if (userToBeBackedUp != userName)
+                    //backup the selected users Desktop
+                    {
+                        picturesFolder = "C:\\Users\\" + userToBeBackedUp + "\\Pictures\\";
+                    }                    
                     source = new DirectoryInfo(picturesFolder);
                     break;
                 case "backupVideosButton":
                     string pathWithEvn = @"%USERPROFILE%\Videos";
                     destinationLocation = selectedDrive + backupDirectoryName + "\\Videos\\";
-                    videosFolder = Environment.ExpandEnvironmentVariables(pathWithEvn);
+                    videosFolder = "";
+                    //Backup the logged in users Desktop
+                    if (userToBeBackedUp == userName)
+                    {
+                        videosFolder = Environment.ExpandEnvironmentVariables(pathWithEvn);
+                    }
+                    if (userToBeBackedUp != userName)
+                    //backup the selected users Desktop
+                    {
+                        videosFolder = "C:\\Users\\" + userToBeBackedUp + "\\Videos\\";
+                    }                    
                     source = new DirectoryInfo(videosFolder);
                     break;
                 case "backupMusicButton":
                     destinationLocation = selectedDrive + backupDirectoryName + "\\Music\\";
-                    musicFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic);
+                    musicFolder = "";
+                    //Backup the logged in users Desktop
+                    if (userToBeBackedUp == userName)
+                    {
+                        musicFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic);
+                    }
+                    if (userToBeBackedUp != userName)
+                    //backup the selected users Desktop
+                    {
+                        musicFolder = "C:\\Users\\" + userToBeBackedUp + "\\Music\\";
+                    }                    
                     source = new DirectoryInfo(musicFolder);
                     break;
                 default:
@@ -1540,9 +1589,9 @@ namespace Helpdesk54
             {
                 /*set the unauthorized directories to skip*/       
                 string[] folderArray = {
-                    @"C:\Users\" + usernameLabel.Text.ToString() + @"\Documents\My Pictures",
-                    @"C:\Users\" + usernameLabel.Text.ToString() + @"\Documents\My Videos",
-                    @"C:\Users\" + usernameLabel.Text.ToString() + @"\Documents\My Music",
+                    @"C:\Users\" + userToBeBackedUp + @"\Documents\My Pictures",
+                    @"C:\Users\" + userToBeBackedUp + @"\Documents\My Videos",
+                    @"C:\Users\" + userToBeBackedUp + @"\Documents\My Music",
                     };
                 if (folderArray.Contains(subFolder))
                 {
