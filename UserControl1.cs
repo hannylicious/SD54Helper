@@ -1430,15 +1430,12 @@ namespace Helpdesk54
             //Backup the logged in users Desktop
             if (userToBeBackedUp == userName)
             {
-                MessageBox.Show("backing up logged in desktop");
                 desktopFolder = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             }
             if (userToBeBackedUp != userName)
             //backup the selected users Desktop
             {
-                MessageBox.Show("backing up someone elses desktop" + userToBeBackedUp.ToString());
                 desktopFolder = "C:\\Users\\" + userToBeBackedUp + "\\Desktop\\";
-                MessageBox.Show(desktopFolder);
             }
                 source = new DirectoryInfo(desktopFolder);
                 DirectoryInfo desktopSource = new DirectoryInfo(desktopFolder);
@@ -1476,7 +1473,16 @@ namespace Helpdesk54
         {
             /*FAVORITES*/
             destinationLocation = selectedDrive + backupDirectoryName + "\\Favorites\\";
-            favoritesFolder = Environment.GetFolderPath(Environment.SpecialFolder.Favorites);
+            //Backup the logged in users Desktop
+            if (userToBeBackedUp == userName)
+            {
+                favoritesFolder = Environment.GetFolderPath(Environment.SpecialFolder.Favorites);
+            }
+            if (userToBeBackedUp != userName)
+            //backup the selected users Desktop
+            {
+                favoritesFolder = "C:\\Users\\" + userToBeBackedUp + "\\Favorites\\";
+            }
             DirectoryInfo source = new DirectoryInfo(favoritesFolder);
             DirectoryInfo target = new DirectoryInfo(destinationLocation);
             DirectoryInfo favoritesSource = new DirectoryInfo(favoritesFolder);
