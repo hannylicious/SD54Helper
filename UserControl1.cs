@@ -31,6 +31,7 @@ namespace Helpdesk54
         string userDisplayFirstName, userDisplayLastName, userCustomDisplayName;
         string backupDirectoryName;
         string backupName, userToBeBackedUp;
+        string backupToRestore;
         string serverName;
         string homeDirectory;
         string desktopFolder, documentsFolder, favoritesFolder;
@@ -404,28 +405,6 @@ namespace Helpdesk54
         {
             serverNameLinkLabel.LinkVisited = true;
             System.Diagnostics.Process.Start("explorer", @"\\" + serverNameLinkLabel.Text.ToString());
-        }
-
-        /// <summary>
-        /// Checks for existing backup on H: drive.
-        /// </summary>
-        private void checkForExistingBackup() {
-            try
-            {
-                //Check the selected restoreComboDrive for a backup matching: username-Backup-year
-                DriveInfo restoreSelectedDrive = (DriveInfo)restoreDriveCombo.SelectedItem;
-                searchDirectoryForBackup(restoreSelectedDrive.ToString());
-                if (backupFoundLabel.Text.ToString() == "(Backup Found!)")
-                {
-                    checkBackupDirectories(backupName);
-                }
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show("Exception source from checkForExistingBackup() : {0}", e.Source);
-
-                throw;
-            }
         }
 
         /// <summary>
@@ -871,11 +850,6 @@ namespace Helpdesk54
                 DriveInfo selectedDrive = (DriveInfo)restoreDriveCombo.SelectedItem;
                 //searchDirectoryForBackup(selectedDrive.ToString());
                 setRestorePageOptions();
-                //checkForExistingBackups(selectedDrive.ToString());
-                if (backupFoundLabel.Text.ToString() == "(Backup Found!)")
-                {
-                    checkBackupDirectories(backupName);
-                }
             }
         }
 
@@ -1039,8 +1013,6 @@ namespace Helpdesk54
                 }
             }
             setRestorePageOptions();
-            //checkForExistingBackups(selectedDrive.ToString());
-            checkBackupDirectories(backupName);
         }
 
         /// <summary>
@@ -1259,8 +1231,6 @@ namespace Helpdesk54
                 }
             }
             setRestorePageOptions();
-            //checkForExistingBackups(selectedDrive.ToString());
-            checkBackupDirectories(backupName);
         }
 
         /// <summary>
@@ -1749,7 +1719,7 @@ namespace Helpdesk54
         {
             clickedButton = ((Button)sender).Name.ToString();
             itemsChanged = ((Button)sender).Text.ToString();
-            selectedDrive = backupDriveCombo.SelectedItem.ToString();
+            selectedDrive = restoreDriveCombo.SelectedItem.ToString();
             restoreEssentialBgWorker.RunWorkerAsync();
         }
 
@@ -1762,7 +1732,7 @@ namespace Helpdesk54
         {
             clickedButton = ((Button)sender).Name.ToString();
             itemsChanged = ((Button)sender).Text.ToString();
-            selectedDrive = backupDriveCombo.SelectedItem.ToString();
+            selectedDrive = restoreDriveCombo.SelectedItem.ToString();
             restoreEssentialBgWorker.RunWorkerAsync();
         }
 
@@ -1780,24 +1750,58 @@ namespace Helpdesk54
             selectedDrive = backupDriveCombo.SelectedItem.ToString();
             string[] directoryNameArray = { "Documents", "Favorites", "Desktop" };
             string destinationLocation = "";
-            string directoryToBackup = "";
+            string directoryToRestore = "";
 
             for (int i = 0; i < directoryNameArray.Length; i++)
             {
                 switch (directoryNameArray[i])
                 {
                     case "Documents":
-                        destinationLocation = selectedDrive + backupDirectoryName + "\\" + directoryNameArray[i] + "\\";
-                        directoryToBackup = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-                        break;
+                        if (isRecoveryForLoggedInUser())
+                        {
+                            destinationLocation = selectedDrive + backupDirectoryName + "\\" + directoryNameArray[i] + "\\";
+                            directoryToRestore = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                            break;
+                        }
+                        else
+                        {
+                            string selectedBackup = userRestoreSelectCombo.SelectedItem.ToString();
+                            string selectedBackupUsername = selectedBackup.Split('-')[0];
+                            destinationLocation = selectedDrive + backupDirectoryName + "\\" + directoryNameArray[i] + "\\";
+                            directoryToRestore = "C:\\Users\\"+selectedBackupUsername+"\\Documents";
+                            break;
+                        }
                     case "Favorites":
-                        destinationLocation = selectedDrive + backupDirectoryName + "\\" + directoryNameArray[i] + "\\";
-                        directoryToBackup = Environment.GetFolderPath(Environment.SpecialFolder.Favorites);
-                        break;
+                        if (isRecoveryForLoggedInUser())
+                        {
+                            destinationLocation = selectedDrive + backupDirectoryName + "\\" + directoryNameArray[i] + "\\";
+                            directoryToRestore = Environment.GetFolderPath(Environment.SpecialFolder.Favorites);
+                            break;
+                        }
+                        else
+                        {
+                            string selectedBackup = userRestoreSelectCombo.SelectedItem.ToString();
+                            string selectedBackupUsername = selectedBackup.Split('-')[0];
+                            destinationLocation = selectedDrive + backupDirectoryName + "\\" + directoryNameArray[i] + "\\";
+                            directoryToRestore = "C:\\Users\\" + selectedBackupUsername + "\\Favorites";
+                            break;
+                        }
+                
                     case "Desktop":
-                        destinationLocation = selectedDrive + backupDirectoryName + "\\" + directoryNameArray[i] + "\\";
-                        directoryToBackup = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-                        break;
+                        if (isRecoveryForLoggedInUser())
+                        {
+                            destinationLocation = selectedDrive + backupDirectoryName + "\\" + directoryNameArray[i] + "\\";
+                            directoryToRestore = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+                            break;
+                        }
+                        else
+                        {
+                            string selectedBackup = userRestoreSelectCombo.SelectedItem.ToString();
+                            string selectedBackupUsername = selectedBackup.Split('-')[0];
+                            destinationLocation = selectedDrive + backupDirectoryName + "\\" + directoryNameArray[i] + "\\";
+                            directoryToRestore = "C:\\Users\\" + selectedBackupUsername + "\\Desktop";
+                            break;
+                        }
                     default:
                         break;
                 }
@@ -1806,7 +1810,7 @@ namespace Helpdesk54
                     Directory.CreateDirectory(destinationLocation);
                 }
                 DirectoryInfo target = new DirectoryInfo(destinationLocation);
-                DirectoryInfo source = new DirectoryInfo(directoryToBackup);
+                DirectoryInfo source = new DirectoryInfo(directoryToRestore);
                 CopyFilesRecursively(source, target);
             }
         }
@@ -1914,9 +1918,11 @@ namespace Helpdesk54
         /// </summary>
         private void restoreDesktop()
         {
-            string userDirectory = @"C:\Users\" + usernameLabel.Text.ToString();
-            destinationLocation = userDirectory + "\\Desktop\\";
-            string desktopBackupFolder = selectedDrive + backupDirectoryName + "\\Desktop\\";
+            string selectedBackup = backupToRestore;
+            string backupDrive = selectedDrive;
+            string selectedBackupUsername = selectedBackup.Split('-')[0];
+            destinationLocation = @"C:\Users\" + selectedBackupUsername + "\\Desktop\\";
+            string desktopBackupFolder = backupDrive + "54HelperBackups\\" + selectedBackup + "\\Desktop\\";
             source = new DirectoryInfo(desktopBackupFolder);
             DirectoryInfo target = new DirectoryInfo(destinationLocation);
             fileCount = source.GetFiles("*", SearchOption.AllDirectories).Length;
@@ -1936,6 +1942,7 @@ namespace Helpdesk54
                 MessageBox.Show("This location does not exist for the logged in user.");
             }
             RestoreFilesRecursively(source, target);
+            
         }
 
         /// <summary>
@@ -1943,9 +1950,11 @@ namespace Helpdesk54
         /// </summary>
         private void restoreFavorites()
         {
-            string userDirectory = @"C:\Users\" + usernameLabel.Text.ToString();
-            destinationLocation = userDirectory + "\\Favorites\\";
-            string favoritesBackupFolder = selectedDrive + backupDirectoryName + "\\Favorites\\";
+            string selectedBackup = backupToRestore;
+            string backupDrive = selectedDrive;
+            string selectedBackupUsername = selectedBackup.Split('-')[0];
+            destinationLocation = @"C:\Users\" + selectedBackupUsername + "\\Favorites\\";
+            string favoritesBackupFolder = backupDrive + "54HelperBackups\\" + selectedBackup + "\\Favorites\\";
             source = new DirectoryInfo(favoritesBackupFolder);
             DirectoryInfo target = new DirectoryInfo(destinationLocation);
             fileCount = source.GetFiles("*", SearchOption.AllDirectories).Length;
@@ -1972,9 +1981,11 @@ namespace Helpdesk54
         /// </summary>
         private void restoreDocuments()
         {
-            string userDirectory = @"C:\Users\" + usernameLabel.Text.ToString();
-            destinationLocation = userDirectory + "\\Documents\\";
-            string documentsBackupFolder = selectedDrive + backupDirectoryName + "\\Documents\\";
+            string selectedBackup = backupToRestore;
+            string backupDrive = selectedDrive;
+            string selectedBackupUsername = selectedBackup.Split('-')[0];
+            destinationLocation = @"C:\Users\" + selectedBackupUsername + "\\Documents\\";
+            string documentsBackupFolder = backupDrive + "54HelperBackups\\" + selectedBackup + "\\Documents\\";
             source = new DirectoryInfo(documentsBackupFolder);
             DirectoryInfo target = new DirectoryInfo(destinationLocation);
             fileCount = source.GetFiles("*", SearchOption.AllDirectories).Length;
@@ -2976,22 +2987,36 @@ namespace Helpdesk54
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void userRestoreSelectCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
+            using (BeginWaitCursorBlock()) {
+                backupToRestore = userRestoreSelectCombo.SelectedItem.ToString();
+                string selectedBackup = userRestoreSelectCombo.SelectedItem.ToString();
+                string selectedBackupUsername = selectedBackup.Split('-')[0];
+                //Check that the user backup selected has a user folder existing on the computer
+                if (Directory.Exists("C:\\Users\\" + selectedBackupUsername))
+                {
+                    //user account exists on PC - enable buttons to restore data
+                    enableRestoreButtons(userRestoreSelectCombo.SelectedItem.ToString());
+                }
+                else
+                {
+                    disableRestoreButtons();
+                    MessageBox.Show("The backup you've selected is for a user that has not logged on to this PC yet. Please have " + selectedBackupUsername + " logon to this PC before restoring from this backup.");
+                }
+            }
+        }
+        public bool isRecoveryForLoggedInUser()
+        {
             string selectedBackup = userRestoreSelectCombo.SelectedItem.ToString();
             string selectedBackupUsername = selectedBackup.Split('-')[0];
-            //Check that the user backup selected has a user folder existing on the computer
-            if (Directory.Exists("C:\\Users\\" + selectedBackupUsername))
+            if (userName == selectedBackupUsername)
             {
-                //user account exists on PC - enable buttons to restore data
-                enableRestoreButtons(userRestoreSelectCombo.SelectedItem.ToString());
+                return true;
             }
             else
             {
-                disableRestoreButtons();
-                MessageBox.Show("The backup you've selected is for a user that has not logged on to this PC yet. Please have "+selectedBackupUsername+" logon to this PC before restoring from this backup.");
+                return false;
             }
-            
         }
-
         /// <summary>
         /// Authenticates the service account.
         /// </summary>
@@ -3022,80 +3047,6 @@ namespace Helpdesk54
                 throw new Exception("Create ServiceAccount Failed", ex);
             }
             
-        }
-
-        /// <summary>
-        /// Checks the backup directories and updates the labels.
-        /// </summary>
-        /// <param name="backupName">Name of the backup.</param>
-        public void checkBackupDirectories(string backupName)
-        {
-            string subDirectoryURL;
-            string[] directoryList =
-            {
-                "Documents",
-                "Favorites",
-                "Desktop",
-                "Sticky Notes",
-                "Pictures",
-                "Videos",
-                "Music"
-            };
-            foreach (string subDirectory in directoryList)
-            {
-                subDirectoryURL = backupName + "\\" + subDirectory;
-                if (Directory.Exists(subDirectoryURL))
-                {
-                    switch (subDirectory)
-                    {
-                        case "Documents":
-                            recoverDocumentsLabel.Enabled = true;
-                            recoverDocumentsLabel.Text = "(Found!)";
-                            recoverDocumentsLabel.ForeColor = System.Drawing.Color.ForestGreen;
-                            restoreDocumentsButton.Enabled = true;
-                            break;
-                        case "Favorites":
-                            recoverFavoritesLabel.Enabled = true;
-                            recoverFavoritesLabel.Text = "(Found!)";
-                            recoverFavoritesLabel.ForeColor = System.Drawing.Color.ForestGreen;
-                            restoreFavoritesButton.Enabled = true;
-                            break;
-                        case "Desktop":
-                            recoverDesktopLabel.Enabled = true;
-                            recoverDesktopLabel.Text = "(Found!)";
-                            recoverDesktopLabel.ForeColor = System.Drawing.Color.ForestGreen;
-                            restoreDesktopButton.Enabled = true;
-                            break;
-                        case "Sticky Notes":
-                            recoverStickyNotesLabel.Enabled = true;
-                            recoverStickyNotesLabel.Text = "(Found!)";
-                            recoverStickyNotesLabel.ForeColor = System.Drawing.Color.ForestGreen;
-                            restoreStickyNotesButton.Enabled = true;
-                            break;
-                        case "Pictures":
-                            recoverPicturesLabel.Enabled = true;
-                            recoverPicturesLabel.Text = "(Found!)";
-                            recoverPicturesLabel.ForeColor = System.Drawing.Color.ForestGreen;
-                            restorePicturesButton.Enabled = true;
-                            break;
-                        case "Videos":
-                            recoverVideosLabel.Enabled = true;
-                            recoverVideosLabel.Text = "(Found!)";
-                            recoverVideosLabel.ForeColor = System.Drawing.Color.ForestGreen;
-                            restoreVideosButton.Enabled = true;
-                            break;
-                        case "Music":
-                            recoverMusicLabel.Enabled = true;
-                            recoverMusicLabel.Text = "(Found!)";
-                            recoverMusicLabel.ForeColor = System.Drawing.Color.ForestGreen;
-                            restoreMusicButton.Enabled = true;
-                            break;
-                        default:
-                            break;
-                    }
-                }
-
-            }
         }
 
         /// <summary>
