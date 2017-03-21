@@ -189,7 +189,7 @@
             this.restoreDriveCombo.FormattingEnabled = true;
             this.restoreDriveCombo.Location = new System.Drawing.Point(149, 21);
             this.restoreDriveCombo.Name = "restoreDriveCombo";
-            this.restoreDriveCombo.Size = new System.Drawing.Size(88, 28);
+            this.restoreDriveCombo.Size = new System.Drawing.Size(74, 28);
             this.restoreDriveCombo.TabIndex = 7;
             this.restoreDriveCombo.SelectedIndexChanged += new System.EventHandler(this.restoreDriveCombo_SelectedIndexChanged);
             // 
@@ -621,11 +621,11 @@
             // 
             this.backupFoundLabel.AutoSize = true;
             this.backupFoundLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.backupFoundLabel.Location = new System.Drawing.Point(252, 25);
+            this.backupFoundLabel.Location = new System.Drawing.Point(226, 25);
             this.backupFoundLabel.Name = "backupFoundLabel";
-            this.backupFoundLabel.Size = new System.Drawing.Size(123, 20);
+            this.backupFoundLabel.Size = new System.Drawing.Size(135, 20);
             this.backupFoundLabel.TabIndex = 8;
-            this.backupFoundLabel.Text = "(Backup Found)";
+            this.backupFoundLabel.Text = "(Backups Found!)";
             // 
             // restoreEssentialsBarLabel
             // 
@@ -1577,9 +1577,9 @@
             // userRestoreSelectCombo
             // 
             this.userRestoreSelectCombo.FormattingEnabled = true;
-            this.userRestoreSelectCombo.Location = new System.Drawing.Point(397, 22);
+            this.userRestoreSelectCombo.Location = new System.Drawing.Point(364, 22);
             this.userRestoreSelectCombo.Name = "userRestoreSelectCombo";
-            this.userRestoreSelectCombo.Size = new System.Drawing.Size(254, 28);
+            this.userRestoreSelectCombo.Size = new System.Drawing.Size(287, 28);
             this.userRestoreSelectCombo.TabIndex = 13;
             this.userRestoreSelectCombo.Visible = false;
             this.userRestoreSelectCombo.SelectedIndexChanged += new System.EventHandler(this.userRestoreSelectCombo_SelectedIndexChanged);

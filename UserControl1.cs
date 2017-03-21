@@ -142,6 +142,9 @@ namespace Helpdesk54
 
         }
 
+        /// <summary>
+        /// Sets the restore page options. Called when restore drive combo changes.
+        /// </summary>
         private void setRestorePageOptions()
         {
             userRestoreSelectCombo.Items.Clear();
@@ -161,6 +164,11 @@ namespace Helpdesk54
                 {
                     string shortenedBackupDirectory = backupDirectory.Contains("\\") && backupDirectory.Split('\\').GetLength(0) > 2 ? string.Join("\\", backupDirectory.Split('\\').Skip(2).ToList()) : backupDirectory;
                     userRestoreSelectCombo.Items.Add(shortenedBackupDirectory);
+                    //set the current users backup as default if there is one
+                    if (backupDirectory.Contains(backupDirectoryName))
+                    {
+                        userRestoreSelectCombo.SelectedItem = shortenedBackupDirectory;
+                    }
                 }
             }
             else //there are no backups
@@ -2516,27 +2524,29 @@ namespace Helpdesk54
             }
         }
         /// <summary>
-        /// Restores from backup.
+        /// Enables buttons for restoring from backup
         /// </summary>
-        /// <param name="directoryName">Name of the directory.</param>
+        /// <param name="backupDirectoryName">Name of the directory.</param>
         /// <param name="userName">Name of the user.</param>
-        public void restoreFromBackup(string directoryName, string userName)
+        public void enableRestoreButtons(string backupDirectoryName)
         {
-            string userDirectory;
+            string drive = restoreDriveCombo.SelectedItem.ToString();
+            string backupDirectory = drive + "54HelperBackups\\" + backupDirectoryName;
+            string backupSubDirectory;
             string[] directoryList =
             {
                 "Documents",
                 "Favorites",
                 "Desktop",
-                "StickyNotes",
+                "Sticky Notes",
                 "Pictures",
                 "Videos",
                 "Music"
             };
             foreach (string subDirectory in directoryList)
             {
-                userDirectory = backupName + "\\" + subDirectory;
-                if (Directory.Exists(userDirectory))
+                backupSubDirectory = backupDirectory + "\\" + subDirectory;
+                if (Directory.Exists(backupSubDirectory))
                 {
                     switch (subDirectory)
                     {
@@ -2558,7 +2568,7 @@ namespace Helpdesk54
                             recoverDesktopLabel.ForeColor = System.Drawing.Color.ForestGreen;
                             restoreDesktopButton.Enabled = true;
                             break;
-                        case "StickyNotes":
+                        case "Sticky Notes":
                             recoverStickyNotesLabel.Enabled = true;
                             recoverStickyNotesLabel.Text = "(Found!)";
                             recoverStickyNotesLabel.ForeColor = System.Drawing.Color.ForestGreen;
@@ -2966,7 +2976,20 @@ namespace Helpdesk54
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void userRestoreSelectCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            string selectedBackup = userRestoreSelectCombo.SelectedItem.ToString();
+            string selectedBackupUsername = selectedBackup.Split('-')[0];
+            //Check that the user backup selected has a user folder existing on the computer
+            if (Directory.Exists("C:\\Users\\" + selectedBackupUsername))
+            {
+                //user account exists on PC - enable buttons to restore data
+                enableRestoreButtons(userRestoreSelectCombo.SelectedItem.ToString());
+            }
+            else
+            {
+                disableRestoreButtons();
+                MessageBox.Show("The backup you've selected is for a user that has not logged on to this PC yet. Please have "+selectedBackupUsername+" logon to this PC before restoring from this backup.");
+            }
+            
         }
 
         /// <summary>
