@@ -1823,6 +1823,7 @@ namespace Helpdesk54
         void restoreEssentialBgWorker_DoWork(object sender, DoWorkEventArgs e)
         {
             
+
             string buttonSender = clickedButton; //Desktop, Documents, etc.
             switch (buttonSender)
             {
@@ -2030,7 +2031,9 @@ namespace Helpdesk54
         {
             clickedButton = ((Button)sender).Name.ToString();
             itemsChanged = ((Button)sender).Text.ToString();
+            MessageBox.Show("RestorePictures_CLICK object - BEFORE selectedDr");
             selectedDrive = restoreDriveCombo.SelectedItem.ToString();
+            MessageBox.Show("RestorePictures_CLICK object - AFTER selectedDr");
             restoreAdditionalBgWorker.RunWorkerAsync();
             restoreAdditionalBarLabel.Visible = false;
         }
@@ -2069,89 +2072,25 @@ namespace Helpdesk54
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="DoWorkEventArgs"/> instance containing the event data.</param>
         void restoreAdditionalBgWorker_DoWork(object sender, DoWorkEventArgs e)
-        {
-            string userDirectory = @"C:\Users\" + usernameLabel.Text.ToString();
+        {            
             string buttonSender = clickedButton; //Desktop, Documents, etc.
             switch (buttonSender)
             {
-                case "Sticky Notes":
-                    destinationLocation = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Microsoft\Sticky Notes\";
-                    string stickyNotesBackupFolder = selectedDrive + backupDirectoryName + "\\Sticky Notes\\";
-                    source = new DirectoryInfo(stickyNotesBackupFolder);
+                case "restoreStickyNotesButton":
+                    restoreStickyNotes();
                     break;
-                case "Pictures":
-                    destinationLocation = userDirectory + "\\Pictures\\";
-                    string picturesBackupFolder = selectedDrive + backupDirectoryName + "\\Pictures\\";
-                    source = new DirectoryInfo(picturesBackupFolder);
+                case "restorePicturesButton":
+                    restorePictures();
                     break;
-                case "Videos":
-                    destinationLocation = userDirectory + "\\Videos\\";
-                    string videosFolder = selectedDrive + backupDirectoryName + "\\Videos\\";
-                    source = new DirectoryInfo(videosFolder);
+                case "restoreVideosButton":
+                    restoreVideos();
                     break;
-                case "Music":
-                    destinationLocation = userDirectory + "\\Music\\";
-                    string musicFolder = selectedDrive + backupDirectoryName + "\\Music\\";
-                    source = new DirectoryInfo(musicFolder);
+                case "restoreMusicButton":
+                    restoreMusic();
                     break;
                 default:
 
                     break;
-            }
-            //By default - Sticky Notes is really the only file that might fail here - the rest are system folders which will always exist
-            if (!Directory.Exists(destinationLocation))
-            {
-                if (buttonSender == "Sticky Notes")
-                {
-                    DialogResult result = MessageBox.Show(String.Format("The directory {0} does not exist. Would you like to create this directory now and restore the file?", destinationLocation), "Confirmation", MessageBoxButtons.YesNo);
-                    if (result == DialogResult.Yes)
-                    {
-                        //create the Sticky Notes directory (C:\users\*username*\AppData\Roaming\Microsoft\Sticky Notes\)
-                        Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Microsoft\Sticky Notes\");
-                        //restore the Sticky Notes file
-                        DirectoryInfo target = new DirectoryInfo(destinationLocation);
-                        fileCount = source.GetFiles("*", SearchOption.AllDirectories).Length;
-                        totalFileCount = fileCount;
-                        int total = totalFileCount; //total things being transferred
-                        for (int i = 0; i <= total; i++) //report those numbers
-                        {
-                            System.Threading.Thread.Sleep(100);
-                            int percents = (i * 100) / total;
-                            restoreAdditionalBgWorker.ReportProgress(percents, i);
-                            //2 arguments:
-                            //1. procenteges (from 0 t0 100) - i do a calcumation 
-                            //2. some current value!
-                        }
-                        RestoreFilesRecursively(source, target);
-                    }
-                    else if (result == DialogResult.No)
-                    {
-                        restoreAdditionalBgWorker.CancelAsync();
-                    }
-                }
-                else
-                {
-
-                }
-
-            }
-            else
-            {
-                DirectoryInfo target = new DirectoryInfo(destinationLocation);
-                fileCount = source.GetFiles("*", SearchOption.AllDirectories).Length;
-                totalFileCount = fileCount;
-                int total = totalFileCount; //total things being transferred
-                for (int i = 0; i <= total; i++) //report those numbers
-                {
-                    System.Threading.Thread.Sleep(100);
-                    int percents = (i * 100) / total;
-                    restoreAdditionalBgWorker.ReportProgress(percents, i);
-                    //2 arguments:
-                    //1. procenteges (from 0 t0 100) - i do a calcumation 
-                    //2. some current value!
-                }
-
-                RestoreFilesRecursively(source, target);
             }
             //set the cancel flag so we know the job was cancelled!
             if (restoreAdditionalBgWorker.CancellationPending)
@@ -2160,7 +2099,144 @@ namespace Helpdesk54
                 return;
             }
         }
+        private void restoreStickyNotes()
+        {
+            string selectedBackup = backupToRestore;
+            string backupDrive = selectedDrive;
+            string selectedBackupUsername = selectedBackup.Split('-')[0];
+            //set the destination to stickynotes (C:\users\*username*\AppData\Roaming\Microsoft\Sticky Notes\)
+            if (WinMajorVersion == 10)
+            //windows 10
+            {
+                destinationLocation = "C:\\Users\\" + selectedBackupUsername + "\\AppData\\Local\\Packages\\Microsoft.MicrosoftStickyNotes_8wekyb3d8bbwe";
+            }
+            else
+            {
+                //windows 7
+                destinationLocation = "C:\\Users\\" + selectedBackupUsername + "\\AppData\\Roaming\\Microsoft\\Sticky Notes";
+            }
+            //By default - Sticky Notes is really the only file that might fail here - the rest are system folders which will always exist
+            if (!Directory.Exists(destinationLocation))
+            {
+                DialogResult result = MessageBox.Show(String.Format("The directory {0} does not exist. Would you like to create this directory now and restore the file?", destinationLocation), "Confirmation", MessageBoxButtons.YesNo);
+                if (result == DialogResult.Yes)
+                {
+                    //create the Sticky Notes directory (C:\users\*username*\AppData\Roaming\Microsoft\Sticky Notes\)
+                    if (WinMajorVersion == 10)
+                    //windows 10
+                    {
+                        Directory.CreateDirectory("C:\\Users\\" + selectedBackupUsername + "\\AppData\\Local\\Packages\\Microsoft.MicrosoftStickyNotes_8wekyb3d8bbwe");
+                    }
+                    else
+                    {
+                        //windows 7
+                        Directory.CreateDirectory("C:\\Users\\" + selectedBackupUsername + "\\AppData\\Roaming\\Microsoft\\Sticky Notes");
+                    }
 
+                    //restore the Sticky Notes file
+                    DirectoryInfo target = new DirectoryInfo(destinationLocation);
+                    fileCount = source.GetFiles("*", SearchOption.AllDirectories).Length;
+                    totalFileCount = fileCount;
+                    int total = totalFileCount; //total things being transferred
+                    for (int i = 0; i <= total; i++) //report those numbers
+                    {
+                        System.Threading.Thread.Sleep(100);
+                        int percents = (i * 100) / total;
+                        restoreAdditionalBgWorker.ReportProgress(percents, i);
+                        //2 arguments:
+                        //1. procenteges (from 0 t0 100) - i do a calcumation 
+                        //2. some current value!
+                    }
+                    RestoreFilesRecursively(source, target);
+                }
+                else if (result == DialogResult.No)
+                {
+                    restoreAdditionalBgWorker.CancelAsync();
+                }
+            }
+        }
+        private void restorePictures()
+        {
+            MessageBox.Show("INSIDE PICTURE RECOVERY");
+            string selectedBackup = backupToRestore;
+            string backupDrive = selectedDrive;
+            string selectedBackupUsername = selectedBackup.Split('-')[0];
+            destinationLocation = @"C:\Users\" + selectedBackupUsername + "\\Pictures\\";
+            string picturesBackupFolder = backupDrive + "54HelperBackups\\" + selectedBackup + "\\Pictures\\";
+            source = new DirectoryInfo(picturesBackupFolder);
+            DirectoryInfo target = new DirectoryInfo(destinationLocation);
+            fileCount = source.GetFiles("*", SearchOption.AllDirectories).Length;
+            totalFileCount = fileCount;
+            int total = totalFileCount; //total things being transferred
+            for (int i = 0; i <= total; i++) //report those numbers
+            {
+                System.Threading.Thread.Sleep(100);
+                int percents = (i * 100) / total;
+                restoreAdditionalBgWorker.ReportProgress(percents, i);
+                //2 arguments:
+                //1. procenteges (from 0 t0 100) - i do a calcumation 
+                //2. some current value!
+            }
+            if (!Directory.Exists(destinationLocation))
+            {
+                MessageBox.Show("This location does not exist for the logged in user.");
+            }
+            RestoreFilesRecursively(source, target);
+        }
+        private void restoreVideos()
+        {
+            string selectedBackup = backupToRestore;
+            string backupDrive = selectedDrive;
+            string selectedBackupUsername = selectedBackup.Split('-')[0];
+            destinationLocation = @"C:\Users\" + selectedBackupUsername + "\\Videos\\";
+            string videosBackupFolder = backupDrive + "54HelperBackups\\" + selectedBackup + "\\Videos\\";
+            source = new DirectoryInfo(videosBackupFolder);
+            DirectoryInfo target = new DirectoryInfo(destinationLocation);
+            fileCount = source.GetFiles("*", SearchOption.AllDirectories).Length;
+            totalFileCount = fileCount;
+            int total = totalFileCount; //total things being transferred
+            for (int i = 0; i <= total; i++) //report those numbers
+            {
+                System.Threading.Thread.Sleep(100);
+                int percents = (i * 100) / total;
+                restoreAdditionalBgWorker.ReportProgress(percents, i);
+                //2 arguments:
+                //1. procenteges (from 0 t0 100) - i do a calcumation 
+                //2. some current value!
+            }
+            if (!Directory.Exists(destinationLocation))
+            {
+                MessageBox.Show("This location does not exist for the logged in user.");
+            }
+            RestoreFilesRecursively(source, target);
+        }
+        private void restoreMusic()
+        {
+            string selectedBackup = backupToRestore;
+            string backupDrive = selectedDrive;
+            string selectedBackupUsername = selectedBackup.Split('-')[0];
+            destinationLocation = @"C:\Users\" + selectedBackupUsername + "\\Music\\";
+            string musicBackupFolder = backupDrive + "54HelperBackups\\" + selectedBackup + "\\Music\\";
+            source = new DirectoryInfo(musicBackupFolder);
+            DirectoryInfo target = new DirectoryInfo(destinationLocation);
+            fileCount = source.GetFiles("*", SearchOption.AllDirectories).Length;
+            totalFileCount = fileCount;
+            int total = totalFileCount; //total things being transferred
+            for (int i = 0; i <= total; i++) //report those numbers
+            {
+                System.Threading.Thread.Sleep(100);
+                int percents = (i * 100) / total;
+                restoreAdditionalBgWorker.ReportProgress(percents, i);
+                //2 arguments:
+                //1. procenteges (from 0 t0 100) - i do a calcumation 
+                //2. some current value!
+            }
+            if (!Directory.Exists(destinationLocation))
+            {
+                MessageBox.Show("This location does not exist for the logged in user.");
+            }
+            RestoreFilesRecursively(source, target);
+        }
         /// <summary>
         /// Handles the ProgressChanged event of the restoreAdditionalBgWorker control.
         /// </summary>
