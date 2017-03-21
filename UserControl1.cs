@@ -1462,6 +1462,7 @@ namespace Helpdesk54
                     }
                     if (backupDesktopButton.Enabled && backupDocumentsButton.Enabled && backupFavoritesButton.Enabled)
                     {
+                        allEssentialsSizeLabel.ForeColor = System.Drawing.Color.ForestGreen;
                         backupAllEssentialsButton.Enabled = true;
                     }
                 }
@@ -2698,6 +2699,11 @@ namespace Helpdesk54
                             break;
                         default:
                             break;
+                    }
+                    if (restoreDesktopButton.Enabled && restoreDocumentsButton.Enabled && restoreFavoritesButton.Enabled)
+                    {
+                        recoverAllEssentialsLabel.ForeColor = System.Drawing.Color.ForestGreen;
+                        restoreAllEssentialsButton.Enabled = true;
                     }
                 }
             }
