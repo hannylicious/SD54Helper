@@ -2031,9 +2031,7 @@ namespace Helpdesk54
         {
             clickedButton = ((Button)sender).Name.ToString();
             itemsChanged = ((Button)sender).Text.ToString();
-            MessageBox.Show("RestorePictures_CLICK object - BEFORE selectedDr");
             selectedDrive = restoreDriveCombo.SelectedItem.ToString();
-            MessageBox.Show("RestorePictures_CLICK object - AFTER selectedDr");
             restoreAdditionalBgWorker.RunWorkerAsync();
             restoreAdditionalBarLabel.Visible = false;
         }
@@ -2154,10 +2152,29 @@ namespace Helpdesk54
                     restoreAdditionalBgWorker.CancelAsync();
                 }
             }
+            else
+            {
+                //restore the Sticky Notes file
+                string stickyNotesBackupFolder = backupDrive + "54HelperBackups\\" + selectedBackup + "\\Sticky Notes\\";
+                source = new DirectoryInfo(stickyNotesBackupFolder);
+                DirectoryInfo target = new DirectoryInfo(destinationLocation);
+                fileCount = source.GetFiles("*", SearchOption.AllDirectories).Length;
+                totalFileCount = fileCount;
+                int total = totalFileCount; //total things being transferred
+                for (int i = 0; i <= total; i++) //report those numbers
+                {
+                    System.Threading.Thread.Sleep(100);
+                    int percents = (i * 100) / total;
+                    restoreAdditionalBgWorker.ReportProgress(percents, i);
+                    //2 arguments:
+                    //1. procenteges (from 0 t0 100) - i do a calcumation 
+                    //2. some current value!
+                }
+                RestoreFilesRecursively(source, target);
+            }
         }
         private void restorePictures()
         {
-            MessageBox.Show("INSIDE PICTURE RECOVERY");
             string selectedBackup = backupToRestore;
             string backupDrive = selectedDrive;
             string selectedBackupUsername = selectedBackup.Split('-')[0];
