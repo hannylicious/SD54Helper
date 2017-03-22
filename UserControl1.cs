@@ -72,6 +72,8 @@ namespace Helpdesk54
             //Get the userName to the currently logged in user
             getUsername();         
             usernameLabel.Text = userName;
+            //set the backupDirectoryName
+            backupDirectoryName = userName.ToString() + "-54Help-" + DateTime.Now.Year.ToString();
             //Get the attached drives            
             getAttachedDrives();
             //check if the user gets access to quicken
@@ -103,8 +105,6 @@ namespace Helpdesk54
                 userBackedUpAnswerLabel.Text = "YES";
                 userBackedUpAnswerLabel.ForeColor = System.Drawing.Color.ForestGreen;
             }
-            //set the backupDirectoryName
-            backupDirectoryName = userName.ToString() + "-54Help-" + DateTime.Now.Year.ToString();
             //set backupDriveCombo dropdown
             setBackupDriveCombo();
             //set restoreDriveCombo to dropdown
@@ -848,7 +848,6 @@ namespace Helpdesk54
                 //Set the selected drive freespace label
                 disableRestoreButtons();
                 DriveInfo selectedDrive = (DriveInfo)restoreDriveCombo.SelectedItem;
-                //searchDirectoryForBackup(selectedDrive.ToString());
                 setRestorePageOptions();
             }
         }
