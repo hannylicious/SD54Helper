@@ -15,7 +15,7 @@ namespace Helpdesk54
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new UserControl1());
+            Application.Run(new MainForm());
         }
     }
 }

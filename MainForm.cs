@@ -23,7 +23,7 @@ using System.Threading;
 
 namespace Helpdesk54
 {
-    public partial class UserControl1 : Form
+    public partial class MainForm : Form
 
     {
         int existingSetupRowNumber, existingBackupRowNumber;
@@ -51,7 +51,7 @@ namespace Helpdesk54
         int fileCount;
         DriveInfo[] theDrives;
 
-        public UserControl1()
+        public MainForm()
         {
 
             Hide();
@@ -316,15 +316,18 @@ namespace Helpdesk54
                     {
                         // This is the Home drive! // 
                         homeDirectory = currentDrive.Name;
+                        Uri uri = new Uri(path);
+                        serverName = uri.Host.ToString();
+                        serverNameLinkLabel.Text = serverName;
                     }
                     if (path.ToLower().Contains(userCustomDisplayName.ToLower()))
                     {
                         // This is the Home drive! // 
                         homeDirectory = currentDrive.Name;
+                        Uri uri = new Uri(path);
+                        serverName = uri.Host.ToString();
+                        serverNameLinkLabel.Text = serverName;
                     }
-                    Uri uri = new Uri(path);
-                    serverName = uri.Host.ToString();
-                    serverNameLinkLabel.Text = serverName;
                 }
                 else
                 {

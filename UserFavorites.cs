@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace Helpdesk54
 {
-    class UserBackup
+    class UserFavorites
     {
-        public void backupDesktop()
+        public void backupFavorites()
         {
 
         }
-        public void backupDocuments()
+        public void restoreFavorites()
         {
 
         }

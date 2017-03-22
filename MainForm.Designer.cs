@@ -1,6 +1,6 @@
 ﻿namespace Helpdesk54
 {
-    partial class UserControl1
+    partial class MainForm
     {
         /// <summary>
         /// Required designer variable.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UserControl1));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.restoreDriveCombo = new System.Windows.Forms.ComboBox();
             this.startOfYearGroupBox = new System.Windows.Forms.GroupBox();
             this.quickenButton = new System.Windows.Forms.Button();
