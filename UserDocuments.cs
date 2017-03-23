@@ -13,7 +13,7 @@ namespace Helpdesk54
 
 
         }
-        public void recoverDocuments()
+        public void restoreDocuments()
         {
 
         }

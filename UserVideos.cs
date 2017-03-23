@@ -6,13 +6,14 @@ using System.Threading.Tasks;
 
 namespace Helpdesk54
 {
-    public class UserDesktop
+    class UserVideos
     {
-        public void backupDesktop()
+        public void backupVideos(string destinationLocation, string selectedDrive, string userToBeBackedUp, string backupDirectoryName)
         {
 
+
         }
-        public void restoreDesktop()
+        public void restoreVideos()
         {
 
         }

@@ -36,6 +36,7 @@ namespace Helpdesk54
         string homeDirectory;
         string desktopFolder, documentsFolder, favoritesFolder;
         string userName;
+        bool useCustomName;
         string wordPath, excelPath, outlookPath;
         BackgroundWorker essentialBgWorker = new BackgroundWorker();
         BackgroundWorker additionalBgWorker = new BackgroundWorker();
@@ -87,6 +88,8 @@ namespace Helpdesk54
                 quickenCheckBox.Enabled = false;
                 quickenBackupCheckBox.Enabled = false;
             }
+            //set the useCustomName to false unless it's found that we should be using custom name in setServerNameLink()
+            useCustomName = false;
             //set the serverNameLink to link to the appropriate location
             setServerNameLink();
             //check installations
@@ -319,6 +322,7 @@ namespace Helpdesk54
                         Uri uri = new Uri(path);
                         serverName = uri.Host.ToString();
                         serverNameLinkLabel.Text = serverName;
+                        useCustomName = false;
                     }
                     if (path.ToLower().Contains(userCustomDisplayName.ToLower()))
                     {
@@ -327,6 +331,7 @@ namespace Helpdesk54
                         Uri uri = new Uri(path);
                         serverName = uri.Host.ToString();
                         serverNameLinkLabel.Text = serverName;
+                        useCustomName = true;
                     }
                 }
                 else
