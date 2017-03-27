@@ -80,6 +80,7 @@
             this.restoreDocumentsButton = new System.Windows.Forms.Button();
             this.restoreFavoritesButton = new System.Windows.Forms.Button();
             this.restoreGroupBox = new System.Windows.Forms.GroupBox();
+            this.userRestoreSelectCombo = new System.Windows.Forms.ComboBox();
             this.restoreAdditionalGroupBox = new System.Windows.Forms.GroupBox();
             this.restoreAdditionalBarLabel = new System.Windows.Forms.Label();
             this.recoverMusicLabel = new System.Windows.Forms.Label();
@@ -96,7 +97,7 @@
             this.usernameLabel = new System.Windows.Forms.Label();
             this.userLabel = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.general = new System.Windows.Forms.TabPage();
             this.userBackedUpAnswerLabel = new System.Windows.Forms.Label();
             this.userSetupAnswerLabel = new System.Windows.Forms.Label();
             this.userHasBeenBackedUpLabel = new System.Windows.Forms.Label();
@@ -109,9 +110,9 @@
             this.installShortcutsLabel = new System.Windows.Forms.Label();
             this.installShortcutsButton = new System.Windows.Forms.Button();
             this.userSetupQuestionLabel = new System.Windows.Forms.Label();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.dataBackup = new System.Windows.Forms.TabPage();
+            this.dataRestore = new System.Windows.Forms.TabPage();
+            this.userChecklist = new System.Windows.Forms.TabPage();
             this.endOfYearCheckBoxPanel = new System.Windows.Forms.Panel();
             this.endOfYearLabel = new System.Windows.Forms.Label();
             this.panel7 = new System.Windows.Forms.Panel();
@@ -152,11 +153,9 @@
             this.dymoPrintingCheckBox = new System.Windows.Forms.CheckBox();
             this.label2 = new System.Windows.Forms.Label();
             this.icPrintingCheckBox = new System.Windows.Forms.CheckBox();
-            this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.serverListView = new System.Windows.Forms.ListView();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.userRestoreSelectCombo = new System.Windows.Forms.ComboBox();
+            this.administratorBackupCheckBox = new System.Windows.Forms.CheckBox();
             this.startOfYearGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.dataBackupGroupBox.SuspendLayout();
@@ -166,11 +165,11 @@
             this.restoreGroupBox.SuspendLayout();
             this.restoreAdditionalGroupBox.SuspendLayout();
             this.tabControl1.SuspendLayout();
-            this.tabPage1.SuspendLayout();
+            this.general.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            this.tabPage2.SuspendLayout();
-            this.tabPage3.SuspendLayout();
-            this.tabPage5.SuspendLayout();
+            this.dataBackup.SuspendLayout();
+            this.dataRestore.SuspendLayout();
+            this.userChecklist.SuspendLayout();
             this.endOfYearCheckBoxPanel.SuspendLayout();
             this.panel7.SuspendLayout();
             this.panel8.SuspendLayout();
@@ -179,7 +178,6 @@
             this.shortcutsPanel.SuspendLayout();
             this.printersPanel.SuspendLayout();
             this.printingPanel.SuspendLayout();
-            this.tabPage4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -307,6 +305,7 @@
             // dataBackupGroupBox
             // 
             this.dataBackupGroupBox.BackColor = System.Drawing.Color.AliceBlue;
+            this.dataBackupGroupBox.Controls.Add(this.administratorBackupCheckBox);
             this.dataBackupGroupBox.Controls.Add(this.userBackupSelectComboLabel);
             this.dataBackupGroupBox.Controls.Add(this.userBackupSelectCombo);
             this.dataBackupGroupBox.Controls.Add(this.essentialItemsGroupBox);
@@ -355,7 +354,7 @@
             this.essentialItemsGroupBox.Controls.Add(this.backupFavoritesButton);
             this.essentialItemsGroupBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.essentialItemsGroupBox.ForeColor = System.Drawing.Color.Black;
-            this.essentialItemsGroupBox.Location = new System.Drawing.Point(6, 59);
+            this.essentialItemsGroupBox.Location = new System.Drawing.Point(6, 74);
             this.essentialItemsGroupBox.Name = "essentialItemsGroupBox";
             this.essentialItemsGroupBox.Size = new System.Drawing.Size(651, 212);
             this.essentialItemsGroupBox.TabIndex = 12;
@@ -478,7 +477,7 @@
             this.additionalItemsGroupBox.Controls.Add(this.stickyNotesSizeLabel);
             this.additionalItemsGroupBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.additionalItemsGroupBox.ForeColor = System.Drawing.Color.Black;
-            this.additionalItemsGroupBox.Location = new System.Drawing.Point(6, 277);
+            this.additionalItemsGroupBox.Location = new System.Drawing.Point(6, 287);
             this.additionalItemsGroupBox.Name = "additionalItemsGroupBox";
             this.additionalItemsGroupBox.Size = new System.Drawing.Size(651, 166);
             this.additionalItemsGroupBox.TabIndex = 11;
@@ -654,7 +653,7 @@
             this.restoreEssentialGroupBox.Controls.Add(this.restoreFavoritesButton);
             this.restoreEssentialGroupBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.restoreEssentialGroupBox.ForeColor = System.Drawing.Color.Black;
-            this.restoreEssentialGroupBox.Location = new System.Drawing.Point(6, 59);
+            this.restoreEssentialGroupBox.Location = new System.Drawing.Point(6, 74);
             this.restoreEssentialGroupBox.Name = "restoreEssentialGroupBox";
             this.restoreEssentialGroupBox.Size = new System.Drawing.Size(651, 212);
             this.restoreEssentialGroupBox.TabIndex = 12;
@@ -766,6 +765,16 @@
             this.restoreGroupBox.TabIndex = 21;
             this.restoreGroupBox.TabStop = false;
             // 
+            // userRestoreSelectCombo
+            // 
+            this.userRestoreSelectCombo.FormattingEnabled = true;
+            this.userRestoreSelectCombo.Location = new System.Drawing.Point(364, 22);
+            this.userRestoreSelectCombo.Name = "userRestoreSelectCombo";
+            this.userRestoreSelectCombo.Size = new System.Drawing.Size(287, 28);
+            this.userRestoreSelectCombo.TabIndex = 13;
+            this.userRestoreSelectCombo.Visible = false;
+            this.userRestoreSelectCombo.SelectedIndexChanged += new System.EventHandler(this.userRestoreSelectCombo_SelectedIndexChanged);
+            // 
             // restoreAdditionalGroupBox
             // 
             this.restoreAdditionalGroupBox.BackColor = System.Drawing.Color.AliceBlue;
@@ -781,7 +790,7 @@
             this.restoreAdditionalGroupBox.Controls.Add(this.recoverStickyNotesLabel);
             this.restoreAdditionalGroupBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.restoreAdditionalGroupBox.ForeColor = System.Drawing.Color.Black;
-            this.restoreAdditionalGroupBox.Location = new System.Drawing.Point(6, 277);
+            this.restoreAdditionalGroupBox.Location = new System.Drawing.Point(6, 287);
             this.restoreAdditionalGroupBox.Name = "restoreAdditionalGroupBox";
             this.restoreAdditionalGroupBox.Size = new System.Drawing.Size(651, 166);
             this.restoreAdditionalGroupBox.TabIndex = 11;
@@ -934,33 +943,33 @@
             // 
             // tabControl1
             // 
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Controls.Add(this.tabPage3);
-            this.tabControl1.Controls.Add(this.tabPage5);
-            this.tabControl1.Controls.Add(this.tabPage4);
+            this.tabControl1.Controls.Add(this.general);
+            this.tabControl1.Controls.Add(this.dataBackup);
+            this.tabControl1.Controls.Add(this.dataRestore);
+            this.tabControl1.Controls.Add(this.userChecklist);
             this.tabControl1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tabControl1.Location = new System.Drawing.Point(2, 79);
             this.tabControl1.Name = "tabControl1";
+            this.tabControl1.Padding = new System.Drawing.Point(35, 5);
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(680, 500);
             this.tabControl1.TabIndex = 24;
             // 
-            // tabPage1
+            // general
             // 
-            this.tabPage1.Controls.Add(this.userBackedUpAnswerLabel);
-            this.tabPage1.Controls.Add(this.userSetupAnswerLabel);
-            this.tabPage1.Controls.Add(this.userHasBeenBackedUpLabel);
-            this.tabPage1.Controls.Add(this.groupBox1);
-            this.tabPage1.Controls.Add(this.userSetupQuestionLabel);
-            this.tabPage1.Controls.Add(this.startOfYearGroupBox);
-            this.tabPage1.Location = new System.Drawing.Point(4, 29);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(672, 467);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Programs";
-            this.tabPage1.UseVisualStyleBackColor = true;
+            this.general.Controls.Add(this.userBackedUpAnswerLabel);
+            this.general.Controls.Add(this.userSetupAnswerLabel);
+            this.general.Controls.Add(this.userHasBeenBackedUpLabel);
+            this.general.Controls.Add(this.groupBox1);
+            this.general.Controls.Add(this.userSetupQuestionLabel);
+            this.general.Controls.Add(this.startOfYearGroupBox);
+            this.general.Location = new System.Drawing.Point(4, 33);
+            this.general.Name = "general";
+            this.general.Padding = new System.Windows.Forms.Padding(3);
+            this.general.Size = new System.Drawing.Size(672, 463);
+            this.general.TabIndex = 0;
+            this.general.Text = "Programs";
+            this.general.UseVisualStyleBackColor = true;
             // 
             // userBackedUpAnswerLabel
             // 
@@ -1096,39 +1105,39 @@
             this.userSetupQuestionLabel.TabIndex = 31;
             this.userSetupQuestionLabel.Text = "User Has Been Setup This Year?";
             // 
-            // tabPage2
+            // dataBackup
             // 
-            this.tabPage2.BackColor = System.Drawing.Color.AliceBlue;
-            this.tabPage2.Controls.Add(this.dataBackupGroupBox);
-            this.tabPage2.Location = new System.Drawing.Point(4, 29);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(672, 467);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Data Backup";
+            this.dataBackup.BackColor = System.Drawing.Color.AliceBlue;
+            this.dataBackup.Controls.Add(this.dataBackupGroupBox);
+            this.dataBackup.Location = new System.Drawing.Point(4, 33);
+            this.dataBackup.Name = "dataBackup";
+            this.dataBackup.Padding = new System.Windows.Forms.Padding(3);
+            this.dataBackup.Size = new System.Drawing.Size(672, 463);
+            this.dataBackup.TabIndex = 1;
+            this.dataBackup.Text = "Data Backup";
             // 
-            // tabPage3
+            // dataRestore
             // 
-            this.tabPage3.BackColor = System.Drawing.Color.AliceBlue;
-            this.tabPage3.Controls.Add(this.restoreGroupBox);
-            this.tabPage3.Location = new System.Drawing.Point(4, 29);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(672, 467);
-            this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "Data Restoration";
+            this.dataRestore.BackColor = System.Drawing.Color.AliceBlue;
+            this.dataRestore.Controls.Add(this.restoreGroupBox);
+            this.dataRestore.Location = new System.Drawing.Point(4, 33);
+            this.dataRestore.Name = "dataRestore";
+            this.dataRestore.Padding = new System.Windows.Forms.Padding(3);
+            this.dataRestore.Size = new System.Drawing.Size(672, 463);
+            this.dataRestore.TabIndex = 2;
+            this.dataRestore.Text = "Data Restoration";
             // 
-            // tabPage5
+            // userChecklist
             // 
-            this.tabPage5.Controls.Add(this.endOfYearCheckBoxPanel);
-            this.tabPage5.Controls.Add(this.startOfYearCheckBoxPanel);
-            this.tabPage5.Location = new System.Drawing.Point(4, 29);
-            this.tabPage5.Name = "tabPage5";
-            this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage5.Size = new System.Drawing.Size(672, 467);
-            this.tabPage5.TabIndex = 4;
-            this.tabPage5.Text = "User Checklist";
-            this.tabPage5.UseVisualStyleBackColor = true;
+            this.userChecklist.Controls.Add(this.endOfYearCheckBoxPanel);
+            this.userChecklist.Controls.Add(this.startOfYearCheckBoxPanel);
+            this.userChecklist.Location = new System.Drawing.Point(4, 33);
+            this.userChecklist.Name = "userChecklist";
+            this.userChecklist.Padding = new System.Windows.Forms.Padding(3);
+            this.userChecklist.Size = new System.Drawing.Size(672, 463);
+            this.userChecklist.TabIndex = 4;
+            this.userChecklist.Text = "User Checklist";
+            this.userChecklist.UseVisualStyleBackColor = true;
             // 
             // endOfYearCheckBoxPanel
             // 
@@ -1546,25 +1555,6 @@
             this.icPrintingCheckBox.Text = "IC Label Printing";
             this.icPrintingCheckBox.UseVisualStyleBackColor = true;
             // 
-            // tabPage4
-            // 
-            this.tabPage4.Controls.Add(this.serverListView);
-            this.tabPage4.Location = new System.Drawing.Point(4, 29);
-            this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(672, 467);
-            this.tabPage4.TabIndex = 3;
-            this.tabPage4.Text = "Printers";
-            this.tabPage4.UseVisualStyleBackColor = true;
-            // 
-            // serverListView
-            // 
-            this.serverListView.Location = new System.Drawing.Point(6, 6);
-            this.serverListView.Name = "serverListView";
-            this.serverListView.Size = new System.Drawing.Size(627, 445);
-            this.serverListView.TabIndex = 0;
-            this.serverListView.UseCompatibleStateImageBehavior = false;
-            // 
             // pictureBox1
             // 
             this.pictureBox1.Image = global::Helpdesk54.Properties.Resources.ic_dns_indigo_800_24dp;
@@ -1574,17 +1564,19 @@
             this.pictureBox1.TabIndex = 29;
             this.pictureBox1.TabStop = false;
             // 
-            // userRestoreSelectCombo
+            // administratorBackupCheckBox
             // 
-            this.userRestoreSelectCombo.FormattingEnabled = true;
-            this.userRestoreSelectCombo.Location = new System.Drawing.Point(364, 22);
-            this.userRestoreSelectCombo.Name = "userRestoreSelectCombo";
-            this.userRestoreSelectCombo.Size = new System.Drawing.Size(287, 28);
-            this.userRestoreSelectCombo.TabIndex = 13;
-            this.userRestoreSelectCombo.Visible = false;
-            this.userRestoreSelectCombo.SelectedIndexChanged += new System.EventHandler(this.userRestoreSelectCombo_SelectedIndexChanged);
+            this.administratorBackupCheckBox.AutoSize = true;
+            this.administratorBackupCheckBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.administratorBackupCheckBox.Location = new System.Drawing.Point(421, 57);
+            this.administratorBackupCheckBox.Name = "administratorBackupCheckBox";
+            this.administratorBackupCheckBox.Size = new System.Drawing.Size(122, 24);
+            this.administratorBackupCheckBox.TabIndex = 13;
+            this.administratorBackupCheckBox.Text = "Administrator";
+            this.administratorBackupCheckBox.UseVisualStyleBackColor = true;
+            this.administratorBackupCheckBox.CheckedChanged += new System.EventHandler(this.administratorBackupCheckBox_CheckedChanged);
             // 
-            // UserControl1
+            // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -1599,7 +1591,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
-            this.Name = "UserControl1";
+            this.Name = "MainForm";
             this.Text = "School District 54 Helper";
             this.startOfYearGroupBox.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
@@ -1616,12 +1608,12 @@
             this.restoreAdditionalGroupBox.ResumeLayout(false);
             this.restoreAdditionalGroupBox.PerformLayout();
             this.tabControl1.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
-            this.tabPage1.PerformLayout();
+            this.general.ResumeLayout(false);
+            this.general.PerformLayout();
             this.groupBox1.ResumeLayout(false);
-            this.tabPage2.ResumeLayout(false);
-            this.tabPage3.ResumeLayout(false);
-            this.tabPage5.ResumeLayout(false);
+            this.dataBackup.ResumeLayout(false);
+            this.dataRestore.ResumeLayout(false);
+            this.userChecklist.ResumeLayout(false);
             this.endOfYearCheckBoxPanel.ResumeLayout(false);
             this.endOfYearCheckBoxPanel.PerformLayout();
             this.panel7.ResumeLayout(false);
@@ -1638,7 +1630,6 @@
             this.printersPanel.PerformLayout();
             this.printingPanel.ResumeLayout(false);
             this.printingPanel.PerformLayout();
-            this.tabPage4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -1710,12 +1701,10 @@
         private System.Windows.Forms.Label usernameLabel;
         private System.Windows.Forms.Label userLabel;
         private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.TabPage tabPage2;
-        private System.Windows.Forms.TabPage tabPage3;
-        private System.Windows.Forms.TabPage tabPage4;
-        private System.Windows.Forms.ListView serverListView;
-        private System.Windows.Forms.TabPage tabPage5;
+        private System.Windows.Forms.TabPage general;
+        private System.Windows.Forms.TabPage dataBackup;
+        private System.Windows.Forms.TabPage dataRestore;
+        private System.Windows.Forms.TabPage userChecklist;
         private System.Windows.Forms.Panel printersPanel;
         private System.Windows.Forms.CheckBox imageRunnerCheckBox;
         private System.Windows.Forms.Label label4;
@@ -1774,6 +1763,7 @@
         private System.Windows.Forms.ComboBox userBackupSelectCombo;
         private System.Windows.Forms.ComboBox userRestoreSelectCombo;
         private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.CheckBox administratorBackupCheckBox;
     }
 }
 

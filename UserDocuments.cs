@@ -14,7 +14,6 @@ namespace Helpdesk54
         public void backupDocuments(MainForm mainForm, string userName, string selectedDrive, string userToBeBackedUp, string backupDirectoryName)
         {
             string documentsFolder = "";
-            /*DOCUMENTS*/
             string destinationLocation = selectedDrive + "\\54HelperBackups\\" + backupDirectoryName + "\\Documents\\";
             //Backup the logged in users Documents
             if (userToBeBackedUp == userName)

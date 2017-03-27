@@ -28,11 +28,8 @@ namespace Helpdesk54
     {
         int existingSetupRowNumber, existingBackupRowNumber;
         long canItFit;
-        string userDisplayFirstName, userDisplayLastName, userCustomDisplayName;
         string backupDirectoryName;
         string backupName;
-        string backupToRestore;
-        string serverName;
         public BackgroundWorker essentialBgWorker = new BackgroundWorker();
         public BackgroundWorker additionalBgWorker = new BackgroundWorker();
         public BackgroundWorker restoreEssentialBgWorker = new BackgroundWorker();
@@ -56,7 +53,7 @@ namespace Helpdesk54
                 }
             });
             InitializeComponent();
-
+            tabControl1.SelectedIndexChanged += TabControl1_SelectedIndexChanged;
             //setup background worker for progress bars
             //essentialBgWorker
             essentialBgWorker.DoWork += new DoWorkEventHandler(essentialBgWorker_DoWork);
@@ -79,31 +76,28 @@ namespace Helpdesk54
             restoreAdditionalBgWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(restoreAdditionalBgWorker_RunWorkerCompleted);
             restoreAdditionalBgWorker.WorkerReportsProgress = true;
             restoreAdditionalBgWorker.WorkerSupportsCancellation = true;
-
             //Get the userName to the currently logged in user
             //also gets userCustomDisplayName
             string userName = getUsername().ToString();
             string customUserName = getUserCustomDisplayName().ToString();
             usernameLabel.Text = userName;
-            //setup the backup tab
-            setBackupPageOptions();
-            //set restoreDriveCombo to dropdown
-            setRestoreDriveCombo();
+            //set the serverNameLink to link to the appropriate location
+            setServerNameLink();
+            //check installations
+            checkApplicationInstalls();
             //check if the user gets access to quicken
             if (doesUserGetQuicken(userName))
             {
                 quickenButton.Enabled = true;
                 quickenCheckBox.Enabled = true;
                 quickenBackupCheckBox.Enabled = true;
-            } else {
+            }
+            else
+            {
                 quickenButton.Enabled = false;
                 quickenCheckBox.Enabled = false;
                 quickenBackupCheckBox.Enabled = false;
             }
-            //set the serverNameLink to link to the appropriate location
-            setServerNameLink();
-            //check installations
-            checkApplicationInstalls();
             //check to see if user has been backed up or restored already
             if (userHasBeenSetup(userName))
             {
@@ -118,13 +112,48 @@ namespace Helpdesk54
                 userBackedUpAnswerLabel.Text = "YES";
                 userBackedUpAnswerLabel.ForeColor = System.Drawing.Color.ForestGreen;
             }
+            //setup backup page items during initial load so it is quicker to load when user clicks backup tab
+            setBackupPageOptions();
             //update labels
             labelDirectorySizes(userName);
-
             done = true;
             Show();
 
         }
+
+        /// <summary>
+        /// Handles the SelectedIndexChanged event of the TabControl1 control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        private void TabControl1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string userName = getUsername().ToString();
+            string name = tabControl1.SelectedTab.Name;
+            if (name == "dataBackup")
+            {
+                using (BeginWaitCursorBlock())
+                {
+
+                }
+            }
+            if (name == "dataRestore")
+            {
+                using (BeginWaitCursorBlock())
+                {
+                    //set H: drive
+                    setRestoreDriveCombo();
+                    //set user dropdown
+                    setRestorePageOptions();
+                    //set labels/buttons   
+                }             
+            }
+                      
+        }
+
+        /// <summary>
+        /// Sets the backup page options.
+        /// </summary>
         private void setBackupPageOptions()
         {
             string userName = getUsername().ToString();
@@ -146,7 +175,7 @@ namespace Helpdesk54
             string directoryToHouseBackups = "54HelperBackups";
             string selectedDrive = restoreDriveCombo.SelectedItem.ToString();
             string fullPathForBackups = selectedDrive + directoryToHouseBackups;
-            //there are backups
+            //there are backups - format the user dropdown
             if (doBackupsExist(fullPathForBackups))
             {
                 //do things because backups were found
@@ -173,6 +202,8 @@ namespace Helpdesk54
                 backupFoundLabel.ForeColor = System.Drawing.Color.Crimson;
                 userRestoreSelectCombo.Visible = false;
             }
+            //set the buttons 
+
         }
 
         private bool doBackupsExist(string fullPathForBackups)
@@ -200,6 +231,7 @@ namespace Helpdesk54
         /// </summary>
         private void setUserSelectBackupCombo()
         {
+            userBackupSelectCombo.Items.Clear();
             string userName = getUsername().ToString();
             userBackupSelectCombo.DropDownStyle = ComboBoxStyle.DropDownList;
             string[] folders = System.IO.Directory.GetDirectories(@"C:\Users\", "*", System.IO.SearchOption.TopDirectoryOnly);
@@ -225,6 +257,7 @@ namespace Helpdesk54
         /// </summary>
         private void setBackupDriveCombo()
         {
+            backupDriveCombo.Items.Clear();
             string homeDirectory = getHomeDirectory().ToString();
             Array theDrives = getAttachedDrives(); ;
             //set it
@@ -252,6 +285,7 @@ namespace Helpdesk54
         /// </summary>
         private void setRestoreDriveCombo()
         {
+            restoreDriveCombo.Items.Clear();
             string homeDirectory = getHomeDirectory().ToString();
             Array theDrives = getAttachedDrives();
             //Set it
@@ -306,6 +340,7 @@ namespace Helpdesk54
             Array theDrives = getAttachedDrives();
             string homeDirectory = "";
             string userName = getUsername().ToString();
+            string customUserName = getUserCustomDisplayName().ToString();
             foreach (DriveInfo currentDrive in theDrives)
             {
                 if (currentDrive.DriveType == DriveType.Network)
@@ -317,7 +352,7 @@ namespace Helpdesk54
                         // This is the Home drive! // 
                         homeDirectory = currentDrive.Name;
                     }
-                    if (path.ToLower().Contains(userCustomDisplayName.ToLower()))
+                    if (path.ToLower().Contains(customUserName.ToLower()))
                     {
                         // This is the Home drive! // 
                         homeDirectory = currentDrive.Name;
@@ -340,6 +375,7 @@ namespace Helpdesk54
             Array theDrives = getAttachedDrives();
             string homeDirectory = getHomeDirectory().ToString();
             string userName = getUsername().ToString();
+            string customUserName = getUserCustomDisplayName().ToString();
             foreach (DriveInfo currentDrive in theDrives)
             {
                 if (currentDrive.DriveType == DriveType.Network)
@@ -354,7 +390,7 @@ namespace Helpdesk54
                         serverName = uri.Host.ToString();
                         serverNameLinkLabel.Text = serverName;
                     }
-                    if (path.ToLower().Contains(userCustomDisplayName.ToLower()))
+                    if (path.ToLower().Contains(customUserName.ToLower()))
                     {
                         // This is the Home drive! // 
                         homeDirectory = currentDrive.Name;
@@ -440,9 +476,6 @@ namespace Helpdesk54
         {
             //set username - Do this early!
             string userName = Environment.UserName;
-            userDisplayFirstName = UserPrincipal.Current.GivenName;
-            userDisplayLastName = UserPrincipal.Current.Surname;
-            userCustomDisplayName = userDisplayFirstName + userDisplayLastName;
             return userName;
         }
         private string getUserToBeBackedUp()
@@ -461,9 +494,9 @@ namespace Helpdesk54
         /// <returns>String userCustomDisplayName</returns>
         private string getUserCustomDisplayName()
         {
-            userDisplayFirstName = UserPrincipal.Current.GivenName;
-            userDisplayLastName = UserPrincipal.Current.Surname;
-            userCustomDisplayName = userDisplayFirstName + userDisplayLastName;
+            string userDisplayFirstName = UserPrincipal.Current.GivenName;
+            string userDisplayLastName = UserPrincipal.Current.Surname;
+            string userCustomDisplayName = userDisplayFirstName + userDisplayLastName;
             return userCustomDisplayName;
         }
         private bool userHasCustomName(string userName, string userCustomDisplayName)
@@ -493,7 +526,6 @@ namespace Helpdesk54
         /// </summary>
         private void checkApplicationInstalls()
         {
-            string userToBeBackedUp = userBackupSelectCombo.SelectedItem.ToString();
             string[] applicationList =
             {
                 "DYMO Label v.8",
@@ -565,27 +597,6 @@ namespace Helpdesk54
                     }
                 }
             }
-            //check to see if stickynotes has been ran - if file exists enable button - otherwise disable and set to 'none'
-            string stickyNotesDirectory;
-            if (WinMajorVersion == 10)
-            //windows 10
-            {
-                stickyNotesDirectory = "C:\\Users\\" + userToBeBackedUp + "\\AppData\\Local\\Packages\\Microsoft.MicrosoftStickyNotes_8wekyb3d8bbwe";
-            }
-            else
-            {
-                //windows 7
-                stickyNotesDirectory = "C:\\Users\\" + userToBeBackedUp + "\\AppData\\Roaming\\Microsoft\\Sticky Notes";
-            }
-            if (Directory.Exists(stickyNotesDirectory))
-            {
-                backupStickyNotesButton.Enabled = true;
-            }
-            else
-            {
-                backupStickyNotesButton.Enabled = false;
-            }
-
         }
 
         /// <summary>
@@ -895,10 +906,18 @@ namespace Helpdesk54
                 //Set the selected drive freespace label
                 DriveInfo selectedDrive = (DriveInfo)backupDriveCombo.SelectedItem;
                 //If it's the homedrive (or a network drive) - we need to do further calculation to determine 'available free space'
-                //Max Available For Standard Users: 3GB            
+                //Max Available For Standard Users: 3GB    
+                long maxAvailableDriveSpace;        
                 if (selectedDrive.DriveType == DriveType.Network)
                 {
-                    long maxAvailableDriveSpace = 3221225472;
+                    if (administratorBackupCheckBox.Checked)
+                    {
+                        maxAvailableDriveSpace = 9663676416;
+                    }
+                    else
+                    {
+                        maxAvailableDriveSpace = 3221225472;
+                    }   
                     string folder = selectedDrive.ToString();
                     long networkDirectorySize = DirSize(new DirectoryInfo(folder));
                     selectedDriveAvailableSize = maxAvailableDriveSpace - networkDirectorySize;
@@ -1114,7 +1133,6 @@ namespace Helpdesk54
                     cont.Enabled = true;
                 }
             }
-            setRestorePageOptions();
         }
 
         /// <summary>
@@ -1284,7 +1302,6 @@ namespace Helpdesk54
                     cont.Enabled = true;
                 }
             }
-            setRestorePageOptions();
         }
 
         /// <summary>
@@ -1596,8 +1613,11 @@ namespace Helpdesk54
         private void restoreDesktopButton_Click(object sender, EventArgs e)
         {
             clickedButton = ((Button)sender).Name.ToString();
-            itemsChanged = ((Button)sender).Text.ToString();                        
-            restoreEssentialBgWorker.RunWorkerAsync();
+            itemsChanged = ((Button)sender).Text.ToString();
+            string selectedDrive = getSelectedDrive();
+            string backupToRestore = userRestoreSelectCombo.SelectedItem.ToString();
+            Tuple<string, string> tuple = new Tuple<string, string>(selectedDrive, backupToRestore);
+            restoreEssentialBgWorker.RunWorkerAsync(tuple);
         }
 
         /// <summary>
@@ -1609,7 +1629,10 @@ namespace Helpdesk54
         {
             clickedButton = ((Button)sender).Name.ToString();
             itemsChanged = ((Button)sender).Text.ToString();
-            restoreEssentialBgWorker.RunWorkerAsync();
+            string selectedDrive = getSelectedDrive();
+            string backupToRestore = userRestoreSelectCombo.SelectedItem.ToString();
+            Tuple<string, string> tuple = new Tuple<string, string>(selectedDrive, backupToRestore);
+            restoreEssentialBgWorker.RunWorkerAsync(tuple);
         }
 
         /// <summary>
@@ -1621,7 +1644,10 @@ namespace Helpdesk54
         {
             clickedButton = ((Button)sender).Name.ToString();
             itemsChanged = ((Button)sender).Text.ToString();
-            restoreEssentialBgWorker.RunWorkerAsync();
+            string selectedDrive = getSelectedDrive();
+            string backupToRestore = userRestoreSelectCombo.SelectedItem.ToString();
+            Tuple<string, string> tuple = new Tuple<string, string>(selectedDrive, backupToRestore);
+            restoreEssentialBgWorker.RunWorkerAsync(tuple);
         }
 
         /// <summary>
@@ -1633,73 +1659,10 @@ namespace Helpdesk54
         {
             clickedButton = ((Button)sender).Name.ToString();
             itemsChanged = ((Button)sender).Text.ToString();
-            string selectedDrive = backupDriveCombo.SelectedItem.ToString();
-            restoreEssentialBgWorker.RunWorkerAsync();
-            string[] directoryNameArray = { "Documents", "Favorites", "Desktop" };
-            string destinationLocation = "";
-            string directoryToRestore = "";
-
-            for (int i = 0; i < directoryNameArray.Length; i++)
-            {
-                switch (directoryNameArray[i])
-                {
-                    case "Documents":
-                        if (isRecoveryForLoggedInUser())
-                        {
-                            destinationLocation = selectedDrive + backupDirectoryName + "\\" + directoryNameArray[i] + "\\";
-                            directoryToRestore = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-                            break;
-                        }
-                        else
-                        {
-                            string selectedBackup = userRestoreSelectCombo.SelectedItem.ToString();
-                            string selectedBackupUsername = selectedBackup.Split('-')[0];
-                            destinationLocation = selectedDrive + backupDirectoryName + "\\" + directoryNameArray[i] + "\\";
-                            directoryToRestore = "C:\\Users\\"+selectedBackupUsername+"\\Documents";
-                            break;
-                        }
-                    case "Favorites":
-                        if (isRecoveryForLoggedInUser())
-                        {
-                            destinationLocation = selectedDrive + backupDirectoryName + "\\" + directoryNameArray[i] + "\\";
-                            directoryToRestore = Environment.GetFolderPath(Environment.SpecialFolder.Favorites);
-                            break;
-                        }
-                        else
-                        {
-                            string selectedBackup = userRestoreSelectCombo.SelectedItem.ToString();
-                            string selectedBackupUsername = selectedBackup.Split('-')[0];
-                            destinationLocation = selectedDrive + backupDirectoryName + "\\" + directoryNameArray[i] + "\\";
-                            directoryToRestore = "C:\\Users\\" + selectedBackupUsername + "\\Favorites";
-                            break;
-                        }
-                
-                    case "Desktop":
-                        if (isRecoveryForLoggedInUser())
-                        {
-                            destinationLocation = selectedDrive + backupDirectoryName + "\\" + directoryNameArray[i] + "\\";
-                            directoryToRestore = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-                            break;
-                        }
-                        else
-                        {
-                            string selectedBackup = userRestoreSelectCombo.SelectedItem.ToString();
-                            string selectedBackupUsername = selectedBackup.Split('-')[0];
-                            destinationLocation = selectedDrive + backupDirectoryName + "\\" + directoryNameArray[i] + "\\";
-                            directoryToRestore = "C:\\Users\\" + selectedBackupUsername + "\\Desktop";
-                            break;
-                        }
-                    default:
-                        break;
-                }
-                if (!Directory.Exists(destinationLocation))
-                {
-                    Directory.CreateDirectory(destinationLocation);
-                }
-                DirectoryInfo target = new DirectoryInfo(destinationLocation);
-                DirectoryInfo source = new DirectoryInfo(directoryToRestore);
-                CopyFilesRecursively(source, target);
-            }
+            string selectedDrive = getSelectedDrive();
+            string backupToRestore = userRestoreSelectCombo.SelectedItem.ToString();
+            Tuple<string, string> tuple = new Tuple<string, string>(selectedDrive, backupToRestore);
+            restoreEssentialBgWorker.RunWorkerAsync(tuple);
         }
 
         /// <summary>
@@ -1712,7 +1675,9 @@ namespace Helpdesk54
             UserDocuments userDocuments = new UserDocuments();
             UserDesktop userDesktop = new UserDesktop();
             UserFavorites userFavorites = new UserFavorites();
-            string selectedDrive = restoreDriveCombo.SelectedItem.ToString();
+            Tuple<string, string> tuple = e.Argument as Tuple<string, string>;
+            string selectedDrive = tuple.Item1;
+            string backupToRestore = tuple.Item2;
             string buttonSender = clickedButton; //Desktop, Documents, etc.
             switch (buttonSender)
             {
@@ -1812,7 +1777,10 @@ namespace Helpdesk54
         {
             clickedButton = ((Button)sender).Name.ToString();
             itemsChanged = ((Button)sender).Text.ToString();
-            restoreAdditionalBgWorker.RunWorkerAsync();
+            string selectedDrive = getSelectedDrive();
+            string backupToRestore = userRestoreSelectCombo.SelectedItem.ToString();
+            Tuple<string, string> tuple = new Tuple<string, string>(selectedDrive, backupToRestore);
+            restoreAdditionalBgWorker.RunWorkerAsync(tuple);
             restoreAdditionalBarLabel.Visible = false;
         }
 
@@ -1825,7 +1793,10 @@ namespace Helpdesk54
         {
             clickedButton = ((Button)sender).Name.ToString();
             itemsChanged = ((Button)sender).Text.ToString();
-            restoreAdditionalBgWorker.RunWorkerAsync();
+            string selectedDrive = getSelectedDrive();
+            string backupToRestore = userRestoreSelectCombo.SelectedItem.ToString();
+            Tuple<string, string> tuple = new Tuple<string, string>(selectedDrive, backupToRestore);
+            restoreAdditionalBgWorker.RunWorkerAsync(tuple);
             restoreAdditionalBarLabel.Visible = false;
         }
 
@@ -1838,7 +1809,10 @@ namespace Helpdesk54
         {
             clickedButton = ((Button)sender).Name.ToString();
             itemsChanged = ((Button)sender).Text.ToString();
-            restoreAdditionalBgWorker.RunWorkerAsync();
+            string selectedDrive = getSelectedDrive();
+            string backupToRestore = userRestoreSelectCombo.SelectedItem.ToString();
+            Tuple<string, string> tuple = new Tuple<string, string>(selectedDrive, backupToRestore);
+            restoreAdditionalBgWorker.RunWorkerAsync(tuple);
             restoreAdditionalBarLabel.Visible = false;
         }
 
@@ -1851,7 +1825,10 @@ namespace Helpdesk54
         {
             clickedButton = ((Button)sender).Name.ToString();
             itemsChanged = ((Button)sender).Text.ToString();
-            restoreAdditionalBgWorker.RunWorkerAsync();
+            string selectedDrive = getSelectedDrive();
+            string backupToRestore = userRestoreSelectCombo.SelectedItem.ToString();
+            Tuple<string, string> tuple = new Tuple<string, string>(selectedDrive, backupToRestore);
+            restoreAdditionalBgWorker.RunWorkerAsync(tuple);
             restoreAdditionalBarLabel.Visible = false;
         }
 
@@ -1866,7 +1843,9 @@ namespace Helpdesk54
             UserStickyNotes userStickyNotes = new UserStickyNotes();
             UserVideos userVideos = new UserVideos();
             UserMusic userMusic = new UserMusic();
-            string selectedDrive = restoreDriveCombo.SelectedItem.ToString();
+            Tuple<string, string> tuple = e.Argument as Tuple<string, string>;
+            string selectedDrive = tuple.Item1;
+            string backupToRestore = tuple.Item2;
             string buttonSender = clickedButton; //Desktop, Documents, etc.
             switch (buttonSender)
             {
@@ -2194,7 +2173,23 @@ namespace Helpdesk54
             installPrintersCheckBox.Checked = true;
             imageRunnerCheckBox.Checked = true;
         }
-
+        private string getServerName()
+        {
+            string serverName = "";
+            string homeDirectory = getHomeDirectory().ToString();
+            DriveInfo[] theDrives = DriveInfo.GetDrives();
+            foreach (DriveInfo currentDrive in theDrives)
+            {
+                if (currentDrive.Name == homeDirectory)
+                {
+                    string currentDriveString = currentDrive.Name.ToString();
+                    string path = GetUNCPath(currentDriveString);
+                    Uri uri = new Uri(path);
+                    serverName = uri.Host.ToString();
+                } 
+            }
+            return serverName;
+        }
         /*
         * ***** *
         * ***** GET UNC PATH ***** *
@@ -2340,11 +2335,13 @@ namespace Helpdesk54
                         default:
                             break;
                     }
-                    if (restoreDesktopButton.Enabled && restoreDocumentsButton.Enabled && restoreFavoritesButton.Enabled)
-                    {
-                        recoverAllEssentialsLabel.ForeColor = System.Drawing.Color.ForestGreen;
-                        restoreAllEssentialsButton.Enabled = true;
-                    }
+                }
+                if (restoreDesktopButton.Enabled && restoreDocumentsButton.Enabled && restoreFavoritesButton.Enabled)
+                {
+                    recoverAllEssentialsLabel.Enabled = true;
+                    recoverAllEssentialsLabel.Text = "(Found!)";
+                    recoverAllEssentialsLabel.ForeColor = System.Drawing.Color.ForestGreen;
+                    restoreAllEssentialsButton.Enabled = true;
                 }
             }
         }
@@ -2370,7 +2367,7 @@ namespace Helpdesk54
                 string monthDay = DateTime.Today.ToString("MM/dd");
                 oblist.Add(monthDay);
                 //set location
-                string serverOutput = Regex.Replace(serverName, @"[\d-]", string.Empty);
+                string serverOutput = Regex.Replace(getServerName(), @"[\d-]", string.Empty);
                 oblist.Add(serverOutput);
                 //set username
                 oblist.Add(userName);
@@ -2457,7 +2454,7 @@ namespace Helpdesk54
                 string monthDay = DateTime.Today.ToString("MM/dd");
                 oblist.Add(monthDay);
                 //set location
-                string serverOutput = Regex.Replace(serverName, @"[\d-]", string.Empty);
+                string serverOutput = Regex.Replace(getServerName(), @"[\d-]", string.Empty);
                 oblist.Add(serverOutput);
                 //set username
                 oblist.Add(userName);
@@ -2728,7 +2725,7 @@ namespace Helpdesk54
         private void userRestoreSelectCombo_SelectedIndexChanged(object sender, EventArgs e)
         {
             using (BeginWaitCursorBlock()) {
-                backupToRestore = userRestoreSelectCombo.SelectedItem.ToString();
+                disableRestoreButtons();
                 string selectedBackup = userRestoreSelectCombo.SelectedItem.ToString();
                 string selectedBackupUsername = selectedBackup.Split('-')[0];
                 //Check that the user backup selected has a user folder existing on the computer
@@ -2862,6 +2859,15 @@ namespace Helpdesk54
                 return uint.TryParse(versionParts[0], out majorAsUInt) ? majorAsUInt : 0;
             }
         }
+
+        private void administratorBackupCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            using (BeginWaitCursorBlock())
+            {
+                backupDriveCombo_SelectedIndexChanged(sender, e);
+            }                
+        }
+
         private static bool TryGetRegistryKey(string path, string key, out dynamic value)
         {
             value = null;
